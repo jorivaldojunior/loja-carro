@@ -73,6 +73,32 @@
             max-height: 200px;
             width: 100% !important;
         }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background: #111;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: #444;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
@@ -95,7 +121,6 @@
                     <i class="fas fa-home mr-3 purple-accent"></i> Dashboard
                 </button>
                 
-                <!-- NOVO: Link para página de estoque separada -->
                 <button onclick="window.location.href='estoque.html'" class="sidebar-item w-full text-left p-3 rounded">
                     <i class="fas fa-car mr-3 purple-accent"></i> Estoque
                 </button>
@@ -133,7 +158,6 @@
             <div id="dashboard">
                 <div class="flex justify-between items-center mb-8">
                     <h1 class="text-3xl font-bold purple-accent">Dashboard</h1>
-                    <!-- BOTÃO DE TELA CHEIA NO CANTO SUPERIOR -->
                     <button onclick="ativarTelaCheia()" class="fullscreen-btn">
                         <i class="fas fa-expand"></i>
                         <span class="hidden md:inline">Tela Cheia</span>
@@ -178,8 +202,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div class="card p-4">
                         <h3 class="text-lg font-semibold mb-2 purple-accent">Saúde do Negócio</h3>
-                        <div id="saudeIndicador" class="text-2xl font-bold"></div>
-                        <p id="saudeMensagem" class="text-sm text-gray-400 mt-2"></p>
+                        <div id="saudeIndicador" class="text-2xl font-bold">📊 Sem dados</div>
+                        <p id="saudeMensagem" class="text-sm text-gray-400 mt-2">Cadastre veículos para começar</p>
                     </div>
 
                     <div class="card p-4">
@@ -311,13 +335,11 @@
                 elemento.msRequestFullscreen();
             }
             
-            // Mostrar indicador
             if (indicator) {
                 indicator.classList.add('visible');
             }
         }
 
-        // Detectar quando sai do modo tela cheia (ESC)
         document.addEventListener('fullscreenchange', atualizarIndicadorFullscreen);
         document.addEventListener('webkitfullscreenchange', atualizarIndicadorFullscreen);
         document.addEventListener('mozfullscreenchange', atualizarIndicadorFullscreen);
@@ -325,10 +347,8 @@
 
         function atualizarIndicadorFullscreen() {
             const indicator = document.getElementById('fullscreenIndicator');
-            if (!document.fullscreenElement) {
-                if (indicator) {
-                    indicator.classList.remove('visible');
-                }
+            if (!document.fullscreenElement && indicator) {
+                indicator.classList.remove('visible');
             }
         }
 
@@ -344,7 +364,7 @@
         }
 
         function abrirEstoquePublico() {
-             window.location.href = 'estoque-publico.html';
+            window.location.href = 'estoque-publico.html';
         }
 
         // ========== FUNÇÕES DE FORMATAÇÃO ==========
@@ -392,53 +412,8 @@
                 }
             }
             
-            // Adicionar alguns dados de exemplo se estiver vazio
-            if (cars.length === 0) {
-                cars = [
-                    {
-                        id: 1,
-                        marca: 'Toyota',
-                        modelo: 'Corolla',
-                        ano: '2022',
-                        placa: 'ABC1234',
-                        cor: 'Preto',
-                        km: '25000',
-                        compra: 85000,
-                        venda: 95000,
-                        dataCompra: '2023-01-15',
-                        status: 'Disponível',
-                        fotos: []
-                    },
-                    {
-                        id: 2,
-                        marca: 'Honda',
-                        modelo: 'Civic',
-                        ano: '2021',
-                        placa: 'XYZ5678',
-                        cor: 'Branco',
-                        km: '35000',
-                        compra: 80000,
-                        venda: 89000,
-                        dataCompra: '2023-02-20',
-                        status: 'Vendido',
-                        fotos: []
-                    },
-                    {
-                        id: 3,
-                        marca: 'Volkswagen',
-                        modelo: 'T-Cross',
-                        ano: '2023',
-                        placa: 'DEF4321',
-                        cor: 'Vermelho',
-                        km: '12000',
-                        compra: 110000,
-                        venda: 125000,
-                        dataCompra: '2023-05-10',
-                        status: 'Reservado',
-                        fotos: []
-                    }
-                ];
-            }
+            // IMPORTANTE: NÃO adicionar dados de exemplo
+            // Se não há dados, cars continua como array vazio []
             
             atualizarDashboard();
         }
@@ -625,7 +600,6 @@
                 lucroElem.innerHTML = `<span class="${lucroClass}">R$ •••••••</span>`;
             }
             
-            // Atualizar cards de resumo
             document.getElementById('lucroRealizado').innerText = formatarMoedaBrasileira(ind.lucroRealizado);
             document.getElementById('lucroPotencial').innerText = formatarMoedaBrasileira(ind.lucroPotencial);
             document.getElementById('valorEstoque').innerText = formatarMoedaBrasileira(ind.valorEstoque);
@@ -633,7 +607,10 @@
             let saudeElem = document.getElementById('saudeIndicador');
             let saudeMsg = document.getElementById('saudeMensagem');
             
-            if (investimento === 0) {
+            if (ind.totalCars === 0) {
+                saudeElem.innerHTML = '📊 Sem dados';
+                saudeMsg.innerText = 'Cadastre veículos para começar';
+            } else if (investimento === 0) {
                 saudeElem.innerHTML = '⚠️ Defina o investimento';
                 saudeMsg.innerText = 'Clique no card de investimento para configurar';
             } else {
@@ -652,6 +629,9 @@
                 let margemMedia = carsComMargem.reduce((acc, c) => acc + (((c.venda || 0) - (c.compra || 0)) / (c.compra || 1) * 100), 0) / carsComMargem.length;
                 document.getElementById('margemMedia').innerHTML = margemMedia.toFixed(1).replace('.', ',') + '%';
                 document.getElementById('margemBar').style.width = Math.min(Math.abs(margemMedia), 100) + '%';
+            } else {
+                document.getElementById('margemMedia').innerHTML = '0,0%';
+                document.getElementById('margemBar').style.width = '0%';
             }
             
             atualizarGraficos();
@@ -668,9 +648,8 @@
             }
             
             if (window.salesChart) {
-                // Simular vendas mensais
-                let vendasMensais = [2, 3, 1, 4, 2, 3]; // Dados de exemplo
-                window.salesChart.data.datasets[0].data = vendasMensais;
+                // Zera os dados de vendas mensais
+                window.salesChart.data.datasets[0].data = [0, 0, 0, 0, 0, 0];
                 window.salesChart.update();
             }
         }
