@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GM Repasses | Estoque</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            background: #0b0b0b; 
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .purple-accent { color: #a855f7; }
+        .purple-bg { background: #a855f7; }
+        .purple-border { border-color: #a855f7; }
+        
+        .card { 
+            background: #111; 
+            border: 1px solid #2a2a2a; 
+            border-radius: 12px; 
+            transition: all 0.3s;
+        }
+        
+        .card:hover { 
+            border-color: #9333ea; 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2);
+        }
+        
+        /* Header e navegação */
+        .header-gradient {
+            background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%);
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .back-btn {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #888;
+            transition: all 0.3s;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+            transform: translateX(-2px);
+        }
+        
+        /* ESTILO DO BOTÃO DE TELA CHEIA */
+        .fullscreen-btn {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #888;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+
+        .fullscreen-btn:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+            transform: translateY(-1px);
+        }
+
+        .fullscreen-btn i {
+            font-size: 16px;
+        }
+
+        /* INDICADOR DE TELA CHEIA */
+        .fullscreen-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .fullscreen-indicator.visible {
+            opacity: 1;
+        }
+        
+        /* Busca */
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            color: #e5e7eb;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-wrapper input:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+        }
+
+        .search-wrapper input::placeholder {
+            color: #4b5563;
+            font-weight: 300;
+        }
+
+        .search-stats {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 10px;
+            text-align: right;
+            padding-right: 8px;
+        }
+
+        /* Filtros rápidos */
+        .filter-chip {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #9ca3af;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .filter-chip:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+            background: #151515;
+        }
+        
+        .filter-chip.active {
+            background: #a855f7;
+            border-color: #a855f7;
+            color: white;
+        }
+        
+        .filter-chip i {
+            font-size: 12px;
+        }
+
+        /* Cards de veículos */
+        .vehicle-card {
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .vehicle-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .vehicle-image-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #1a1a1a;
+            margin-bottom: 16px;
+        }
+        
+        .vehicle-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .vehicle-card:hover .vehicle-image {
+            transform: scale(1.05);
+        }
+        
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: flex-end;
+            padding: 12px;
+        }
+        
+        .vehicle-card:hover .image-overlay {
+            opacity: 1;
+        }
+        
+        .photo-count {
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid;
+        }
+        
+        .status-disponivel { 
+            color: #10b981; 
+            border-color: #10b981;
+        }
+        .status-vendido { 
+            color: #ef4444; 
+            border-color: #ef4444;
+        }
+        .status-reservado { 
+            color: #f59e0b; 
+            border-color: #f59e0b;
+        }
+
+        /* Informações do veículo */
+        .vehicle-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: white;
+        }
+        
+        .vehicle-subtitle {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .vehicle-subtitle i {
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #1f1f1f;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .info-label i {
+            width: 16px;
+            font-size: 14px;
+            color: #4b5563;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+        }
+        
+        .page-btn {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #9ca3af;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover:not(.disabled) {
+            border-color: #a855f7;
+            color: #a855f7;
+            transform: translateY(-2px);
+        }
+        
+        .page-btn.active {
+            background: #a855f7;
+            border-color: #a855f7;
+            color: white;
+        }
+        
+        .page-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #111;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            color: #2a2a2a;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        /* Botões */
+        .btn-primary {
+            background: #a855f7;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            background: #9333ea;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #9ca3af;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a855f7;
+        }
+    </style>
+</head>
+<body class="text-gray-200 min-h-screen">
+
+    <!-- INDICADOR DE TELA CHEIA -->
+    <div class="fullscreen-indicator" id="fullscreenIndicator">
+        <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para sair
+    </div>
+
+    <!-- HEADER -->
+    <header class="header-gradient sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <button onclick="voltarDashboard()" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="hidden md:inline">Dashboard</span>
+                    </button>
+                    
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold purple-accent flex items-center gap-3">
+                            <i class="fas fa-car"></i>
+                            Estoque de Veículos
+                        </h1>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Gerencie todos os veículos da loja
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <!-- BOTÃO DE TELA CHEIA -->
+                    <button onclick="ativarTelaCheia()" class="fullscreen-btn" title="Tela Cheia">
+                        <i class="fas fa-expand"></i>
+                        <span class="hidden md:inline">Tela Cheia</span>
+                    </button>
+                    
+                    <button onclick="recarregarDados()" class="back-btn" title="Atualizar dados">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    
+                    <button onclick="abrirCadastro()" class="btn-primary">
+                        <i class="fas fa-plus-circle"></i>
+                        <span class="hidden md:inline">Novo Veículo</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        
+        <!-- FILTROS E BUSCA -->
+        <div class="mb-8 space-y-4">
+            <!-- Barra de busca inteligente -->
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input 
+                    type="text" 
+                    id="filtroInteligente" 
+                    placeholder="Buscar por marca, modelo, ano, cor, placa ou status..." 
+                    onkeyup="aplicarFiltros()"
+                    autocomplete="off"
+                >
+            </div>
+            
+            <!-- Filtros rápidos -->
+            <div class="flex flex-wrap gap-3">
+                <span class="filter-chip active" onclick="filtrarPorStatus('todos')" id="filtroTodos">
+                    <i class="fas fa-list"></i> Todos
+                </span>
+                <span class="filter-chip" onclick="filtrarPorStatus('disponivel')" id="filtroDisponivel">
+                    <i class="fas fa-check-circle"></i> Disponível
+                </span>
+                <span class="filter-chip" onclick="filtrarPorStatus('reservado')" id="filtroReservado">
+                    <i class="fas fa-clock"></i> Reservado
+                </span>
+                <span class="filter-chip" onclick="filtrarPorStatus('vendido')" id="filtroVendido">
+                    <i class="fas fa-check-double"></i> Vendido
+                </span>
+                
+                <span class="filter-chip" onclick="ordenarPor('recentes')" id="ordemRecentes">
+                    <i class="fas fa-calendar-alt"></i> Mais Recentes
+                </span>
+                <span class="filter-chip" onclick="ordenarPor('menorPreco')" id="ordemMenorPreco">
+                    <i class="fas fa-arrow-down"></i> Menor Preço
+                </span>
+                <span class="filter-chip" onclick="ordenarPor('maiorPreco')" id="ordemMaiorPreco">
+                    <i class="fas fa-arrow-up"></i> Maior Preço
+                </span>
+                
+                <span class="filter-chip" onclick="exportarDados()">
+                    <i class="fas fa-download"></i> Exportar
+                </span>
+            </div>
+            
+            <!-- Stats da busca -->
+            <div class="search-stats" id="filtroStats">
+                Carregando veículos...
+            </div>
+        </div>
+
+        <!-- ÁREA DE CARREGAMENTO / CARDS -->
+        <div id="estoqueContainer">
+            <!-- Loading skeleton (aparece enquanto carrega) -->
+            <div id="loadingSkeleton" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-4"><div class="skeleton h-40 w-full mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+                <div class="card p-4"><div class="skeleton h-40 w-full mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+                <div class="card p-4"><div class="skeleton h-40 w-full mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+            </div>
+
+            <!-- Cards serão inseridos aqui via JavaScript -->
+            <div id="estoqueCards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+        </div>
+
+        <!-- PAGINAÇÃO -->
+        <div id="paginacao" class="pagination hidden">
+            <div class="page-btn disabled" id="prevPage" onclick="mudarPagina('prev')">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div id="pageNumbers" class="flex gap-2"></div>
+            <div class="page-btn" id="nextPage" onclick="mudarPagina('next')">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DE EXPORTAÇÃO -->
+    <div id="modalExportar" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50">
+        <div class="bg-gray-900 p-8 rounded-xl w-96 border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 purple-accent flex items-center gap-3">
+                <i class="fas fa-download"></i>
+                Exportar Dados
+            </h2>
+            <p class="text-sm text-gray-400 mb-6">Escolha o formato para exportar o estoque:</p>
+            
+            <button onclick="exportarCSV()" class="w-full bg-gray-800 hover:bg-gray-700 p-4 rounded-lg mb-3 text-left flex items-center gap-3 transition-all">
+                <i class="fas fa-file-csv text-green-400"></i>
+                <div>
+                    <div class="font-bold">CSV (Excel)</div>
+                    <div class="text-xs text-gray-400">Abrir no Excel, Google Sheets</div>
+                </div>
+            </button>
+            
+            <button onclick="exportarJSON()" class="w-full bg-gray-800 hover:bg-gray-700 p-4 rounded-lg mb-3 text-left flex items-center gap-3 transition-all">
+                <i class="fas fa-file-code text-yellow-400"></i>
+                <div>
+                    <div class="font-bold">JSON</div>
+                    <div class="text-xs text-gray-400">Formato para desenvolvedores</div>
+                </div>
+            </button>
+            
+            <button onclick="exportarPDF()" class="w-full bg-gray-800 hover:bg-gray-700 p-4 rounded-lg mb-6 text-left flex items-center gap-3 transition-all">
+                <i class="fas fa-file-pdf text-red-400"></i>
+                <div>
+                    <div class="font-bold">PDF</div>
+                    <div class="text-xs text-gray-400">Relatório formatado</div>
+                </div>
+            </button>
+            
+            <button onclick="fecharModalExportar()" class="w-full p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all">
+                Cancelar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIGURAÇÕES ==========
+        const ITENS_POR_PAGINA = 9;
+        let cars = [];
+        let carsFiltrados = [];
+        let filtroAtual = {
+            texto: '',
+            status: 'todos',
+            ordenacao: 'recentes'
+        };
+        let paginaAtual = 1;
+        let totalPaginas = 1;
+
+        // ========== FUNÇÃO DE TELA CHEIA ==========
+        function ativarTelaCheia() {
+            const elemento = document.documentElement;
+            const indicator = document.getElementById('fullscreenIndicator');
+            
+            if (elemento.requestFullscreen) {
+                elemento.requestFullscreen();
+            } else if (elemento.webkitRequestFullscreen) {
+                elemento.webkitRequestFullscreen();
+            } else if (elemento.msRequestFullscreen) {
+                elemento.msRequestFullscreen();
+            }
+            
+            // Mostrar indicador
+            if (indicator) {
+                indicator.classList.add('visible');
+            }
+        }
+
+        // Detectar quando sai do modo tela cheia (ESC)
+        document.addEventListener('fullscreenchange', atualizarIndicadorFullscreen);
+        document.addEventListener('webkitfullscreenchange', atualizarIndicadorFullscreen);
+        document.addEventListener('mozfullscreenchange', atualizarIndicadorFullscreen);
+        document.addEventListener('MSFullscreenChange', atualizarIndicadorFullscreen);
+
+        function atualizarIndicadorFullscreen() {
+            const indicator = document.getElementById('fullscreenIndicator');
+            if (!document.fullscreenElement) {
+                if (indicator) {
+                    indicator.classList.remove('visible');
+                }
+            }
+        }
+
+        // ========== INICIALIZAÇÃO ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarDados();
+        });
+
+        function carregarDados() {
+            // Mostrar skeleton
+            document.getElementById('loadingSkeleton').classList.remove('hidden');
+            document.getElementById('estoqueCards').classList.add('hidden');
+            
+            // Simular um pequeno delay para mostrar o skeleton (opcional)
+            setTimeout(() => {
+                try {
+                    // Tenta carregar do localStorage compartilhado com a página principal
+                    const dadosSalvos = localStorage.getItem('gmRepasses');
+                    if (dadosSalvos) {
+                        const dados = JSON.parse(dadosSalvos);
+                        cars = dados.cars || [];
+                    }
+                    
+                    // Se não houver dados, carregar exemplos
+                    if (!cars || cars.length === 0) {
+                        cars = [
+                            {
+                                id: 1,
+                                marca: 'Toyota',
+                                modelo: 'Corolla',
+                                ano: '2022',
+                                placa: 'ABC1234',
+                                cor: 'Preto',
+                                km: '25000',
+                                compra: 85000,
+                                venda: 95000,
+                                dataCompra: '2023-01-15',
+                                status: 'Disponível',
+                                fotos: []
+                            },
+                            {
+                                id: 2,
+                                marca: 'Honda',
+                                modelo: 'Civic',
+                                ano: '2021',
+                                placa: 'XYZ5678',
+                                cor: 'Branco',
+                                km: '35000',
+                                compra: 80000,
+                                venda: 89000,
+                                dataCompra: '2023-02-20',
+                                status: 'Vendido',
+                                fotos: []
+                            },
+                            {
+                                id: 3,
+                                marca: 'Volkswagen',
+                                modelo: 'T-Cross',
+                                ano: '2023',
+                                placa: 'DEF4321',
+                                cor: 'Vermelho',
+                                km: '12000',
+                                compra: 110000,
+                                venda: 125000,
+                                dataCompra: '2023-05-10',
+                                status: 'Reservado',
+                                fotos: []
+                            }
+                        ];
+                    }
+                    
+                    // Inicializar filtros
+                    aplicarFiltros();
+                    
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                    mostrarErro('Erro ao carregar dados. Tente recarregar a página.');
+                }
+            }, 300); // Pequeno delay para mostrar o skeleton
+        }
+
+        // ========== FUNÇÕES DE FORMATAÇÃO ==========
+        function formatarMoedaBrasileira(valor) {
+            if (valor === null || valor === undefined || isNaN(valor)) {
+                return 'R$ 0,00';
+            }
+            valor = Number(valor);
+            return valor.toLocaleString('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL' 
+            });
+        }
+
+        function formatarKM(km) {
+            if (!km) return 'KM não informado';
+            let numKM = parseInt(km);
+            if (isNaN(numKM)) return km;
+            return numKM.toLocaleString('pt-BR') + ' km';
+        }
+
+        // ========== FUNÇÕES DE FILTRO E ORDENAÇÃO ==========
+        function aplicarFiltros() {
+            const termoBusca = document.getElementById('filtroInteligente').value.toLowerCase();
+            filtroAtual.texto = termoBusca;
+            
+            // Filtrar por texto
+            let filtrados = cars.filter(c => {
+                if (!c) return false;
+                
+                // Busca em todos os campos relevantes
+                const buscaStr = `
+                    ${c.marca || ''} 
+                    ${c.modelo || ''} 
+                    ${c.ano || ''} 
+                    ${c.cor || ''} 
+                    ${c.placa || ''} 
+                    ${c.status || ''}
+                `.toLowerCase();
+                
+                return buscaStr.includes(termoBusca);
+            });
+            
+            // Filtrar por status
+            if (filtroAtual.status !== 'todos') {
+                const statusMap = {
+                    'disponivel': 'Disponível',
+                    'reservado': 'Reservado',
+                    'vendido': 'Vendido'
+                };
+                const statusBusca = statusMap[filtroAtual.status];
+                if (statusBusca) {
+                    filtrados = filtrados.filter(c => c.status === statusBusca);
+                }
+            }
+            
+            // Ordenar
+            filtrados = ordenarVeiculos(filtrados, filtroAtual.ordenacao);
+            
+            carsFiltrados = filtrados;
+            paginaAtual = 1;
+            renderizarEstoque();
+        }
+
+        function filtrarPorStatus(status) {
+            filtroAtual.status = status;
+            
+            // Atualizar UI dos chips
+            document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+            document.getElementById(`filtro${status.charAt(0).toUpperCase() + status.slice(1)}`)?.classList.add('active');
+            
+            aplicarFiltros();
+        }
+
+        function ordenarPor(tipo) {
+            filtroAtual.ordenacao = tipo;
+            
+            // Atualizar UI
+            document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+            const mapaIds = {
+                'recentes': 'ordemRecentes',
+                'menorPreco': 'ordemMenorPreco',
+                'maiorPreco': 'ordemMaiorPreco'
+            };
+            document.getElementById(mapaIds[tipo])?.classList.add('active');
+            
+            aplicarFiltros();
+        }
+
+        function ordenarVeiculos(veiculos, tipo) {
+            const veiculosCopy = [...veiculos];
+            
+            switch(tipo) {
+                case 'recentes':
+                    return veiculosCopy.sort((a, b) => {
+                        // Ordenar por data de compra (mais recente primeiro)
+                        return new Date(b.dataCompra || 0) - new Date(a.dataCompra || 0);
+                    });
+                    
+                case 'menorPreco':
+                    return veiculosCopy.sort((a, b) => (a.venda || 0) - (b.venda || 0));
+                    
+                case 'maiorPreco':
+                    return veiculosCopy.sort((a, b) => (b.venda || 0) - (a.venda || 0));
+                    
+                default:
+                    return veiculosCopy;
+            }
+        }
+
+        // ========== RENDERIZAÇÃO ==========
+        function renderizarEstoque() {
+            // Calcular paginação
+            totalPaginas = Math.ceil(carsFiltrados.length / ITENS_POR_PAGINA) || 1;
+            
+            // Atualizar stats
+            const statsEl = document.getElementById('filtroStats');
+            if (statsEl) {
+                if (carsFiltrados.length === 0) {
+                    statsEl.innerHTML = '<i class="fas fa-search mr-1"></i> Nenhum veículo encontrado';
+                } else {
+                    statsEl.innerHTML = `
+                        <i class="fas fa-car mr-1"></i> 
+                        ${carsFiltrados.length} ${carsFiltrados.length === 1 ? 'veículo encontrado' : 'veículos encontrados'}
+                        ${filtroAtual.texto ? `para "<span class="text-purple-400">${filtroAtual.texto}</span>"` : ''}
+                    `;
+                }
+            }
+            
+            // Esconder skeleton e mostrar cards
+            document.getElementById('loadingSkeleton').classList.add('hidden');
+            const cardsContainer = document.getElementById('estoqueCards');
+            cardsContainer.classList.remove('hidden');
+            
+            if (carsFiltrados.length === 0) {
+                // Mostrar empty state
+                cardsContainer.innerHTML = `
+                    <div class="col-span-3">
+                        <div class="empty-state">
+                            <i class="fas fa-car"></i>
+                            <h3>Nenhum veículo encontrado</h3>
+                            <p>${filtroAtual.texto ? `Nenhum resultado para "${filtroAtual.texto}"` : 'Comece cadastrando seu primeiro veículo'}</p>
+                            <button onclick="abrirCadastro()" class="btn-primary mt-4">
+                                <i class="fas fa-plus-circle"></i>
+                                Cadastrar Veículo
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('paginacao').classList.add('hidden');
+                return;
+            }
+            
+            // Calcular índices da página atual
+            const inicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
+            const fim = Math.min(inicio + ITENS_POR_PAGINA, carsFiltrados.length);
+            const carsPagina = carsFiltrados.slice(inicio, fim);
+            
+            // Renderizar cards
+            let html = '';
+            for (let i = 0; i < carsPagina.length; i++) {
+                const c = carsPagina[i];
+                if (!c) continue;
+                
+                const compra = c.compra || 0;
+                const venda = c.venda || 0;
+                const lucro = venda - compra;
+                const lucroClass = lucro >= 0 ? 'text-green-400' : 'text-red-400';
+                
+                // Pegar primeira foto ou placeholder
+                const primeiraFoto = c.fotos && c.fotos.length > 0 
+                    ? c.fotos[0] 
+                    : 'https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Sem+Foto';
+                
+                const qtdFotos = c.fotos ? c.fotos.length : 0;
+                
+                // Classe de status
+                const statusClass = {
+                    'Disponível': 'status-disponivel',
+                    'Vendido': 'status-vendido',
+                    'Reservado': 'status-reservado'
+                }[c.status] || 'status-disponivel';
+                
+                html += `
+                    <div class="card vehicle-card p-4" onclick="abrirPaginaVeiculo(${c.id})">
+                        <div class="vehicle-image-container">
+                            <img src="${primeiraFoto}" 
+                                 class="vehicle-image" 
+                                 alt="${c.marca} ${c.modelo}"
+                                 onerror="this.src='https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Sem+Foto'">
+                            
+                            <span class="status-badge ${statusClass}">
+                                ${c.status || 'Disponível'}
+                            </span>
+                            
+                            <div class="image-overlay">
+                                <span class="photo-count">
+                                    <i class="fas fa-camera"></i>
+                                    ${qtdFotos} ${qtdFotos === 1 ? 'foto' : 'fotos'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="vehicle-title">${c.marca || ''} ${c.modelo || ''}</h3>
+                        
+                        <div class="vehicle-subtitle">
+                            <span><i class="far fa-calendar"></i> ${c.ano || 'Ano não informado'}</span>
+                            <i class="fas fa-circle" style="font-size: 4px;"></i>
+                            <span><i class="fas fa-palette"></i> ${c.cor || 'Cor não informada'}</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="info-row">
+                                <span class="info-label"><i class="fas fa-tachometer-alt"></i> Quilometragem</span>
+                                <span class="info-value">${formatarKM(c.km)}</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <span class="info-label"><i class="fas fa-tag"></i> Preço de Venda</span>
+                                <span class="info-value text-purple-400 font-bold">${formatarMoedaBrasileira(venda)}</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <span class="info-label"><i class="fas fa-chart-line"></i> Lucro Estimado</span>
+                                <span class="info-value ${lucroClass} font-bold">${formatarMoedaBrasileira(lucro)}</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <span class="info-label"><i class="fas fa-barcode"></i> Placa</span>
+                                <span class="info-value font-mono">${c.placa || 'N/I'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            cardsContainer.innerHTML = html;
+            
+            // Renderizar paginação
+            renderizarPaginacao();
+        }
+
+        function renderizarPaginacao() {
+            if (totalPaginas <= 1) {
+                document.getElementById('paginacao').classList.add('hidden');
+                return;
+            }
+            
+            document.getElementById('paginacao').classList.remove('hidden');
+            
+            // Atualizar botões anterior/próximo
+            document.getElementById('prevPage').classList.toggle('disabled', paginaAtual === 1);
+            document.getElementById('nextPage').classList.toggle('disabled', paginaAtual === totalPaginas);
+            
+            // Gerar números das páginas
+            let pageNumbers = '';
+            const maxBotoes = 5;
+            let inicio = Math.max(1, paginaAtual - Math.floor(maxBotoes / 2));
+            let fim = Math.min(totalPaginas, inicio + maxBotoes - 1);
+            
+            if (fim - inicio + 1 < maxBotoes) {
+                inicio = Math.max(1, fim - maxBotoes + 1);
+            }
+            
+            for (let i = inicio; i <= fim; i++) {
+                pageNumbers += `
+                    <div class="page-btn ${i === paginaAtual ? 'active' : ''}" onclick="irParaPagina(${i})">
+                        ${i}
+                    </div>
+                `;
+            }
+            
+            document.getElementById('pageNumbers').innerHTML = pageNumbers;
+        }
+
+        function mudarPagina(direcao) {
+            if (direcao === 'prev' && paginaAtual > 1) {
+                paginaAtual--;
+                renderizarEstoque();
+            } else if (direcao === 'next' && paginaAtual < totalPaginas) {
+                paginaAtual++;
+                renderizarEstoque();
+            }
+        }
+
+        function irParaPagina(pagina) {
+            if (pagina >= 1 && pagina <= totalPaginas && pagina !== paginaAtual) {
+                paginaAtual = pagina;
+                renderizarEstoque();
+            }
+        }
+
+        // ========== FUNÇÕES DE NAVEGAÇÃO ==========
+        function voltarDashboard() {
+            window.location.href = 'principal.html';
+        }
+
+        function abrirCadastro() {
+            window.location.href = 'cadastro-veiculo.html';
+        }
+
+        function abrirPaginaVeiculo(id) {
+            localStorage.setItem('veiculoId', id);
+            window.location.href = 'detalhes_veiculos.html';
+        }
+
+        function recarregarDados() {
+            carregarDados();
+            Swal.fire({
+                icon: 'success',
+                title: 'Dados atualizados!',
+                text: 'O estoque foi recarregado com sucesso.',
+                background: '#1a1a1a',
+                color: '#fff',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        // ========== FUNÇÕES DE EXPORTAÇÃO ==========
+        function exportarDados() {
+            document.getElementById('modalExportar').classList.remove('hidden');
+            document.getElementById('modalExportar').classList.add('flex');
+        }
+
+        function fecharModalExportar() {
+            document.getElementById('modalExportar').classList.add('hidden');
+            document.getElementById('modalExportar').classList.remove('flex');
+        }
+
+        function exportarCSV() {
+            if (carsFiltrados.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Nada para exportar',
+                    text: 'Não há veículos para exportar.',
+                    background: '#1a1a1a',
+                    color: '#fff'
+                });
+                return;
+            }
+            
+            // Criar cabeçalho CSV
+            const cabecalho = ['Marca', 'Modelo', 'Ano', 'Cor', 'Placa', 'KM', 'Compra', 'Venda', 'Status', 'Lucro'];
+            
+            // Criar linhas
+            const linhas = carsFiltrados.map(c => [
+                c.marca || '',
+                c.modelo || '',
+                c.ano || '',
+                c.cor || '',
+                c.placa || '',
+                c.km || '',
+                c.compra || 0,
+                c.venda || 0,
+                c.status || 'Disponível',
+                (c.venda || 0) - (c.compra || 0)
+            ]);
+            
+            // Montar CSV
+            const csvContent = [
+                cabecalho.join(','),
+                ...linhas.map(l => l.join(','))
+            ].join('\n');
+            
+            // Download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `estoque_gm_repasses_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            
+            fecharModalExportar();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Exportado com sucesso!',
+                text: `CSV com ${carsFiltrados.length} veículos gerado.`,
+                background: '#1a1a1a',
+                color: '#fff',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+
+        function exportarJSON() {
+            const jsonStr = JSON.stringify(carsFiltrados, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `estoque_gm_repasses_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            
+            fecharModalExportar();
+        }
+
+        function exportarPDF() {
+            // Simplesmente avisar que é uma feature premium
+            Swal.fire({
+                icon: 'info',
+                title: 'Exportação PDF',
+                html: `
+                    <p class="mb-4">A exportação em PDF está em desenvolvimento.</p>
+                    <p class="text-sm text-gray-400">Enquanto isso, utilize CSV para Excel ou JSON.</p>
+                `,
+                background: '#1a1a1a',
+                color: '#fff',
+                confirmButtonColor: '#a855f7'
+            });
+            fecharModalExportar();
+        }
+
+        // ========== FUNÇÕES DE ERRO ==========
+        function mostrarErro(mensagem) {
+            document.getElementById('loadingSkeleton').classList.add('hidden');
+            document.getElementById('estoqueCards').classList.remove('hidden');
+            
+            document.getElementById('estoqueCards').innerHTML = `
+                <div class="col-span-3">
+                    <div class="empty-state" style="border-color: #ef4444;">
+                        <i class="fas fa-exclamation-triangle text-red-500"></i>
+                        <h3 class="text-red-400">Ops! Algo deu errado</h3>
+                        <p class="text-gray-400">${mensagem}</p>
+                        <button onclick="recarregarDados()" class="btn-primary mt-4">
+                            <i class="fas fa-sync-alt"></i>
+                            Tentar Novamente
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

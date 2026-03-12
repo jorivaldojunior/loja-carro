@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GM Repasses | Estoque de Veículos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* HEADER COM GRADIENTE */
+        .header-gradient {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-bottom: 1px solid #a855f7;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.95);
+        }
+        
+        /* BOTÃO VOLTAR */
+        .back-to-home {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        
+        .back-to-home:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+            transform: scale(1.1);
+        }
+        
+        /* CARDS ESTILIZADOS */
+        .vehicle-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+            box-shadow: 0 15px 30px -10px rgba(168, 85, 247, 0.3);
+        }
+        
+        .vehicle-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #222;
+            transition: all 0.3s;
+        }
+        
+        .vehicle-card:hover .vehicle-image {
+            transform: scale(1.05);
+        }
+        
+        .image-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .price-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #a855f7;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+            z-index: 10;
+            border: 2px solid #fff;
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10;
+        }
+        
+        .status-disponivel {
+            background: #10b981;
+            color: #fff;
+        }
+        
+        .status-reservado {
+            background: #f59e0b;
+            color: #fff;
+        }
+        
+        .vehicle-info {
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .vehicle-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .vehicle-subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .vehicle-subtitle span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .vehicle-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px dashed #222;
+            border-bottom: 1px dashed #222;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+            font-size: 13px;
+        }
+        
+        .detail-item i {
+            color: #a855f7;
+            width: 18px;
+            font-size: 14px;
+        }
+        
+        /* NOVOS CAMPOS */
+        .extra-info {
+            background: #0a0a0a;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            border-left: 3px solid #a855f7;
+        }
+        
+        .extra-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #ccc;
+        }
+        
+        .extra-item i {
+            color: #a855f7;
+            width: 18px;
+        }
+        
+        .extra-item .label {
+            color: #666;
+            width: 80px;
+        }
+        
+        .extra-item .value {
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        .fipe-value {
+            color: #a855f7;
+            font-weight: bold;
+        }
+        
+        .fipe-comparison {
+            font-size: 11px;
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 6px;
+            border-radius: 12px;
+        }
+        
+        .fipe-above {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .fipe-below {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .fipe-equal {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+        }
+        
+        .observation-note {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #aaa;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+        
+        .observation-note i {
+            color: #f59e0b;
+            margin-top: 2px;
+        }
+        
+        .contact-button {
+            background: #a855f7;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .contact-button:hover {
+            background: #9333ea;
+            transform: scale(1.02);
+        }
+        
+        .search-wrapper {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .search-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 18px;
+        }
+        
+        .search-wrapper input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            background: #111;
+            border: 2px solid #222;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-wrapper input:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+        }
+        
+        .search-wrapper input::placeholder {
+            color: #4b5563;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 30px;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            border: 2px solid #fff;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+        }
+        
+        .stats-bar {
+            background: #111;
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid #222;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .stat-item i {
+            color: #a855f7;
+        }
+        
+        .stat-item strong {
+            color: #fff;
+            font-size: 18px;
+        }
+        
+        .footer {
+            background: #0a0a0a;
+            border-top: 1px solid #222;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: #111;
+            border-radius: 16px;
+            border: 1px solid #222;
+        }
+        
+        .no-results i {
+            font-size: 60px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+        
+        .loading i {
+            font-size: 40px;
+            color: #a855f7;
+            animation: spin 1s infinite linear;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .purple-accent {
+            color: #a855f7;
+        }
+
+        /* ESTILO DO BOTÃO DE TELA CHEIA */
+        .fullscreen-btn {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+        
+        .fullscreen-btn:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+            transform: scale(1.1);
+        }
+
+        /* INDICADOR DE TELA CHEIA */
+        .fullscreen-indicator {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .fullscreen-indicator.visible {
+            opacity: 1;
+        }
+
+        /* HEADER ACTIONS */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- INDICADOR DE TELA CHEIA -->
+    <div class="fullscreen-indicator" id="fullscreenIndicator">
+        <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para sair
+    </div>
+
+    <!-- HEADER COM BOTÃO DE TELA CHEIA E BOTÃO VOLTAR -->
+    <div class="header-gradient py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <!-- BOTÃO VOLTAR PARA PÁGINA PRINCIPAL -->
+                    <div class="back-to-home" onclick="voltarPaginaPrincipal()" title="Página Principal">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    
+                    <img src="./image/log_3d.png" class="h-12" alt="Logo" onerror="this.src='https://via.placeholder.com/48x48/1a1a1a/666?text=GM'">
+                    <div class="hidden md:block">
+                        <h1 class="text-2xl font-bold text-white">A SUA LOJA É AQUI - <span class="purple-accent">VEJA NOSSAS OFERTAS!</span></h1>
+                        <p class="text-xs text-gray-500">Veículos com procedência e garantia</p>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="stats-bar hidden md:flex">
+                        <div class="stat-item">
+                            <i class="fas fa-car"></i>
+                            <span><strong id="totalVeiculos">0</strong> carros</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-tag"></i>
+                            <span>a partir de <strong id="precoMinimo">R$ 0</strong></span>
+                        </div>
+                    </div>
+                    
+                    <!-- BOTÃO DE TELA CHEIA -->
+                    <div class="fullscreen-btn" onclick="ativarTelaCheia()" title="Tela Cheia">
+                        <i class="fas fa-expand"></i>
+                    </div>
+                    
+                    <a href="https://wa.me/5599999999999" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 transition">
+                        <i class="fab fa-whatsapp"></i>
+                        <span class="hidden md:inline">Fale conosco</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container mx-auto px-4 py-8">
+
+        <!-- TÍTULO DA PÁGINA -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">Nosso <span class="purple-accent">Estoque</span></h2>
+            <p class="text-gray-500">Confira os veículos disponíveis para compra</p>
+        </div>
+        
+        <!-- BUSCA -->
+        <div class="max-w-2xl mx-auto mb-8">
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="buscaCliente" placeholder="Buscar por marca, modelo, ano ou cor..." onkeyup="filtrarVeiculos()">
+            </div>
+            <div class="text-right mt-2 text-sm text-gray-600" id="resultadoBusca"></div>
+        </div>
+        
+        <!-- GRID DE VEÍCULOS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="veiculosGrid">
+            <div class="loading">
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <p class="mt-2">Carregando veículos...</p>
+            </div>
+        </div>
+        
+        <!-- BOTÃO WHATSAPP FLUTUANTE -->
+        <a href="https://wa.me/5599999999999" target="_blank" class="whatsapp-float">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="container mx-auto px-4">
+            <img src="./image/log_3d.png" class="h-12 mx-auto mb-4 opacity-50" alt="Logo" onerror="this.style.display='none'">
+            <p class="mb-2">Sua loja de veículos - Qualidade e confiança em seminovos</p>
+            <p class="text-xs">
+                <i class="fas fa-map-marker-alt mr-1"></i> Av. Exemplo, 1000 - Cidade/UF<br>
+                <i class="fas fa-phone mr-1"></i> (99) 99999-9999
+            </p>
+            <p class="text-xs mt-4">© 2024 GM Repasses. Todos os direitos reservados.</p>
+        </div>
+    </div>
+
+    <script>
+        // ========== FUNÇÃO DE TELA CHEIA ==========
+        function ativarTelaCheia() {
+            const elemento = document.documentElement;
+            const indicator = document.getElementById('fullscreenIndicator');
+            
+            if (elemento.requestFullscreen) {
+                elemento.requestFullscreen();
+            } else if (elemento.webkitRequestFullscreen) {
+                elemento.webkitRequestFullscreen();
+            } else if (elemento.msRequestFullscreen) {
+                elemento.msRequestFullscreen();
+            }
+            
+            // Mostrar indicador
+            if (indicator) {
+                indicator.classList.add('visible');
+            }
+        }
+
+        // Detectar quando sai do modo tela cheia (ESC)
+        document.addEventListener('fullscreenchange', atualizarIndicadorFullscreen);
+        document.addEventListener('webkitfullscreenchange', atualizarIndicadorFullscreen);
+        document.addEventListener('mozfullscreenchange', atualizarIndicadorFullscreen);
+        document.addEventListener('MSFullscreenChange', atualizarIndicadorFullscreen);
+
+        function atualizarIndicadorFullscreen() {
+            const indicator = document.getElementById('fullscreenIndicator');
+            if (!document.fullscreenElement) {
+                if (indicator) {
+                    indicator.classList.remove('visible');
+                }
+            }
+        }
+
+        // ========== FUNÇÃO VOLTAR PARA PÁGINA PRINCIPAL ==========
+        function voltarPaginaPrincipal() {
+            window.location.href = 'principal.html';
+        }
+
+        let todosVeiculos = [];
+
+        // Carregar veículos do localStorage
+        function carregarVeiculos() {
+            const dadosSalvos = localStorage.getItem('gmRepasses');
+            if (dadosSalvos) {
+                const dados = JSON.parse(dadosSalvos);
+                // Filtrar apenas veículos disponíveis e reservados (não mostrar vendidos)
+                todosVeiculos = (dados.cars || []).filter(c => c.status !== 'Vendido');
+            }
+            
+            // Atualizar estatísticas
+            atualizarStats();
+            
+            // Renderizar veículos
+            renderizarVeiculos(todosVeiculos);
+        }
+        
+        // Atualizar estatísticas do header
+        function atualizarStats() {
+            document.getElementById('totalVeiculos').innerText = todosVeiculos.length;
+            
+            if (todosVeiculos.length > 0) {
+                const precos = todosVeiculos.map(c => c.venda || 0).filter(p => p > 0);
+                if (precos.length > 0) {
+                    const precoMinimo = Math.min(...precos);
+                    document.getElementById('precoMinimo').innerText = formatarMoedaBrasileira(precoMinimo).replace('R$', 'R$');
+                }
+            }
+        }
+        
+        // Formatar moeda
+        function formatarMoedaBrasileira(valor) {
+            if (!valor || isNaN(valor)) return 'R$ 0';
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 });
+        }
+        
+        // Formatar KM
+        function formatarKM(km) {
+            if (!km) return 'KM não informado';
+            return parseInt(km).toLocaleString('pt-BR') + ' km';
+        }
+
+        // Comparar com FIPE
+        function compararComFIPE(fipe, venda) {
+            if (!fipe || fipe === 0) return { text: '', class: '' };
+            if (!venda || venda === 0) return { text: '', class: '' };
+            
+            const diff = ((venda - fipe) / fipe * 100).toFixed(1);
+            
+            if (venda > fipe) {
+                return { text: `+${diff}% acima FIPE`, class: 'fipe-above' };
+            } else if (venda < fipe) {
+                return { text: `${diff}% abaixo FIPE`, class: 'fipe-below' };
+            } else {
+                return { text: 'Igual FIPE', class: 'fipe-equal' };
+            }
+        }
+        
+        // Renderizar veículos
+        function renderizarVeiculos(veiculos) {
+            const grid = document.getElementById('veiculosGrid');
+            
+            if (!veiculos || veiculos.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-car"></i>
+                        <h3 class="text-xl font-bold text-gray-400 mb-2">Nenhum veículo disponível</h3>
+                        <p class="text-gray-600">No momento não temos veículos em estoque.</p>
+                        <p class="text-gray-600 mt-4">Entre em contato pelo WhatsApp para mais informações.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            veiculos.forEach(c => {
+                // Pegar primeira foto ou imagem padrão
+                const foto = c.fotos && c.fotos.length > 0 ? c.fotos[0] : 'https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem';
+                
+                // Definir badge de status
+                const statusClass = c.status === 'Disponível' ? 'status-disponivel' : 'status-reservado';
+                const statusIcon = c.status === 'Disponível' ? 'fa-check-circle' : 'fa-clock';
+                
+                // Comparação FIPE
+                const fipeComp = compararComFIPE(c.fipe, c.venda);
+                
+                html += `
+                    <div class="vehicle-card" onclick="interessado('${c.marca} ${c.modelo} ${c.ano}', ${c.venda})">
+                        <div class="image-container">
+                            <img src="${foto}" class="vehicle-image" alt="${c.marca} ${c.modelo}" onerror="this.src='https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem'">
+                            <div class="price-tag">${formatarMoedaBrasileira(c.venda)}</div>
+                            <div class="status-badge ${statusClass}">
+                                <i class="fas ${statusIcon} mr-1"></i> ${c.status}
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-info">
+                            <h3 class="vehicle-title">${c.marca || ''} ${c.modelo || ''}</h3>
+                            
+                            <div class="vehicle-subtitle">
+                                <span><i class="fas fa-calendar"></i> ${c.ano || '-'}</span>
+                                <span><i class="fas fa-palette"></i> ${c.cor || '-'}</span>
+                                <span><i class="fas fa-gas-pump"></i> ${c.combustivel || '-'}</span>
+                            </div>
+                            
+                            <div class="vehicle-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>${formatarKM(c.km)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>${c.placa || 'Placa não informada'}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- NOVAS INFORMAÇÕES: FIPE e Observações -->
+                            <div class="extra-info">
+                                ${c.fipe ? `
+                                <div class="extra-item">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span class="label">FIPE:</span>
+                                    <span class="value fipe-value">${formatarMoedaBrasileira(c.fipe)}</span>
+                                    ${fipeComp.text ? `<span class="fipe-comparison ${fipeComp.class}">${fipeComp.text}</span>` : ''}
+                                </div>
+                                ` : ''}
+                                
+                                ${c.observacoes ? `
+                                <div class="observation-note">
+                                    <i class="fas fa-comment"></i>
+                                    <span>${c.observacoes}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                            
+                            <button class="contact-button" onclick="event.stopPropagation(); interessado('${c.marca} ${c.modelo} ${c.ano}', ${c.venda})">
+                                <i class="fab fa-whatsapp"></i>
+                                Tenho interesse
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+        
+        // Filtrar veículos
+        function filtrarVeiculos() {
+            const termo = document.getElementById('buscaCliente').value.toLowerCase().trim();
+            const resultadoEl = document.getElementById('resultadoBusca');
+            
+            if (termo === '') {
+                resultadoEl.innerHTML = `${todosVeiculos.length} veículo(s) disponível(eis)`;
+                renderizarVeiculos(todosVeiculos);
+                return;
+            }
+            
+            const filtrados = todosVeiculos.filter(c => {
+                return (c.marca && c.marca.toLowerCase().includes(termo)) ||
+                       (c.modelo && c.modelo.toLowerCase().includes(termo)) ||
+                       (c.ano && c.ano.toString().includes(termo)) ||
+                       (c.cor && c.cor.toLowerCase().includes(termo)) ||
+                       (c.combustivel && c.combustivel.toLowerCase().includes(termo));
+            });
+            
+            resultadoEl.innerHTML = `${filtrados.length} veículo(s) encontrado(s)`;
+            renderizarVeiculos(filtrados);
+        }
+        
+        // Função para enviar WhatsApp
+        function interessado(veiculo, preco) {
+            const numero = '5581981837459'; // Substitua pelo número da loja
+            const mensagem = `Olá! Tenho interesse no veículo *${veiculo}* anunciado por *${formatarMoedaBrasileira(preco)}*. Poderia me passar mais informações?`;
+            const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+        
+        // Inicializar
+        window.onload = function() {
+            carregarVeiculos();
+            
+            // Atualizar quando houver mudanças no localStorage (opcional)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'gmRepasses') {
+                    carregarVeiculos();
+                }
+            });
+        };
+    </script>
+</body>
+</html>

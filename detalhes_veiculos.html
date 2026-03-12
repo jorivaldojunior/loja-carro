@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GM Repasses | Veículo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { background: #0b0b0b; font-family: system-ui, -apple-system, sans-serif; }
+        
+        /* Cards simples */
+        .card { 
+            background: #111; 
+            border: 1px solid #2a2a2a; 
+            border-radius: 12px; 
+        }
+        
+        /* Botões ícone */
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-icon:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+        }
+        
+        .btn-icon.danger:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        .btn-icon.success:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        
+        /* Status badge */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .badge-disponivel { background: #10b98120; color: #10b981; border-color: #10b981; }
+        .badge-reservado { background: #f59e0b20; color: #f59e0b; border-color: #f59e0b; }
+        .badge-vendido { background: #ef444420; color: #ef4444; border-color: #ef4444; }
+        
+        /* Galeria simplificada */
+        .gallery-main {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #0a0a0a;
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #333;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .gallery-nav:hover {
+            background: #a855f7;
+            border-color: #a855f7;
+        }
+        
+        .gallery-nav.prev { left: 10px; }
+        .gallery-nav.next { right: 10px; }
+        
+        .gallery-thumbs {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        
+        .gallery-thumbs img {
+            width: 60px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .gallery-thumbs img:hover {
+            border-color: #a855f7;
+        }
+        
+        .gallery-thumbs img.active {
+            border-color: #a855f7;
+        }
+        
+        /* Info grid compacta */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        
+        .info-item {
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+        
+        .info-label {
+            font-size: 10px;
+            color: #6b7280;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .info-label i {
+            font-size: 10px;
+            width: 12px;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        /* Campo editável */
+        .edit-field {
+            background: #1a1a1a;
+            border: 1px solid #a855f7;
+            border-radius: 4px;
+            padding: 4px 6px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+            outline: none;
+        }
+        
+        .edit-field:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3);
+        }
+        
+        select.edit-field {
+            background: #1a1a1a;
+        }
+        
+        /* Valores */
+        .valor-card {
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        /* FIPE card */
+        .fipe-card {
+            background: #0a0a0a;
+            border: 1px solid #a855f7;
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+        
+        .fipe-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- Header minimalista -->
+    <div class="bg-black border-b border-gray-800 px-4 py-2 sticky top-0 z-10">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <button onclick="voltar()" class="btn-icon">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <span class="text-sm text-gray-400" id="veiculoTitulo">Carregando...</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button onclick="ativarTelaCheia()" class="btn-icon">
+                    <i class="fas fa-expand"></i>
+                </button>
+                
+                <!-- Botão de editar/salvar -->
+                <div id="editActions" class="flex items-center gap-2">
+                    <button onclick="toggleEdit()" id="editBtn" class="btn-icon">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                </div>
+                
+                <button onclick="excluir()" class="btn-icon danger">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="max-w-6xl mx-auto p-4">
+        
+        <!-- Galeria -->
+        <div class="mb-4">
+            <div class="gallery-main" id="galleryMain">
+                <div class="gallery-nav prev" onclick="mudarSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="gallery-nav next" onclick="mudarSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
+            <div class="gallery-thumbs" id="galleryThumbs"></div>
+        </div>
+
+        <!-- Status e ações rápidas -->
+        <div class="flex items-center justify-between mb-3">
+            <div id="statusContainer">
+                <!-- Badge será inserido via JS -->
+            </div>
+            
+            <div id="statusButtons" class="flex gap-1 text-xs">
+                <button onclick="mudarStatus('Disponível')" class="px-2 py-1 rounded border border-green-500/30 text-green-500 hover:bg-green-500/10">Disp</button>
+                <button onclick="mudarStatus('Reservado')" class="px-2 py-1 rounded border border-yellow-500/30 text-yellow-500 hover:bg-yellow-500/10">Res</button>
+                <button onclick="mudarStatus('Vendido')" class="px-2 py-1 rounded border border-red-500/30 text-red-500 hover:bg-red-500/10">Vend</button>
+            </div>
+        </div>
+
+        <!-- Grid de informações - TODAS VISÍVEIS, editáveis inline -->
+        <div class="info-grid mb-3">
+            <!-- Marca -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-tag"></i> Marca</div>
+                <div id="marcaDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <input type="text" id="marcaEdit" class="edit-field hidden" value="" placeholder="Toyota">
+            </div>
+            
+            <!-- Modelo -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-car"></i> Modelo</div>
+                <div id="modeloDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <input type="text" id="modeloEdit" class="edit-field hidden" value="" placeholder="Corolla">
+            </div>
+            
+            <!-- Ano -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-calendar"></i> Ano</div>
+                <div id="anoDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <input type="text" id="anoEdit" class="edit-field hidden" value="" placeholder="2022">
+            </div>
+            
+            <!-- Cor -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-palette"></i> Cor</div>
+                <div id="corDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <input type="text" id="corEdit" class="edit-field hidden" value="" placeholder="Preto">
+            </div>
+            
+            <!-- KM -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-tachometer-alt"></i> KM</div>
+                <div id="kmDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <input type="text" id="kmEdit" class="edit-field hidden" value="" placeholder="25000">
+            </div>
+            
+            <!-- Placa -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-barcode"></i> Placa</div>
+                <div id="placaDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <input type="text" id="placaEdit" class="edit-field hidden" value="" placeholder="ABC1234" style="text-transform:uppercase">
+            </div>
+            
+            <!-- Combustível -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-gas-pump"></i> Combustível</div>
+                <div id="combustivelDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <select id="combustivelEdit" class="edit-field hidden">
+                    <option value="Gasolina">Gasolina</option>
+                    <option value="Etanol">Etanol</option>
+                    <option value="Flex">Flex</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Elétrico">Elétrico</option>
+                    <option value="Híbrido">Híbrido</option>
+                </select>
+            </div>
+            
+            <!-- Data Compra -->
+            <div class="info-item">
+                <div class="info-label"><i class="fas fa-calendar-alt"></i> Data Compra</div>
+                <div id="dataCompraDisplay" class="info-value display-field" onclick="if(editMode) selectField(this)">-</div>
+                <input type="date" id="dataCompraEdit" class="edit-field hidden">
+            </div>
+        </div>
+
+        <!-- Linha de Valores + FIPE -->
+        <div class="grid grid-cols-2 gap-3 mb-3">
+            <!-- Valores (Compra, Venda, Lucro) -->
+            <div class="grid grid-cols-3 gap-2">
+                <div class="valor-card">
+                    <span class="text-xs text-gray-500">Compra</span>
+                    <div id="compraDisplay" class="text-sm font-bold display-field" onclick="if(editMode) selectField(this)">R$ 0</div>
+                    <input type="text" id="compraEdit" class="edit-field hidden text-sm font-bold" value="" placeholder="85000">
+                </div>
+                <div class="valor-card">
+                    <span class="text-xs text-gray-500">Venda</span>
+                    <div id="vendaDisplay" class="text-sm font-bold text-purple-400 display-field" onclick="if(editMode) selectField(this)">R$ 0</div>
+                    <input type="text" id="vendaEdit" class="edit-field hidden text-sm font-bold" value="" placeholder="95000">
+                </div>
+                <div class="valor-card">
+                    <span class="text-xs text-gray-500">Lucro</span>
+                    <div id="lucroDisplay" class="text-sm font-bold">R$ 0</div>
+                </div>
+            </div>
+            
+            <!-- FIPE - Caixa de texto simples -->
+            <div class="fipe-card">
+                <div class="fipe-row">
+                    <span><i class="fas fa-chart-line mr-1 text-purple-400"></i> Valor FIPE</span>
+                    <div>
+                        <span id="fipeDisplay" class="font-bold display-field" onclick="if(editMode) selectField(this)">R$ 0</span>
+                        <input type="text" id="fipeEdit" class="edit-field hidden text-sm font-bold" value="" placeholder="50000" style="width:100px; text-align:right;">
+                    </div>
+                </div>
+                <div class="fipe-row text-xs mt-1">
+                    <span class="text-gray-500" id="fipeComparativo">Digite o valor da Tabela FIPE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Observações (linha completa) -->
+        <div class="bg-black/50 border border-gray-800 rounded-lg p-3">
+            <div class="flex items-start gap-2">
+                <i class="fas fa-comment text-gray-600 mt-1"></i>
+                <div class="flex-1">
+                    <div id="obsDisplay" class="text-sm text-gray-300 display-field" onclick="if(editMode) selectField(this)">-</div>
+                    <input type="text" id="obsEdit" class="edit-field hidden w-full" value="" placeholder="Observações...">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis
+        let veiculoAtual = null;
+        let veiculoId = null;
+        let fotos = [];
+        let slideAtual = 0;
+        let editMode = false;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', carregarVeiculo);
+
+        // Navegação
+        function voltar() { window.location.href = 'estoque.html'; }
+        
+        function ativarTelaCheia() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            }
+        }
+
+        // Modo de edição - INLINE
+        function toggleEdit() {
+            editMode = !editMode;
+            
+            const editBtn = document.getElementById('editBtn');
+            const displayFields = document.querySelectorAll('.display-field');
+            const editFields = document.querySelectorAll('.edit-field');
+            
+            if (editMode) {
+                // Entrar em modo edição
+                editBtn.innerHTML = '<i class="fas fa-check"></i>';
+                editBtn.classList.add('success');
+                
+                // Esconder displays, mostrar campos
+                displayFields.forEach(f => f.classList.add('hidden'));
+                editFields.forEach(f => f.classList.remove('hidden'));
+                
+                // Preencher campos com valores atuais
+                sincronizarCamposParaEdicao();
+                
+            } else {
+                // Sair do modo edição (salvar)
+                salvar();
+                
+                editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+                editBtn.classList.remove('success');
+                
+                // Mostrar displays, esconder campos
+                displayFields.forEach(f => f.classList.remove('hidden'));
+                editFields.forEach(f => f.classList.add('hidden'));
+            }
+        }
+
+        // Sincronizar valores dos displays para os campos de edição
+        function sincronizarCamposParaEdicao() {
+            document.getElementById('marcaEdit').value = veiculoAtual?.marca || '';
+            document.getElementById('modeloEdit').value = veiculoAtual?.modelo || '';
+            document.getElementById('anoEdit').value = veiculoAtual?.ano || '';
+            document.getElementById('corEdit').value = veiculoAtual?.cor || '';
+            document.getElementById('kmEdit').value = veiculoAtual?.km || '';
+            document.getElementById('placaEdit').value = veiculoAtual?.placa || '';
+            document.getElementById('combustivelEdit').value = veiculoAtual?.combustivel || 'Flex';
+            document.getElementById('dataCompraEdit').value = veiculoAtual?.dataCompra || '';
+            document.getElementById('compraEdit').value = veiculoAtual?.compra || '';
+            document.getElementById('vendaEdit').value = veiculoAtual?.venda || '';
+            document.getElementById('fipeEdit').value = veiculoAtual?.fipe || '';
+            document.getElementById('obsEdit').value = veiculoAtual?.observacoes || '';
+        }
+
+        // Selecionar campo automaticamente ao clicar
+        function selectField(element) {
+            if (!editMode) return;
+            const id = element.id.replace('Display', 'Edit');
+            document.getElementById(id)?.focus();
+        }
+
+        // Carregar dados
+        function carregarVeiculo() {
+            veiculoId = localStorage.getItem('veiculoId');
+            if (!veiculoId) {
+                Swal.fire({ icon: 'error', title: 'Erro', text: 'Nenhum veículo selecionado', background: '#1a1a1a' })
+                    .then(() => voltar());
+                return;
+            }
+
+            const dados = JSON.parse(localStorage.getItem('gmRepasses') || '{}');
+            const veiculo = dados.cars?.find(c => c.id == veiculoId);
+            
+            if (veiculo) {
+                veiculoAtual = veiculo;
+                fotos = veiculo.fotos?.length ? veiculo.fotos : ['https://via.placeholder.com/800x600/1a1a1a/666?text=Sem+Imagem'];
+                preencherTudo(veiculo);
+                renderizarGaleria();
+            }
+        }
+
+        function preencherTudo(v) {
+            // Título
+            document.getElementById('veiculoTitulo').innerText = `${v.marca || ''} ${v.modelo || ''} ${v.ano || ''}`.trim() || 'Detalhes';
+            
+            // Displays
+            document.getElementById('marcaDisplay').innerText = v.marca || '-';
+            document.getElementById('modeloDisplay').innerText = v.modelo || '-';
+            document.getElementById('anoDisplay').innerText = v.ano || '-';
+            document.getElementById('corDisplay').innerText = v.cor || '-';
+            document.getElementById('kmDisplay').innerText = v.km ? parseInt(v.km).toLocaleString() + ' km' : '-';
+            document.getElementById('placaDisplay').innerText = v.placa || '-';
+            document.getElementById('combustivelDisplay').innerText = v.combustivel || '-';
+            document.getElementById('dataCompraDisplay').innerText = v.dataCompra ? new Date(v.dataCompra).toLocaleDateString('pt-BR') : '-';
+            document.getElementById('obsDisplay').innerText = v.observacoes || 'Sem observações';
+            
+            // Valores
+            document.getElementById('compraDisplay').innerHTML = formatarMoeda(v.compra || 0);
+            document.getElementById('vendaDisplay').innerHTML = formatarMoeda(v.venda || 0);
+            
+            // FIPE
+            const fipeValor = v.fipe || 0;
+            document.getElementById('fipeDisplay').innerHTML = formatarMoeda(fipeValor);
+            
+            // Status
+            atualizarStatusUI(v.status || 'Disponível');
+            
+            // Calcular lucro e comparativo FIPE
+            calcularLucro(v.compra || 0, v.venda || 0);
+            atualizarComparativoFIPE(fipeValor, v.venda || 0);
+        }
+
+        // Status
+        function mudarStatus(status) {
+            veiculoAtual.status = status;
+            atualizarStatusUI(status);
+            salvar(true);
+        }
+
+        function atualizarStatusUI(status) {
+            const container = document.getElementById('statusContainer');
+            
+            if (status === 'Disponível') {
+                container.innerHTML = '<span class="status-badge badge-disponivel"><i class="fas fa-check-circle"></i> Disponível</span>';
+            } else if (status === 'Reservado') {
+                container.innerHTML = '<span class="status-badge badge-reservado"><i class="fas fa-clock"></i> Reservado</span>';
+            } else {
+                container.innerHTML = '<span class="status-badge badge-vendido"><i class="fas fa-check-double"></i> Vendido</span>';
+            }
+        }
+
+        // Formatação
+        function formatarMoeda(valor) {
+            if (!valor && valor !== 0) return 'R$ 0,00';
+            return 'R$ ' + Number(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Lucro
+        function calcularLucro(compra, venda) {
+            const lucro = venda - compra;
+            document.getElementById('lucroDisplay').innerHTML = formatarMoeda(lucro);
+            document.getElementById('lucroDisplay').className = lucro >= 0 ? 'text-sm font-bold text-green-400' : 'text-sm font-bold text-red-400';
+        }
+
+        // Comparativo FIPE
+        function atualizarComparativoFIPE(fipe, venda) {
+            const comparativo = document.getElementById('fipeComparativo');
+            
+            if (!fipe || fipe === 0) {
+                comparativo.innerHTML = 'Digite o valor da Tabela FIPE';
+                return;
+            }
+            
+            if (!venda || venda === 0) {
+                comparativo.innerHTML = 'Informe valor de venda';
+                return;
+            }
+            
+            const diff = ((venda - fipe) / fipe * 100).toFixed(1);
+            
+            if (venda > fipe) {
+                comparativo.innerHTML = `<span class="text-green-400">+${diff}% acima da FIPE</span>`;
+            } else if (venda < fipe) {
+                comparativo.innerHTML = `<span class="text-yellow-400">${diff}% abaixo da FIPE</span>`;
+            } else {
+                comparativo.innerHTML = '<span class="text-gray-400">Igual à FIPE</span>';
+            }
+        }
+
+        // Salvar
+        function salvar(silencioso = false) {
+            // Pegar valores dos campos de edição
+            const compra = Number(document.getElementById('compraEdit').value) || 0;
+            const venda = Number(document.getElementById('vendaEdit').value) || 0;
+            const fipe = Number(document.getElementById('fipeEdit').value) || 0;
+            
+            const veiculo = {
+                id: veiculoId,
+                marca: document.getElementById('marcaEdit').value || '',
+                modelo: document.getElementById('modeloEdit').value || '',
+                ano: document.getElementById('anoEdit').value || '',
+                cor: document.getElementById('corEdit').value || '',
+                km: document.getElementById('kmEdit').value || '',
+                placa: (document.getElementById('placaEdit').value || '').toUpperCase(),
+                combustivel: document.getElementById('combustivelEdit').value || 'Flex',
+                dataCompra: document.getElementById('dataCompraEdit').value || '',
+                compra: compra,
+                venda: venda,
+                fipe: fipe,
+                observacoes: document.getElementById('obsEdit').value || '',
+                status: veiculoAtual?.status || 'Disponível',
+                fotos: fotos
+            };
+            
+            const dados = JSON.parse(localStorage.getItem('gmRepasses') || '{}');
+            if (!dados.cars) dados.cars = [];
+            
+            const index = dados.cars.findIndex(c => c.id == veiculoId);
+            if (index >= 0) dados.cars[index] = veiculo;
+            
+            localStorage.setItem('gmRepasses', JSON.stringify(dados));
+            veiculoAtual = veiculo;
+            
+            preencherTudo(veiculo);
+            
+            if (!silencioso) {
+                Swal.fire({ icon: 'success', title: 'Salvo!', timer: 1000, showConfirmButton: false, background: '#1a1a1a' });
+            }
+        }
+
+        // Excluir
+        function excluir() {
+            Swal.fire({
+                title: 'Excluir?',
+                text: 'Esta ação não pode ser desfeita',
+                icon: 'warning',
+                background: '#1a1a1a',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                confirmButtonText: 'Excluir',
+                cancelButtonText: 'Cancelar'
+            }).then((r) => {
+                if (r.isConfirmed) {
+                    const dados = JSON.parse(localStorage.getItem('gmRepasses') || '{}');
+                    dados.cars = dados.cars.filter(c => c.id != veiculoId);
+                    localStorage.setItem('gmRepasses', JSON.stringify(dados));
+                    voltar();
+                }
+            });
+        }
+
+        // Galeria
+        function renderizarGaleria() {
+            const main = document.getElementById('galleryMain');
+            const thumbs = document.getElementById('galleryThumbs');
+            
+            let slides = '';
+            let thumbsHtml = '';
+            
+            fotos.forEach((foto, index) => {
+                slides += `<img src="${foto}" class="${index === 0 ? 'active' : ''}" style="display: ${index === 0 ? 'block' : 'none'}; width:100%; height:100%; object-fit:contain;">`;
+                thumbsHtml += `<img src="${foto}" onclick="irParaSlide(${index})" class="${index === 0 ? 'active' : ''}">`;
+            });
+            
+            // Manter botões de navegação
+            const prevBtn = main.querySelector('.gallery-nav.prev');
+            const nextBtn = main.querySelector('.gallery-nav.next');
+            main.innerHTML = slides;
+            main.appendChild(prevBtn);
+            main.appendChild(nextBtn);
+            
+            thumbs.innerHTML = thumbsHtml;
+        }
+
+        function mudarSlide(delta) {
+            const slides = document.querySelectorAll('#galleryMain img');
+            if (!slides.length) return;
+            
+            slides[slideAtual].style.display = 'none';
+            slideAtual = (slideAtual + delta + slides.length) % slides.length;
+            slides[slideAtual].style.display = 'block';
+            
+            document.querySelectorAll('#galleryThumbs img').forEach((thumb, i) => {
+                if (i === slideAtual) thumb.classList.add('active');
+                else thumb.classList.remove('active');
+            });
+        }
+
+        function irParaSlide(index) {
+            const slides = document.querySelectorAll('#galleryMain img');
+            if (!slides.length) return;
+            
+            slides[slideAtual].style.display = 'none';
+            slideAtual = index;
+            slides[slideAtual].style.display = 'block';
+            
+            document.querySelectorAll('#galleryThumbs img').forEach((thumb, i) => {
+                if (i === index) thumb.classList.add('active');
+                else thumb.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>
