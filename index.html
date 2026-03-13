@@ -1,359 +1,332 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>GM Repasses | Login</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-
-html,body{
-margin:0;
-padding:0;
-overflow:hidden;
-background:black;
-}
-
-.slideshow{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:0;
-overflow:hidden;
-}
-
-.slide{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-opacity:0;
-transition:opacity 1.5s ease-in-out;
-}
-
-.slide.active{
-opacity:1;
-}
-
-.banner-bg{
-position:relative;
-z-index:1;
-background:linear-gradient(
-90deg,
-rgba(0,0,0,0.95) 0%,
-rgba(0,0,0,0.85) 35%,
-rgba(0,0,0,0.65) 60%,
-rgba(0,0,0,0.4) 100%
-);
-min-height:100vh;
-display:flex;
-align-items:center;
-}
-
-.purple-glow{
-text-shadow:0 0 20px #a855f7,0 0 40px rgba(168,85,247,0.3);
-animation:glowPulse 2s infinite;
-}
-
-@keyframes glowPulse{
-0%{text-shadow:0 0 20px #a855f7;}
-50%{text-shadow:0 0 30px #a855f7,0 0 50px rgba(168,85,247,0.5);}
-100%{text-shadow:0 0 20px #a855f7;}
-}
-
-.login-card{
-transition:all .3s;
-border:1px solid rgba(168,85,247,.3);
-}
-
-.login-card:hover{
-border-color:#a855f7;
-box-shadow:0 0 30px rgba(168,85,247,.2);
-transform:translateY(-2px);
-}
-
-@keyframes fadeInUp{
-
-from{
-opacity:0;
-transform:translateY(30px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
-
-}
-
-.text-left,.login-card{
-animation:fadeInUp .8s ease-out;
-}
-
-input:focus{
-border-color:#a855f7 !important;
-box-shadow:0 0 0 2px rgba(168,85,247,.2);
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="slideshow" id="slideshow"></div>
-
-<section class="banner-bg w-full min-h-screen flex items-center relative">
-
-<div class="max-w-7xl mx-auto px-10 w-full">
-
-<div class="grid md:grid-cols-2 items-center gap-10">
-
-<div class="text-left">
-
-<img src="./image/log_3d.png" class="w-64 mb-6">
-
-<h1 class="text-5xl font-bold text-white leading-tight mb-6">
-Os Melhores
-<span class="text-purple-500 purple-glow">
-Repasses de Veículos
-</span>
-</h1>
-
-<p class="text-gray-300 text-lg mb-8 max-w-lg">
-Sistema exclusivo da
-<strong class="text-purple-400">GM Repasses</strong>
-para controle de estoque, cadastro de veículos,
-gestão financeira e acompanhamento de vendas.
-</p>
-
-<div class="flex gap-4">
-
-<button onclick="ativarTelaCheia()" class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg text-white font-semibold border border-purple-500 flex items-center gap-2 transition">
-
-<i class="fas fa-expand"></i>
-Módulo Tela Cheia
-
-</button>
-
-</div>
-
-<div class="flex gap-2 mt-8">
-
-<div class="w-2 h-2 rounded-full bg-purple-500" id="indicator1"></div>
-
-<div class="w-2 h-2 rounded-full bg-gray-600" id="indicator2"></div>
-
-</div>
-
-</div>
-
-<div class="login-card bg-black/80 backdrop-blur-md p-10 rounded-2xl border border-purple-600 shadow-2xl">
-
-<h2 class="text-2xl text-white font-bold mb-6 flex items-center gap-2">
-<i class="fas fa-lock text-purple-500 text-xl"></i>
-Acesso ao Sistema
-</h2>
-
-<div class="space-y-5">
-
-<input
-id="username"
-type="text"
-placeholder="Usuário"
-autocomplete="username"
-class="w-full p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition"
->
-
-<input
-id="password"
-type="password"
-placeholder="Senha"
-autocomplete="current-password"
-class="w-full p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition"
->
-
-<button
-onclick="login()"
-class="w-full bg-purple-600 hover:bg-purple-700 transition p-3 rounded-lg font-semibold flex items-center justify-center gap-2 group">
-
-<span>Entrar no Sistema</span>
-<i class="fas fa-arrow-right group-hover:translate-x-1 transition"></i>
-
-</button>
-
-<p class="text-center text-gray-500 text-sm mt-4">
-<i class="fas fa-headset mr-1"></i> Suporte: (81) 991152307
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<script>
-
-const imagens=[
-'./image/FUNDO 1.jpg',
-'./image/FUNDO 2.jpg'
-];
-
-let slideIndex=0;
-
-function criarSlideshow(){
-
-const slideshow=document.getElementById('slideshow');
-
-imagens.forEach((img,index)=>{
-
-const slide=document.createElement('div');
-
-slide.className=`slide ${index===0?'active':''}`;
-
-slide.style.backgroundImage=`url('${img}')`;
-
-slideshow.appendChild(slide);
-
-})
-
-}
-
-function atualizarIndicadores(index){
-
-document.getElementById('indicator1').className=
-'w-2 h-2 rounded-full '+(index===0?'bg-purple-500':'bg-gray-600')
-
-document.getElementById('indicator2').className=
-'w-2 h-2 rounded-full '+(index===1?'bg-purple-500':'bg-gray-600')
-
-}
-
-function trocarSlide(){
-
-const slides=document.querySelectorAll('.slide')
-
-slides.forEach(slide=>slide.classList.remove('active'))
-
-slideIndex=(slideIndex+1)%slides.length
-
-slides[slideIndex].classList.add('active')
-
-atualizarIndicadores(slideIndex)
-
-}
-
-function iniciarSlideshow(){
-
-criarSlideshow()
-
-setInterval(trocarSlide,3000)
-
-}
-
-function limparCampos(){
-
-document.getElementById('username').value=''
-document.getElementById('password').value=''
-
-}
-
-function login(){
-
-let usuario=document.getElementById('username').value
-let senha=document.getElementById('password').value
-
-if(usuario===''||senha===''){
-
-Swal.fire({
-position:'top-end',
-icon:'warning',
-title:'Campos vazios',
-text:'Preencha usuário e senha',
-showConfirmButton:false,
-timer:2000,
-toast:true
-})
-
-return
-}
-
-if(usuario==='admin'&&senha==='1'){
-
-Swal.fire({
-position:'top-end',
-icon:'success',
-title:'Login realizado!',
-showConfirmButton:false,
-timer:1500,
-toast:true
-}).then(()=>{
-
-limparCampos()
-
-window.location.href="principal.html"
-
-})
-
-}else{
-
-Swal.fire({
-position:'top-end',
-icon:'error',
-title:'Erro no login',
-text:'Usuário ou senha incorretos',
-showConfirmButton:false,
-timer:2000,
-toast:true
-})
-
-limparCampos()
-
-}
-
-}
-
-function ativarTelaCheia(){
-
-const elemento=document.documentElement
-
-if(elemento.requestFullscreen){
-elemento.requestFullscreen()
-}
-else if(elemento.webkitRequestFullscreen){
-elemento.webkitRequestFullscreen()
-}
-else if(elemento.msRequestFullscreen){
-elemento.msRequestFullscreen()
-}
-
-}
-
-window.onload=function(){
-iniciarSlideshow()
-}
-
-</script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>GM Repasses | Login</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+
+      .slideshow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 1.5s ease-in-out;
+      }
+
+      .slide.active {
+        opacity: 1;
+      }
+
+      .banner-bg {
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.95) 0%,
+          rgba(0, 0, 0, 0.85) 35%,
+          rgba(0, 0, 0, 0.65) 60%,
+          rgba(0, 0, 0, 0.4) 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+      }
+
+      .purple-glow {
+        text-shadow:
+          0 0 20px #a855f7,
+          0 0 40px rgba(168, 85, 247, 0.3);
+        animation: glowPulse 2s infinite;
+      }
+
+      @keyframes glowPulse {
+        0% {
+          text-shadow: 0 0 20px #a855f7;
+        }
+        50% {
+          text-shadow:
+            0 0 30px #a855f7,
+            0 0 50px rgba(168, 85, 247, 0.5);
+        }
+        100% {
+          text-shadow: 0 0 20px #a855f7;
+        }
+      }
+
+      .login-card {
+        transition: all 0.3s;
+        border: 1px solid rgba(168, 85, 247, 0.3);
+      }
+
+      .login-card:hover {
+        border-color: #a855f7;
+        box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+        transform: translateY(-2px);
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .text-left,
+      .login-card {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      input:focus {
+        border-color: #a855f7 !important;
+        box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="slideshow" id="slideshow"></div>
+
+    <section class="banner-bg w-full min-h-screen flex items-center relative">
+      <div class="max-w-7xl mx-auto px-10 w-full">
+        <div class="grid md:grid-cols-2 items-center gap-10">
+          <div class="text-left">
+            <img src="./image/log_3d.png" class="w-64 mb-6" />
+
+            <h1 class="text-5xl font-bold text-white leading-tight mb-6">
+              Os Melhores
+              <span class="text-purple-500 purple-glow">
+                Repasses de Veículos
+              </span>
+            </h1>
+
+            <p class="text-gray-300 text-lg mb-8 max-w-lg">
+              Sistema exclusivo da
+              <strong class="text-purple-400">GM Repasses</strong>
+              para controle de estoque, cadastro de veículos, gestão financeira
+              e acompanhamento de vendas.
+            </p>
+
+            <div class="flex gap-4">
+              <button
+                onclick="ativarTelaCheia()"
+                class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg text-white font-semibold border border-purple-500 flex items-center gap-2 transition"
+              >
+                <i class="fas fa-expand"></i>
+                Módulo Tela Cheia
+              </button>
+            </div>
+
+            <div class="flex gap-2 mt-8">
+              <div
+                class="w-2 h-2 rounded-full bg-purple-500"
+                id="indicator1"
+              ></div>
+
+              <div
+                class="w-2 h-2 rounded-full bg-gray-600"
+                id="indicator2"
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="login-card bg-black/80 backdrop-blur-md p-10 rounded-2xl border border-purple-600 shadow-2xl"
+          >
+            <h2
+              class="text-2xl text-white font-bold mb-6 flex items-center gap-2"
+            >
+              <i class="fas fa-lock text-purple-500 text-xl"></i>
+              Acesso ao Sistema
+            </h2>
+
+            <div class="space-y-5">
+              <input
+                id="username"
+                type="text"
+                placeholder="Usuário"
+                autocomplete="username"
+                class="w-full p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition"
+              />
+
+              <input
+                id="password"
+                type="password"
+                placeholder="Senha"
+                autocomplete="current-password"
+                class="w-full p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition"
+              />
+
+              <button
+                onclick="login()"
+                class="w-full bg-purple-600 hover:bg-purple-700 transition p-3 rounded-lg font-semibold flex items-center justify-center gap-2 group"
+              >
+                <span>Entrar no Sistema</span>
+                <i
+                  class="fas fa-arrow-right group-hover:translate-x-1 transition"
+                ></i>
+              </button>
+
+              <p class="text-center text-gray-500 text-sm mt-4">
+                <i class="fas fa-headset mr-1"></i> Suporte: (81) 991152307
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const imagens = ["./image/FUNDO 1.jpg", "./image/FUNDO 2.jpg"];
+
+      let slideIndex = 0;
+
+      function criarSlideshow() {
+        const slideshow = document.getElementById("slideshow");
+
+        imagens.forEach((img, index) => {
+          const slide = document.createElement("div");
+
+          slide.className = `slide ${index === 0 ? "active" : ""}`;
+
+          slide.style.backgroundImage = `url('${img}')`;
+
+          slideshow.appendChild(slide);
+        });
+      }
+
+      function atualizarIndicadores(index) {
+        document.getElementById("indicator1").className =
+          "w-2 h-2 rounded-full " +
+          (index === 0 ? "bg-purple-500" : "bg-gray-600");
+
+        document.getElementById("indicator2").className =
+          "w-2 h-2 rounded-full " +
+          (index === 1 ? "bg-purple-500" : "bg-gray-600");
+      }
+
+      function trocarSlide() {
+        const slides = document.querySelectorAll(".slide");
+
+        slides.forEach((slide) => slide.classList.remove("active"));
+
+        slideIndex = (slideIndex + 1) % slides.length;
+
+        slides[slideIndex].classList.add("active");
+
+        atualizarIndicadores(slideIndex);
+      }
+
+      function iniciarSlideshow() {
+        criarSlideshow();
+
+        setInterval(trocarSlide, 3000);
+      }
+
+      function limparCampos() {
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+      }
+
+      function login() {
+        let usuario = document.getElementById("username").value;
+        let senha = document.getElementById("password").value;
+
+        if (usuario === "" || senha === "") {
+          Swal.fire({
+            position: "top-end",
+            icon: "warning",
+            title: "Campos vazios",
+            text: "Preencha usuário e senha",
+            showConfirmButton: false,
+            timer: 2000,
+            toast: true,
+          });
+
+          return;
+        }
+
+        if (usuario === "ninho" && senha === "1234") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Login realizado!",
+            showConfirmButton: false,
+            timer: 1500,
+            toast: true,
+          }).then(() => {
+            limparCampos();
+
+            window.location.href = "principal.html";
+          });
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Erro no login",
+            text: "Usuário ou senha incorretos",
+            showConfirmButton: false,
+            timer: 2000,
+            toast: true,
+          });
+
+          limparCampos();
+        }
+      }
+
+      function ativarTelaCheia() {
+        const elemento = document.documentElement;
+
+        if (elemento.requestFullscreen) {
+          elemento.requestFullscreen();
+        } else if (elemento.webkitRequestFullscreen) {
+          elemento.webkitRequestFullscreen();
+        } else if (elemento.msRequestFullscreen) {
+          elemento.msRequestFullscreen();
+        }
+      }
+
+      window.onload = function () {
+        iniciarSlideshow();
+      };
+    </script>
+  </body>
 </html>
 ```
-
