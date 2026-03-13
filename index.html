@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
 
     <title>GM Repasses | Login</title>
 
@@ -19,8 +19,10 @@
       body {
         margin: 0;
         padding: 0;
-        overflow: hidden;
+        /* REMOVIDO overflow: hidden para permitir rolagem */
         background: black;
+        min-height: 100vh;
+        width: 100%;
       }
 
       .slideshow {
@@ -61,8 +63,134 @@
           rgba(0, 0, 0, 0.4) 100%
         );
         min-height: 100vh;
+        height: auto;
         display: flex;
         align-items: center;
+        overflow-y: auto;
+        padding: 40px 0;
+      }
+
+      /* Ajustes para telas muito pequenas (altura < 400px) */
+      @media (max-height: 500px) {
+        .banner-bg {
+          padding: 60px 0;
+          align-items: flex-start;
+        }
+        
+        .banner-bg .max-w-7xl {
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
+        
+        .text-left img {
+          width: 120px;
+          margin-bottom: 12px;
+        }
+        
+        .text-left h1 {
+          font-size: 1.5rem;
+          margin-bottom: 8px;
+        }
+        
+        .text-left p {
+          font-size: 0.9rem;
+          margin-bottom: 12px;
+        }
+        
+        .login-card {
+          padding: 16px;
+        }
+        
+        .login-card h2 {
+          font-size: 1.1rem;
+          margin-bottom: 12px;
+        }
+        
+        .login-card .space-y-4 {
+          gap: 8px;
+        }
+        
+        .login-card input,
+        .login-card button {
+          padding: 8px;
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Ajustes para telas muito pequenas (altura < 300px) */
+      @media (max-height: 350px) {
+        .banner-bg {
+          padding: 80px 0;
+        }
+        
+        .text-left img {
+          display: none;
+        }
+        
+        .text-left h1 {
+          font-size: 1.2rem;
+        }
+        
+        .text-left p {
+          font-size: 0.8rem;
+          margin-bottom: 8px;
+        }
+        
+        .text-left .flex {
+          margin-top: 8px;
+        }
+        
+        .login-card {
+          padding: 12px;
+        }
+        
+        .login-card .space-y-4 > * {
+          margin-bottom: 6px;
+        }
+      }
+
+      /* Ajustes para mobile (largura < 768px) */
+      @media (max-width: 768px) {
+        .banner-bg {
+          background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.95) 0%,
+            rgba(0, 0, 0, 0.85) 50%,
+            rgba(0, 0, 0, 0.7) 100%
+          );
+          padding: 30px 0;
+        }
+        
+        .banner-bg .max-w-7xl {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        
+        .text-left h1 {
+          font-size: 2rem;
+          line-height: 1.2;
+        }
+        
+        .text-left p {
+          font-size: 1rem;
+        }
+        
+        .login-card {
+          padding: 24px;
+          margin-top: 20px;
+        }
+      }
+
+      /* Ajustes para tablets */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .banner-bg .max-w-7xl {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+        
+        .text-left h1 {
+          font-size: 2.5rem;
+        }
       }
 
       .purple-glow {
@@ -89,6 +217,15 @@
       .login-card {
         transition: all 0.3s;
         border: 1px solid rgba(168, 85, 247, 0.3);
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+      }
+
+      @media (min-width: 768px) {
+        .login-card {
+          margin: 0;
+        }
       }
 
       .login-card:hover {
@@ -118,6 +255,12 @@
         border-color: #a855f7 !important;
         box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
       }
+
+      /* Garantir que o conteúdo seja sempre visível */
+      .banner-bg {
+        min-height: 100vh;
+        height: auto;
+      }
     </style>
   </head>
 
@@ -125,41 +268,41 @@
     <div class="slideshow" id="slideshow"></div>
 
     <section class="banner-bg w-full min-h-screen flex items-center relative">
-      <div class="max-w-7xl mx-auto px-10 w-full">
-        <div class="grid md:grid-cols-2 items-center gap-10">
-          <div class="text-left">
-            <img src="./image/log_3d.png" class="w-64 mb-6" />
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full">
+        <div class="grid md:grid-cols-2 items-center gap-6 md:gap-10">
+          <!-- LADO ESQUERDO - TEXTO -->
+          <div class="text-left order-2 md:order-1 mt-8 md:mt-0">
+            <img src="./image/log_3d.png" class="w-32 xs:w-40 sm:w-48 md:w-64 mb-4 md:mb-6 mx-auto md:mx-0" alt="Logo GM Repasses" />
 
-            <h1 class="text-5xl font-bold text-white leading-tight mb-6">
+            <h1 class="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-3 md:mb-6 text-center md:text-left">
               Os Melhores
-              <span class="text-purple-500 purple-glow">
+              <span class="text-purple-500 purple-glow block sm:inline">
                 Repasses de Veículos
               </span>
             </h1>
 
-            <p class="text-gray-300 text-lg mb-8 max-w-lg">
+            <p class="text-gray-300 text-sm xs:text-base sm:text-lg mb-4 md:mb-8 max-w-lg text-center md:text-left mx-auto md:mx-0">
               Sistema exclusivo da
               <strong class="text-purple-400">GM Repasses</strong>
               para controle de estoque, cadastro de veículos, gestão financeira
               e acompanhamento de vendas.
             </p>
 
-            <div class="flex gap-4">
+            <div class="flex justify-center md:justify-start gap-3 sm:gap-4">
               <button
                 onclick="ativarTelaCheia()"
-                class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg text-white font-semibold border border-purple-500 flex items-center gap-2 transition"
+                class="bg-purple-600 hover:bg-purple-700 px-3 sm:px-4 md:px-6 py-2 sm:py-2 md:py-3 rounded-lg text-white font-semibold border border-purple-500 flex items-center gap-2 transition text-xs sm:text-sm md:text-base"
               >
                 <i class="fas fa-expand"></i>
-                Módulo Tela Cheia
+                <span class="hidden xs:inline">Módulo</span> Tela Cheia
               </button>
             </div>
 
-            <div class="flex gap-2 mt-8">
+            <div class="flex gap-2 mt-4 md:mt-8 justify-center md:justify-start">
               <div
                 class="w-2 h-2 rounded-full bg-purple-500"
                 id="indicator1"
               ></div>
-
               <div
                 class="w-2 h-2 rounded-full bg-gray-600"
                 id="indicator2"
@@ -167,23 +310,24 @@
             </div>
           </div>
 
+          <!-- LADO DIREITO - CARD DE LOGIN -->
           <div
-            class="login-card bg-black/80 backdrop-blur-md p-10 rounded-2xl border border-purple-600 shadow-2xl"
+            class="login-card bg-black/80 backdrop-blur-md p-5 sm:p-6 md:p-8 lg:p-10 rounded-2xl border border-purple-600 shadow-2xl order-1 md:order-2"
           >
             <h2
-              class="text-2xl text-white font-bold mb-6 flex items-center gap-2"
+              class="text-lg sm:text-xl md:text-2xl text-white font-bold mb-3 sm:mb-4 md:mb-6 flex items-center gap-2"
             >
-              <i class="fas fa-lock text-purple-500 text-xl"></i>
+              <i class="fas fa-lock text-purple-500 text-base sm:text-lg md:text-xl"></i>
               Acesso ao Sistema
             </h2>
 
-            <div class="space-y-5">
+            <div class="space-y-3 sm:space-y-4 md:space-y-5">
               <input
                 id="username"
                 type="text"
                 placeholder="Usuário"
                 autocomplete="username"
-                class="w-full p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition"
+                class="w-full p-2 sm:p-2.5 md:p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition text-sm sm:text-base"
               />
 
               <input
@@ -191,12 +335,12 @@
                 type="password"
                 placeholder="Senha"
                 autocomplete="current-password"
-                class="w-full p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition"
+                class="w-full p-2 sm:p-2.5 md:p-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition text-sm sm:text-base"
               />
 
               <button
                 onclick="login()"
-                class="w-full bg-purple-600 hover:bg-purple-700 transition p-3 rounded-lg font-semibold flex items-center justify-center gap-2 group"
+                class="w-full bg-purple-600 hover:bg-purple-700 transition p-2 sm:p-2.5 md:p-3 rounded-lg font-semibold flex items-center justify-center gap-2 group text-sm sm:text-base"
               >
                 <span>Entrar no Sistema</span>
                 <i
@@ -204,7 +348,7 @@
                 ></i>
               </button>
 
-              <p class="text-center text-gray-500 text-sm mt-4">
+              <p class="text-center text-gray-500 text-xs sm:text-sm mt-2 sm:mt-3 md:mt-4">
                 <i class="fas fa-headset mr-1"></i> Suporte: (81) 991152307
               </p>
             </div>
@@ -329,4 +473,3 @@
     </script>
   </body>
 </html>
-```

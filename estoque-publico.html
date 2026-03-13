@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>GM Repasses | Estoque de Veículos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -48,7 +49,7 @@
             background: rgba(10, 10, 10, 0.95);
         }
         
-        /* BOTÃO VOLTAR */
+        /* BOTÃO VOLTAR (apenas desktop) */
         .back-to-home {
             background: #111;
             border: 1px solid #333;
@@ -71,6 +72,137 @@
             border-color: #a855f7;
             transform: scale(1.1);
         }
+
+        /* BOTÃO HAMBURGER */
+        .hamburger-btn {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+            width: 45px;
+            height: 45px;
+            border-radius: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 20px;
+        }
+        
+        .hamburger-btn:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+            transform: scale(1.1);
+        }
+
+        /* MENU MOBILE */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: #111;
+            border-left: 1px solid #333;
+            z-index: 100;
+            transition: right 0.3s ease;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mobile-menu.open {
+            right: 0;
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 90;
+            display: none;
+        }
+        
+        .menu-overlay.active {
+            display: block;
+        }
+        
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .menu-header h3 {
+            color: #a855f7;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .menu-close {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #888;
+            width: 36px;
+            height: 36px;
+            border-radius: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .menu-close:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            color: #e0e0e0;
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-bottom: 5px;
+            text-decoration: none;
+        }
+        
+        .menu-item:hover {
+            background: #1a1a1a;
+            transform: translateX(-5px);
+        }
+        
+        .menu-item i {
+            width: 24px;
+            font-size: 18px;
+        }
+        
+        .menu-item.whatsapp i { color: #25D366; }
+        .menu-item.instagram i { color: #E4405F; }
+        .menu-item.exit i { color: #ef4444; }
+        
+        .menu-item span {
+            flex: 1;
+            font-size: 15px;
+        }
+        
+        .menu-divider {
+            height: 1px;
+            background: #333;
+            margin: 20px 0;
+        }
         
         /* CARDS ESTILIZADOS */
         .vehicle-card {
@@ -79,7 +211,6 @@
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s;
-            cursor: pointer;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -97,6 +228,7 @@
             object-fit: cover;
             border-bottom: 1px solid #222;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .vehicle-card:hover .vehicle-image {
@@ -359,42 +491,6 @@
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
         }
         
-        .stats-bar {
-            background: #111;
-            border-radius: 50px;
-            padding: 10px 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 20px;
-            border: 1px solid #222;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #888;
-            font-size: 14px;
-        }
-        
-        .stat-item i {
-            color: #a855f7;
-        }
-        
-        .stat-item strong {
-            color: #fff;
-            font-size: 18px;
-        }
-        
-        .footer {
-            background: #0a0a0a;
-            border-top: 1px solid #222;
-            padding: 30px 0;
-            margin-top: 50px;
-            text-align: center;
-            color: #666;
-        }
-        
         .no-results {
             grid-column: 1 / -1;
             text-align: center;
@@ -445,7 +541,6 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 18px;
-            margin-left: 10px;
         }
         
         .fullscreen-btn:hover {
@@ -453,6 +548,52 @@
             color: #fff;
             border-color: #a855f7;
             transform: scale(1.1);
+        }
+
+        /* ÍCONES SOCIAIS DESKTOP */
+        .social-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+        }
+        
+        .social-icon {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .social-icon.instagram:hover {
+            background: #E4405F;
+            color: #fff;
+            border-color: #E4405F;
+        }
+        
+        .social-icon.whatsapp:hover {
+            background: #25D366;
+            color: #fff;
+            border-color: #25D366;
+        }
+        
+        .social-icon.exit:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
         }
 
         /* INDICADOR DE TELA CHEIA */
@@ -483,6 +624,176 @@
             align-items: center;
             gap: 10px;
         }
+
+        /* ===== RESPONSIVIDADE ===== */
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            /* Esconder elementos do desktop */
+            .back-to-home {
+                display: none !important;
+            }
+            
+            .social-icons {
+                display: none !important;
+            }
+            
+            /* Header mobile */
+            .header-gradient .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .header-gradient .flex {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            /* Logo maior */
+            .header-gradient img {
+                height: 50px !important;
+            }
+            
+            /* Hamburger à direita */
+            .hamburger-btn {
+                display: flex !important;
+                margin-left: auto;
+            }
+            
+            /* Esconder texto do título */
+            .header-gradient .hidden.md\\:block {
+                display: none !important;
+            }
+            
+            /* Ajustes no conteúdo */
+            .container.px-4.py-8 {
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            
+            h2.text-3xl {
+                font-size: 24px;
+            }
+            
+            .search-wrapper input {
+                padding: 12px 16px 12px 45px;
+                font-size: 14px;
+            }
+            
+            .search-wrapper i {
+                left: 12px;
+                font-size: 16px;
+            }
+            
+            .grid {
+                gap: 16px;
+            }
+            
+            .vehicle-image {
+                height: 160px;
+            }
+            
+            .price-tag {
+                font-size: 16px;
+                padding: 6px 12px;
+                top: 10px;
+                right: 10px;
+            }
+            
+            .status-badge {
+                font-size: 10px;
+                padding: 4px 8px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            .vehicle-info {
+                padding: 16px;
+            }
+            
+            .vehicle-title {
+                font-size: 18px;
+            }
+            
+            .vehicle-subtitle {
+                font-size: 12px;
+                gap: 6px;
+            }
+            
+            .vehicle-details {
+                gap: 8px;
+                margin: 10px 0;
+                padding: 10px 0;
+            }
+            
+            .detail-item {
+                font-size: 11px;
+                gap: 4px;
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Telas muito pequenas */
+        @media (max-width: 480px) {
+            .header-gradient img {
+                height: 45px !important;
+            }
+            
+            .hamburger-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .vehicle-image {
+                height: 180px;
+            }
+            
+            .price-tag {
+                font-size: 14px;
+                padding: 4px 10px;
+            }
+            
+            .status-badge {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
+            
+            .whatsapp-float {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+            }
+        }
+
+        /* Desktop */
+        @media (min-width: 769px) {
+            .hamburger-btn {
+                display: none !important;
+            }
+            
+            .mobile-menu {
+                display: none !important;
+            }
+            
+            .menu-overlay {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -491,96 +802,140 @@
         <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para sair
     </div>
 
-    <!-- HEADER COM BOTÃO DE TELA CHEIA E BOTÃO VOLTAR -->
-    <div class="header-gradient py-4">
-        <div class="container mx-auto px-4">
+    <!-- OVERLAY DO MENU MOBILE -->
+    <div class="menu-overlay" id="menuOverlay" onclick="fecharMenu()"></div>
+
+    <!-- MENU MOBILE -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="menu-header">
+            <h3>MENU</h3>
+            <div class="menu-close" onclick="fecharMenu()">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <!-- LINK DO INSTAGRAM -->
+        <a href="https://www.instagram.com/gmrepasses_/" target="_blank" class="menu-item instagram">
+            <i class="fab fa-instagram"></i>
+            <span>Instagram</span>
+            <i class="fas fa-external-link-alt text-xs opacity-50"></i>
+        </a>
+        
+        <!-- LINK DO WHATSAPP -->
+        <a href="https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk" target="_blank" class="menu-item whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+            <i class="fas fa-external-link-alt text-xs opacity-50"></i>
+        </a>
+        
+        <div class="menu-divider"></div>
+        
+        <div class="menu-item exit" onclick="sair()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="header-gradient py-3 md:py-4">
+        <div class="container mx-auto px-3 md:px-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <!-- BOTÃO VOLTAR PARA PÁGINA PRINCIPAL -->
+                <!-- Logo -->
+                <img src="./image/log_3d.png" class="h-10 md:h-12" alt="Logo" onerror="this.src='https://via.placeholder.com/48x48/1a1a1a/666?text=GM'">
+                
+                <!-- Título (visível apenas em desktop) -->
+                <div class="hidden md:block flex-1 text-center">
+                    <h1 class="text-lg md:text-2xl font-bold text-white">A SUA LOJA É AQUI - <span class="purple-accent">VEJA NOSSAS OFERTAS!</span></h1>
+                    <p class="text-xs text-gray-500">Veículos com procedência e garantia</p>
+                </div>
+                
+                <!-- Ações do header -->
+                <div class="header-actions">
+                    <!-- Botão voltar (apenas desktop) -->
                     <div class="back-to-home" onclick="voltarPaginaPrincipal()" title="Página Principal">
                         <i class="fas fa-home"></i>
                     </div>
                     
-                    <img src="./image/log_3d.png" class="h-12" alt="Logo" onerror="this.src='https://via.placeholder.com/48x48/1a1a1a/666?text=GM'">
-                    <div class="hidden md:block">
-                        <h1 class="text-2xl font-bold text-white">A SUA LOJA É AQUI - <span class="purple-accent">VEJA NOSSAS OFERTAS!</span></h1>
-                        <p class="text-xs text-gray-500">Veículos com procedência e garantia</p>
-                    </div>
-                </div>
-                
-                <div class="header-actions">
-                    <div class="stats-bar hidden md:flex">
-                        <div class="stat-item">
-                            <i class="fas fa-car"></i>
-                            <span><strong id="totalVeiculos">0</strong> carros</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-tag"></i>
-                            <span>a partir de <strong id="precoMinimo">R$ 0</strong></span>
+                    <!-- ÍCONES SOCIAIS DESKTOP -->
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/gmrepasses_/" target="_blank" class="social-icon instagram" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <div class="social-icon exit" onclick="sair()" title="Sair">
+                            <i class="fas fa-sign-out-alt"></i>
                         </div>
                     </div>
                     
-                    <!-- BOTÃO DE TELA CHEIA -->
+                    <!-- Botão de tela cheia -->
                     <div class="fullscreen-btn" onclick="ativarTelaCheia()" title="Tela Cheia">
                         <i class="fas fa-expand"></i>
                     </div>
                     
-                    <a href="https://wa.me/5599999999999" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 transition">
-                        <i class="fab fa-whatsapp"></i>
-                        <span class="hidden md:inline">Fale conosco</span>
-                    </a>
+                    <!-- Botão hamburger (apenas mobile) -->
+                    <div class="hamburger-btn" onclick="toggleMenu()">
+                        <i class="fas fa-bars"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- CONTEÚDO PRINCIPAL -->
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-3 md:px-4 py-6 md:py-8">
 
         <!-- TÍTULO DA PÁGINA -->
-        <div class="text-center mb-8">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">Nosso <span class="purple-accent">Estoque</span></h2>
-            <p class="text-gray-500">Confira os veículos disponíveis para compra</p>
+        <div class="text-center mb-6 md:mb-8">
+            <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">Nosso <span class="purple-accent">Estoque</span></h2>
+            <p class="text-sm md:text-base text-gray-500">Confira os veículos disponíveis para compra</p>
         </div>
         
         <!-- BUSCA -->
-        <div class="max-w-2xl mx-auto mb-8">
+        <div class="max-w-2xl mx-auto mb-6 md:mb-8">
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>
                 <input type="text" id="buscaCliente" placeholder="Buscar por marca, modelo, ano ou cor..." onkeyup="filtrarVeiculos()">
             </div>
-            <div class="text-right mt-2 text-sm text-gray-600" id="resultadoBusca"></div>
+            <div class="text-right mt-2 text-xs md:text-sm text-gray-600" id="resultadoBusca"></div>
         </div>
         
         <!-- GRID DE VEÍCULOS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="veiculosGrid">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6" id="veiculosGrid">
             <div class="loading">
                 <i class="fas fa-circle-notch fa-spin"></i>
-                <p class="mt-2">Carregando veículos...</p>
+                <p class="mt-2 text-sm md:text-base">Carregando veículos...</p>
             </div>
         </div>
         
         <!-- BOTÃO WHATSAPP FLUTUANTE -->
-        <a href="https://wa.me/5599999999999" target="_blank" class="whatsapp-float">
+        <a href="https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk" target="_blank" class="whatsapp-float">
             <i class="fab fa-whatsapp"></i>
         </a>
         
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-        <div class="container mx-auto px-4">
-            <img src="./image/log_3d.png" class="h-12 mx-auto mb-4 opacity-50" alt="Logo" onerror="this.style.display='none'">
-            <p class="mb-2">Sua loja de veículos - Qualidade e confiança em seminovos</p>
-            <p class="text-xs">
-                <i class="fas fa-map-marker-alt mr-1"></i> Av. Exemplo, 1000 - Cidade/UF<br>
-                <i class="fas fa-phone mr-1"></i> (99) 99999-9999
-            </p>
-            <p class="text-xs mt-4">© 2024 GM Repasses. Todos os direitos reservados.</p>
-        </div>
-    </div>
-
     <script>
+        // ========== FUNÇÕES DO MENU MOBILE ==========
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+            document.getElementById('menuOverlay').classList.toggle('active');
+        }
+
+        function fecharMenu() {
+            document.getElementById('mobileMenu').classList.remove('open');
+            document.getElementById('menuOverlay').classList.remove('active');
+        }
+
+        // Fechar menu ao redimensionar para desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.getElementById('mobileMenu').classList.remove('open');
+                document.getElementById('menuOverlay').classList.remove('active');
+            }
+        });
+
         // ========== FUNÇÃO DE TELA CHEIA ==========
         function ativarTelaCheia() {
             const elemento = document.documentElement;
@@ -594,13 +949,11 @@
                 elemento.msRequestFullscreen();
             }
             
-            // Mostrar indicador
             if (indicator) {
                 indicator.classList.add('visible');
             }
         }
 
-        // Detectar quando sai do modo tela cheia (ESC)
         document.addEventListener('fullscreenchange', atualizarIndicadorFullscreen);
         document.addEventListener('webkitfullscreenchange', atualizarIndicadorFullscreen);
         document.addEventListener('mozfullscreenchange', atualizarIndicadorFullscreen);
@@ -608,47 +961,171 @@
 
         function atualizarIndicadorFullscreen() {
             const indicator = document.getElementById('fullscreenIndicator');
-            if (!document.fullscreenElement) {
-                if (indicator) {
-                    indicator.classList.remove('visible');
-                }
+            if (!document.fullscreenElement && indicator) {
+                indicator.classList.remove('visible');
             }
         }
 
-        // ========== FUNÇÃO VOLTAR PARA PÁGINA PRINCIPAL ==========
+        // ========== FUNÇÃO VOLTAR ==========
         function voltarPaginaPrincipal() {
             window.location.href = 'principal.html';
         }
 
+        // ========== FUNÇÃO SAIR ==========
+        function sair() {
+            Swal.fire({
+                title: 'Deseja sair?',
+                text: 'Você será redirecionado para a página de login',
+                icon: 'question',
+                background: '#1a1a1a',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#a855f7',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sim, sair',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+
+        // ========== FUNÇÃO PARA ABRIR GALERIA COM SETAS ==========
+        function abrirGaleria(fotos, titulo) {
+            if (!fotos || fotos.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sem fotos',
+                    text: 'Este veículo não possui fotos cadastradas.',
+                    background: '#1a1a1a',
+                    color: '#fff',
+                    confirmButtonColor: '#a855f7'
+                });
+                return;
+            }
+
+            let currentIndex = 0;
+
+            const showImage = (index) => {
+                const foto = fotos[index];
+                Swal.fire({
+                    imageUrl: foto,
+                    imageAlt: titulo,
+                    title: `${index + 1}/${fotos.length}`,
+                    background: '#1a1a1a',
+                    color: '#fff',
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    showDenyButton: false,
+                    width: '90%',
+                    customClass: {
+                        image: 'max-h-[80vh] object-contain',
+                        closeButton: 'text-gray-400 hover:text-white focus:outline-none'
+                    },
+                    didOpen: () => {
+                        // Adicionar setas de navegação com JavaScript puro
+                        const container = document.querySelector('.swal2-popup');
+                        if (!container) return;
+                        
+                        // Criar seta esquerda
+                        const leftArrow = document.createElement('div');
+                        leftArrow.innerHTML = '◀';
+                        leftArrow.style.cssText = `
+                            position: absolute;
+                            left: 20px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            font-size: 40px;
+                            color: rgba(255,255,255,0.5);
+                            cursor: pointer;
+                            z-index: 1000;
+                            transition: color 0.2s;
+                            user-select: none;
+                        `;
+                        leftArrow.onmouseover = () => leftArrow.style.color = '#a855f7';
+                        leftArrow.onmouseout = () => leftArrow.style.color = 'rgba(255,255,255,0.5)';
+                        leftArrow.onclick = () => {
+                            currentIndex = (currentIndex - 1 + fotos.length) % fotos.length;
+                            Swal.close();
+                            showImage(currentIndex);
+                        };
+                        
+                        // Criar seta direita
+                        const rightArrow = document.createElement('div');
+                        rightArrow.innerHTML = '▶';
+                        rightArrow.style.cssText = `
+                            position: absolute;
+                            right: 20px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            font-size: 40px;
+                            color: rgba(255,255,255,0.5);
+                            cursor: pointer;
+                            z-index: 1000;
+                            transition: color 0.2s;
+                            user-select: none;
+                        `;
+                        rightArrow.onmouseover = () => rightArrow.style.color = '#a855f7';
+                        rightArrow.onmouseout = () => rightArrow.style.color = 'rgba(255,255,255,0.5)';
+                        rightArrow.onclick = () => {
+                            currentIndex = (currentIndex + 1) % fotos.length;
+                            Swal.close();
+                            showImage(currentIndex);
+                        };
+                        
+                        // Adicionar setas ao container
+                        container.appendChild(leftArrow);
+                        container.appendChild(rightArrow);
+                        
+                        // Suporte a teclas do teclado
+                        const keyHandler = (e) => {
+                            if (e.key === 'ArrowLeft') {
+                                e.preventDefault();
+                                currentIndex = (currentIndex - 1 + fotos.length) % fotos.length;
+                                Swal.close();
+                                showImage(currentIndex);
+                            } else if (e.key === 'ArrowRight') {
+                                e.preventDefault();
+                                currentIndex = (currentIndex + 1) % fotos.length;
+                                Swal.close();
+                                showImage(currentIndex);
+                            } else if (e.key === 'Escape') {
+                                Swal.close();
+                            }
+                        };
+                        
+                        document.addEventListener('keydown', keyHandler);
+                        
+                        // Remover event listener quando fechar
+                        const originalClose = Swal.close;
+                        Swal.close = function() {
+                            document.removeEventListener('keydown', keyHandler);
+                            originalClose();
+                        };
+                    }
+                });
+            };
+
+            showImage(currentIndex);
+        }
+
         let todosVeiculos = [];
 
-        // Carregar veículos do localStorage
+        // Carregar veículos
         function carregarVeiculos() {
             const dadosSalvos = localStorage.getItem('gmRepasses');
             if (dadosSalvos) {
-                const dados = JSON.parse(dadosSalvos);
-                // Filtrar apenas veículos disponíveis e reservados (não mostrar vendidos)
-                todosVeiculos = (dados.cars || []).filter(c => c.status !== 'Vendido');
-            }
-            
-            // Atualizar estatísticas
-            atualizarStats();
-            
-            // Renderizar veículos
-            renderizarVeiculos(todosVeiculos);
-        }
-        
-        // Atualizar estatísticas do header
-        function atualizarStats() {
-            document.getElementById('totalVeiculos').innerText = todosVeiculos.length;
-            
-            if (todosVeiculos.length > 0) {
-                const precos = todosVeiculos.map(c => c.venda || 0).filter(p => p > 0);
-                if (precos.length > 0) {
-                    const precoMinimo = Math.min(...precos);
-                    document.getElementById('precoMinimo').innerText = formatarMoedaBrasileira(precoMinimo).replace('R$', 'R$');
+                try {
+                    const dados = JSON.parse(dadosSalvos);
+                    todosVeiculos = (dados.cars || []).filter(c => c.status !== 'Vendido');
+                } catch (e) {
+                    console.error('Erro ao carregar dados:', e);
+                    todosVeiculos = [];
                 }
             }
+            renderizarVeiculos(todosVeiculos);
         }
         
         // Formatar moeda
@@ -663,7 +1140,7 @@
             return parseInt(km).toLocaleString('pt-BR') + ' km';
         }
 
-        // Comparar com FIPE
+        // Comparar FIPE
         function compararComFIPE(fipe, venda) {
             if (!fipe || fipe === 0) return { text: '', class: '' };
             if (!venda || venda === 0) return { text: '', class: '' };
@@ -687,30 +1164,34 @@
                 grid.innerHTML = `
                     <div class="no-results">
                         <i class="fas fa-car"></i>
-                        <h3 class="text-xl font-bold text-gray-400 mb-2">Nenhum veículo disponível</h3>
-                        <p class="text-gray-600">No momento não temos veículos em estoque.</p>
-                        <p class="text-gray-600 mt-4">Entre em contato pelo WhatsApp para mais informações.</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-400 mb-2">Nenhum veículo disponível</h3>
+                        <p class="text-sm md:text-base text-gray-600">No momento não temos veículos em estoque.</p>
+                        <p class="text-sm md:text-base text-gray-600 mt-3 md:mt-4">Entre em contato pelo WhatsApp para mais informações.</p>
                     </div>
                 `;
                 return;
             }
             
             let html = '';
-            veiculos.forEach(c => {
-                // Pegar primeira foto ou imagem padrão
-                const foto = c.fotos && c.fotos.length > 0 ? c.fotos[0] : 'https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem';
+            for (let i = 0; i < veiculos.length; i++) {
+                const c = veiculos[i];
                 
-                // Definir badge de status
+                const foto = (c.fotos && c.fotos.length > 0) ? c.fotos[0] : 'https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem';
+                
                 const statusClass = c.status === 'Disponível' ? 'status-disponivel' : 'status-reservado';
                 const statusIcon = c.status === 'Disponível' ? 'fa-check-circle' : 'fa-clock';
                 
-                // Comparação FIPE
                 const fipeComp = compararComFIPE(c.fipe, c.venda);
                 
+                const fotosJson = JSON.stringify(c.fotos || []);
+                const tituloVeiculo = `${c.marca || ''} ${c.modelo || ''} ${c.ano || ''}`.trim();
+                
                 html += `
-                    <div class="vehicle-card" onclick="interessado('${c.marca} ${c.modelo} ${c.ano}', ${c.venda})">
+                    <div class="vehicle-card">
                         <div class="image-container">
-                            <img src="${foto}" class="vehicle-image" alt="${c.marca} ${c.modelo}" onerror="this.src='https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem'">
+                            <img src="${foto}" class="vehicle-image" alt="${c.marca} ${c.modelo}" 
+                                 onclick='abrirGaleria(${fotosJson}, "${tituloVeiculo}")'
+                                 onerror="this.src='https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem'">
                             <div class="price-tag">${formatarMoedaBrasileira(c.venda)}</div>
                             <div class="status-badge ${statusClass}">
                                 <i class="fas ${statusIcon} mr-1"></i> ${c.status}
@@ -737,7 +1218,6 @@
                                 </div>
                             </div>
                             
-                            <!-- NOVAS INFORMAÇÕES: FIPE e Observações -->
                             <div class="extra-info">
                                 ${c.fipe ? `
                                 <div class="extra-item">
@@ -756,14 +1236,14 @@
                                 ` : ''}
                             </div>
                             
-                            <button class="contact-button" onclick="event.stopPropagation(); interessado('${c.marca} ${c.modelo} ${c.ano}', ${c.venda})">
+                            <button class="contact-button" onclick="interessado('${c.marca} ${c.modelo} ${c.ano}', ${c.venda})">
                                 <i class="fab fa-whatsapp"></i>
                                 Tenho interesse
                             </button>
                         </div>
                     </div>
                 `;
-            });
+            }
             
             grid.innerHTML = html;
         }
@@ -791,9 +1271,9 @@
             renderizarVeiculos(filtrados);
         }
         
-        // Função para enviar WhatsApp
+        // WhatsApp
         function interessado(veiculo, preco) {
-            const numero = '5581981837459'; // Substitua pelo número da loja
+            const numero = '5581981837459';
             const mensagem = `Olá! Tenho interesse no veículo *${veiculo}* anunciado por *${formatarMoedaBrasileira(preco)}*. Poderia me passar mais informações?`;
             const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
             window.open(url, '_blank');
@@ -802,8 +1282,6 @@
         // Inicializar
         window.onload = function() {
             carregarVeiculos();
-            
-            // Atualizar quando houver mudanças no localStorage (opcional)
             window.addEventListener('storage', function(e) {
                 if (e.key === 'gmRepasses') {
                     carregarVeiculos();
