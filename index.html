@@ -261,6 +261,33 @@
         min-height: 100vh;
         height: auto;
       }
+
+      /* Estilo para os indicadores */
+      .indicators {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .indicator.active {
+        background: #a855f7;
+        transform: scale(1.2);
+        box-shadow: 0 0 15px #a855f7;
+      }
+
+      .indicator:hover {
+        background: #a855f7;
+        transform: scale(1.1);
+      }
     </style>
   </head>
 
@@ -298,15 +325,9 @@
               </button>
             </div>
 
-            <div class="flex gap-2 mt-4 md:mt-8 justify-center md:justify-start">
-              <div
-                class="w-2 h-2 rounded-full bg-purple-500"
-                id="indicator1"
-              ></div>
-              <div
-                class="w-2 h-2 rounded-full bg-gray-600"
-                id="indicator2"
-              ></div>
+            <!-- Indicadores do slideshow -->
+            <div class="flex gap-3 mt-6 md:mt-10 justify-center md:justify-start" id="indicators">
+              <!-- Os indicadores serão inseridos via JavaScript -->
             </div>
           </div>
 
@@ -358,50 +379,84 @@
     </section>
 
     <script>
-      const imagens = ["./image/FUNDO 1.jpg", "./image/FUNDO 2.jpg"];
+      // 4 imagens para o slideshow
+      const imagens = [
+        "./image/FUNDO 1.jpg", 
+        "./image/FUNDO 2.jpg",
+        "./image/FUNDO 3.avif",
+        "./image/FUNDO 4.avif"
+      ];
 
       let slideIndex = 0;
+      let slideInterval;
+      const slideshow = document.getElementById("slideshow");
+      const indicatorsContainer = document.getElementById("indicators");
 
       function criarSlideshow() {
-        const slideshow = document.getElementById("slideshow");
+        // Limpar slides e indicadores existentes
+        slideshow.innerHTML = '';
+        indicatorsContainer.innerHTML = '';
 
+        // Criar slides e indicadores
         imagens.forEach((img, index) => {
+          // Criar slide
           const slide = document.createElement("div");
-
           slide.className = `slide ${index === 0 ? "active" : ""}`;
-
           slide.style.backgroundImage = `url('${img}')`;
-
           slideshow.appendChild(slide);
+
+          // Criar indicador
+          const indicator = document.createElement("div");
+          indicator.className = `indicator ${index === 0 ? "active" : ""}`;
+          indicator.setAttribute("onclick", `irParaSlide(${index})`);
+          indicatorsContainer.appendChild(indicator);
         });
       }
 
-      function atualizarIndicadores(index) {
-        document.getElementById("indicator1").className =
-          "w-2 h-2 rounded-full " +
-          (index === 0 ? "bg-purple-500" : "bg-gray-600");
-
-        document.getElementById("indicator2").className =
-          "w-2 h-2 rounded-full " +
-          (index === 1 ? "bg-purple-500" : "bg-gray-600");
+      function irParaSlide(index) {
+        const slides = document.querySelectorAll(".slide");
+        const indicators = document.querySelectorAll(".indicator");
+        
+        // Atualizar slides
+        slides.forEach((slide) => slide.classList.remove("active"));
+        slides[index].classList.add("active");
+        
+        // Atualizar indicadores
+        indicators.forEach((indicator) => indicator.classList.remove("active"));
+        indicators[index].classList.add("active");
+        
+        // Atualizar índice atual
+        slideIndex = index;
       }
 
       function trocarSlide() {
         const slides = document.querySelectorAll(".slide");
-
+        const indicators = document.querySelectorAll(".indicator");
+        
+        if (slides.length === 0) return;
+        
+        // Remover classe active de todos
         slides.forEach((slide) => slide.classList.remove("active"));
-
+        indicators.forEach((indicator) => indicator.classList.remove("active"));
+        
+        // Avançar para o próximo slide
         slideIndex = (slideIndex + 1) % slides.length;
-
+        
+        // Adicionar classe active ao slide e indicador atual
         slides[slideIndex].classList.add("active");
-
-        atualizarIndicadores(slideIndex);
+        indicators[slideIndex].classList.add("active");
       }
 
       function iniciarSlideshow() {
         criarSlideshow();
-
-        setInterval(trocarSlide, 3000);
+        
+        // Limpar intervalo anterior se existir
+        if (slideInterval) {
+          clearInterval(slideInterval);
+        }
+        
+        // Iniciar novo intervalo (3 segundos)
+        slideInterval = setInterval(trocarSlide, 3000);
       }
 
       function limparCampos() {
@@ -423,7 +478,6 @@
             timer: 2000,
             toast: true,
           });
-
           return;
         }
 
@@ -437,7 +491,6 @@
             toast: true,
           }).then(() => {
             limparCampos();
-
             window.location.href = "principal.html";
           });
         } else {
@@ -450,14 +503,12 @@
             timer: 2000,
             toast: true,
           });
-
           limparCampos();
         }
       }
 
       function ativarTelaCheia() {
         const elemento = document.documentElement;
-
         if (elemento.requestFullscreen) {
           elemento.requestFullscreen();
         } else if (elemento.webkitRequestFullscreen) {

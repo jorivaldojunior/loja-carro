@@ -14,15 +14,242 @@
             box-sizing: border-box;
         }
         
-        body {
+        /* Tema escuro (padrão) */
+        body.dark-theme {
             background: #0a0a0a;
             color: #e0e0e0;
+        }
+        
+        body.dark-theme .card {
+            background: #111;
+            border: 1px solid #222;
+        }
+        
+        body.dark-theme .form-control {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+        }
+        
+        body.dark-theme .form-control:focus {
+            border-color: #a855f7;
+        }
+        
+        body.dark-theme .back-icon,
+        body.dark-theme .fullscreen-header-btn,
+        body.dark-theme .action-icon {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+        }
+        
+        body.dark-theme .back-icon:hover,
+        body.dark-theme .fullscreen-header-btn:hover,
+        body.dark-theme .action-icon:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+        }
+        
+        body.dark-theme .action-icon.save:hover {
+            background: #10b981;
+            border-color: #10b981;
+        }
+        
+        body.dark-theme .action-icon.cancel:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        body.dark-theme .upload-area {
+            background: #1a1a1a;
+            border: 1px dashed #333;
+        }
+        
+        body.dark-theme .upload-area:hover {
+            border-color: #a855f7;
+            background: #222;
+        }
+        
+        body.dark-theme .shortcut-hint {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #666;
+        }
+        
+        body.dark-theme .divider {
+            background: linear-gradient(90deg, transparent, #333, transparent);
+        }
+        
+        body.dark-theme .fullscreen-indicator {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #fff;
+        }
+        
+        body.dark-theme .action-icon::after {
+            background: #222;
+            border: 1px solid #333;
+            color: #fff;
+        }
+
+        /* Tema claro */
+        body.light-theme {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        body.light-theme .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.1);
+        }
+        
+        body.light-theme h1 {
+            color: #1f2937;
+        }
+        
+        body.light-theme .form-control {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
+        }
+        
+        body.light-theme .form-control:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168,85,247,0.1);
+        }
+        
+        body.light-theme .form-control::placeholder {
+            color: #9ca3af;
+        }
+        
+        /* CORREÇÃO: Seta branca para não aparecer no tema claro */
+        body.light-theme select.form-control {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px;
+            padding-right: 32px;
+        }
+        
+        body.light-theme .back-icon,
+        body.light-theme .fullscreen-header-btn,
+        body.light-theme .action-icon {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        body.light-theme .back-icon:hover,
+        body.light-theme .fullscreen-header-btn:hover,
+        body.light-theme .action-icon:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+            box-shadow: 0 4px 8px rgba(168,85,247,0.2);
+        }
+        
+        body.light-theme .action-icon.save:hover {
+            background: #10b981;
+            border-color: #10b981;
+            box-shadow: 0 4px 8px rgba(16,185,129,0.2);
+        }
+        
+        body.light-theme .action-icon.cancel:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            box-shadow: 0 4px 8px rgba(239,68,68,0.2);
+        }
+        
+        body.light-theme .upload-area {
+            background: #f9fafb;
+            border: 1px dashed #e5e7eb;
+        }
+        
+        body.light-theme .upload-area:hover {
+            border-color: #a855f7;
+            background: #ffffff;
+        }
+        
+        body.light-theme .upload-area i {
+            color: #9ca3af;
+        }
+        
+        body.light-theme .upload-area p {
+            color: #6b7280;
+        }
+        
+        body.light-theme .upload-area small {
+            color: #9ca3af;
+        }
+        
+        body.light-theme .shortcut-hint {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+        }
+        
+        body.light-theme .shortcut-hint i {
+            color: #a855f7;
+        }
+        
+        body.light-theme .divider {
+            background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+        }
+        
+        body.light-theme .footer {
+            color: #9ca3af;
+        }
+        
+        body.light-theme .fullscreen-indicator {
+            background: rgba(168,85,247,0.1);
+            border: 1px solid #a855f7;
+            color: #1f2937;
+            backdrop-filter: blur(5px);
+        }
+        
+        body.light-theme .action-icon::after {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        body.light-theme .preview-image {
+            border: 2px solid #e5e7eb;
+        }
+        
+        body.light-theme .preview-image:hover {
+            border-color: #a855f7;
+        }
+        
+        body.light-theme .file-info {
+            color: #a855f7;
+        }
+        
+        body.light-theme .form-label {
+            color: #6b7280;
+        }
+        
+        body.light-theme .input-group-text {
+            color: #a855f7;
+        }
+        
+        body.light-theme input[type="date"].form-control::-webkit-calendar-picker-indicator {
+            filter: invert(0.5);
+        }
+
+        /* Estilos comuns */
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 15px;
+            transition: background-color 0.3s ease;
         }
         
         .container {
@@ -40,6 +267,10 @@
             border-bottom: 1px solid #222;
         }
         
+        body.light-theme .header {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
         .header-left {
             display: flex;
             align-items: center;
@@ -51,27 +282,17 @@
             width: 40px;
             height: 40px;
             border-radius: 40px;
-            background: #111;
-            border: 1px solid #333;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #888;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 18px;
         }
         
-        .back-icon:hover {
-            background: #a855f7;
-            color: #fff;
-            border-color: #a855f7;
-        }
-        
         h1 {
             font-size: 22px;
             font-weight: 400;
-            color: #fff;
         }
         
         .purple-accent {
@@ -80,11 +301,9 @@
         }
         
         .card {
-            background: #111;
-            border: 1px solid #222;
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.5);
+            transition: all 0.3s;
         }
         
         .form-grid {
@@ -109,7 +328,6 @@
             align-items: center;
             gap: 5px;
             font-size: 11px;
-            color: #888;
             margin-bottom: 4px;
             letter-spacing: 0.3px;
             text-transform: uppercase;
@@ -123,24 +341,14 @@
         
         .form-control {
             width: 100%;
-            background: #1a1a1a;
-            border: 1px solid #333;
             border-radius: 8px;
             padding: 10px 12px;
-            color: #fff;
             font-size: 14px;
             transition: all 0.2s;
         }
         
         .form-control:focus {
             outline: none;
-            border-color: #a855f7;
-            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
-        }
-        
-        .form-control::placeholder {
-            color: #444;
-            font-size: 12px;
         }
         
         .input-group {
@@ -152,7 +360,6 @@
             left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: #a855f7;
             font-size: 12px;
             z-index: 10;
             font-weight: 600;
@@ -164,7 +371,6 @@
         
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 12px center;
             background-size: 14px;
@@ -177,8 +383,6 @@
         }
         
         .upload-area {
-            background: #1a1a1a;
-            border: 1px dashed #333;
             border-radius: 8px;
             padding: 12px;
             text-align: center;
@@ -190,25 +394,17 @@
             margin-right: auto;
         }
         
-        .upload-area:hover {
-            border-color: #a855f7;
-            background: #222;
-        }
-        
         .upload-area i {
             font-size: 24px;
-            color: #444;
             margin-bottom: 4px;
         }
         
         .upload-area p {
-            color: #888;
             font-size: 13px;
             font-weight: 400;
         }
         
         .upload-area small {
-            color: #444;
             font-size: 10px;
         }
         
@@ -239,13 +435,7 @@
             height: 50px;
             object-fit: cover;
             border-radius: 6px;
-            border: 2px solid #333;
             transition: all 0.2s;
-        }
-        
-        .preview-image:hover {
-            border-color: #a855f7;
-            transform: scale(1.1);
         }
         
         .action-bar {
@@ -258,16 +448,17 @@
             border-top: 1px solid #222;
         }
         
+        body.light-theme .action-bar {
+            border-top: 1px solid #e5e7eb;
+        }
+        
         .action-icon {
             width: 42px;
             height: 42px;
             border-radius: 42px;
-            background: #1a1a1a;
-            border: 1px solid #333;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #888;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 16px;
@@ -275,25 +466,15 @@
         }
         
         .action-icon:hover {
-            background: #a855f7;
-            color: #fff;
-            border-color: #a855f7;
             transform: translateY(-2px);
         }
         
         .action-icon.save:hover {
-            background: #10b981;
-            border-color: #10b981;
+            transform: translateY(-2px);
         }
         
         .action-icon.cancel:hover {
-            background: #ef4444;
-            border-color: #ef4444;
-        }
-
-        .action-icon.fullscreen:hover {
-            background: #a855f7;
-            border-color: #a855f7;
+            transform: translateY(-2px);
         }
         
         .action-icon::after {
@@ -302,8 +483,6 @@
             bottom: -25px;
             left: 50%;
             transform: translateX(-50%);
-            background: #222;
-            color: #fff;
             font-size: 10px;
             padding: 3px 6px;
             border-radius: 4px;
@@ -311,7 +490,6 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s;
-            border: 1px solid #333;
             pointer-events: none;
             z-index: 100;
         }
@@ -324,7 +502,6 @@
         
         .footer {
             text-align: center;
-            color: #333;
             font-size: 10px;
             margin-top: 15px;
             letter-spacing: 0.5px;
@@ -332,7 +509,6 @@
         
         .divider {
             height: 1px;
-            background: linear-gradient(90deg, transparent, #333, transparent);
             margin: 15px 0;
         }
         
@@ -340,35 +516,52 @@
             padding: 9px 12px;
             font-size: 13px;
         }
-        
-        input[type="date"].form-control::-webkit-calendar-picker-indicator {
-            filter: invert(0.5);
-            width: 14px;
-            height: 14px;
+
+        /* BOTÃO DE TEMA */
+        .theme-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+            margin-right: 5px;
         }
 
+        body.dark-theme .theme-toggle {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+        }
+
+        body.light-theme .theme-toggle {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .theme-toggle:hover {
+            background: #a855f7 !important;
+            color: #fff !important;
+            border-color: #a855f7 !important;
+            transform: scale(1.1);
+        }
+        
         /* ESTILO DO BOTÃO DE TELA CHEIA NO HEADER */
         .fullscreen-header-btn {
             width: 38px;
             height: 38px;
             border-radius: 38px;
-            background: #111;
-            border: 1px solid #333;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #888;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 16px;
-            margin-left: 8px;
-        }
-        
-        .fullscreen-header-btn:hover {
-            background: #a855f7;
-            color: #fff;
-            border-color: #a855f7;
-            transform: scale(1.1);
         }
 
         /* INDICADOR DE TELA CHEIA */
@@ -376,9 +569,6 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(168, 85, 247, 0.2);
-            border: 1px solid #a855f7;
-            color: #fff;
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 11px;
@@ -401,12 +591,9 @@
 
         /* DICA DE ATALHO */
         .shortcut-hint {
-            background: #1a1a1a;
-            border: 1px solid #333;
             border-radius: 30px;
             padding: 3px 10px;
             font-size: 10px;
-            color: #666;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -414,7 +601,6 @@
         }
 
         .shortcut-hint i {
-            color: #a855f7;
             font-size: 10px;
         }
 
@@ -551,7 +737,8 @@
                 font-size: 16px;
             }
             
-            .fullscreen-header-btn {
+            .fullscreen-header-btn,
+            .theme-toggle {
                 width: 34px;
                 height: 34px;
                 font-size: 14px;
@@ -602,7 +789,7 @@
         }
     </style>
 </head>
-<body>
+<body class="dark-theme">
     <!-- INDICADOR DE TELA CHEIA -->
     <div class="fullscreen-indicator" id="fullscreenIndicator">
         <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para sair
@@ -621,10 +808,14 @@
                 </div>
             </div>
             <div class="header-actions">
+                <!-- BOTÃO DE TEMA -->
+                <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Alternar tema">
+                    <i class="fas fa-sun"></i>
+                </div>
                 <div class="fullscreen-header-btn" onclick="ativarTelaCheia()" title="Tela Cheia">
                     <i class="fas fa-expand"></i>
                 </div>
-                <img src="./image/LOGO.jpg" style="height: 32px; opacity: 0.7;" onerror="this.style.display='none'">
+                <img src="./image/log_3d.png" style="height: 32px; opacity: 0.7;" onerror="this.style.display='none'">
             </div>
         </div>
 
@@ -775,6 +966,45 @@
     </div>
 
     <script>
+        // ========== FUNÇÃO DE TEMA ==========
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+                icon.classList.add('fa-sun');
+                icon.classList.remove('fa-moon');
+            }
+        }
+
         // ========== FUNÇÃO DE TELA CHEIA ==========
         function ativarTelaCheia() {
             const elemento = document.documentElement;
@@ -839,8 +1069,8 @@
                 cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Sim, limpar',
                 cancelButtonText: 'Cancelar',
-                background: '#1a1a1a',
-                color: '#fff'
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff'
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('marca').value = '';
@@ -879,8 +1109,8 @@
                         icon: 'warning',
                         title: 'Máximo de fotos',
                         text: 'Selecione no máximo 5 fotos!',
-                        background: '#1a1a1a',
-                        color: '#fff',
+                        background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                        color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                         confirmButtonColor: '#a855f7'
                     });
                     input.value = '';
@@ -941,8 +1171,8 @@
                     icon: 'warning',
                     title: 'Atenção',
                     text: 'Marca e modelo são obrigatórios!',
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                     confirmButtonColor: '#a855f7'
                 });
                 return;
@@ -958,8 +1188,8 @@
                     icon: 'warning',
                     title: 'Atenção',
                     text: 'Valor de compra é obrigatório!',
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                     confirmButtonColor: '#a855f7'
                 });
                 return;
@@ -970,8 +1200,8 @@
                     icon: 'warning',
                     title: 'Atenção',
                     text: 'Valor de venda é obrigatório!',
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                     confirmButtonColor: '#a855f7'
                 });
                 return;
@@ -983,8 +1213,8 @@
                 text: 'Salvando veículo',
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading(),
-                background: '#1a1a1a',
-                color: '#fff'
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff'
             });
             
             // Processar fotos
@@ -1024,8 +1254,8 @@
                 icon: 'success',
                 title: 'Sucesso!',
                 text: 'Veículo cadastrado com sucesso!',
-                background: '#1a1a1a',
-                color: '#fff',
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                 timer: 1500,
                 showConfirmButton: false
             }).then(() => {
@@ -1044,8 +1274,8 @@
                 cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Sair',
                 cancelButtonText: 'Cancelar',
-                background: '#1a1a1a',
-                color: '#fff'
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff'
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = 'principal.html';
@@ -1069,14 +1299,17 @@
             if (e.key === 'Escape') {
                 voltar();
             }
-            
-            // F11 para tela cheia (não podemos interceptar, é do navegador)
         });
 
         // Máscara para KM (apenas números)
         document.getElementById('km').addEventListener('input', function(e) {
             this.value = this.value.replace(/\D/g, '');
         });
+
+        // Inicializar tema
+        window.onload = function() {
+            loadTheme();
+        };
     </script>
 </body>
 </html>

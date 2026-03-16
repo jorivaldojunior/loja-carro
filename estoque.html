@@ -12,16 +12,290 @@
     />
 
     <style>
-      body {
+      /* Tema escuro (padrão) */
+      body.dark-theme {
         background: #0b0b0b;
-        font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
+        color: #e5e7eb;
       }
 
+      body.dark-theme .card {
+        background: #111;
+        border: 1px solid #2a2a2a;
+      }
+
+      body.dark-theme .card:hover {
+        border-color: #9333ea;
+      }
+
+      body.dark-theme .header-gradient {
+        background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%);
+        border-bottom: 1px solid #2a2a2a;
+      }
+
+      body.dark-theme .back-btn,
+      body.dark-theme .fullscreen-btn,
+      body.dark-theme .filter-chip {
+        background: #111;
+        border: 1px solid #2a2a2a;
+        color: #888;
+      }
+
+      body.dark-theme .back-btn:hover,
+      body.dark-theme .fullscreen-btn:hover,
+      body.dark-theme .filter-chip:hover {
+        border-color: #a855f7;
+        color: #a855f7;
+      }
+
+      body.dark-theme .search-wrapper input {
+        background: #111;
+        border: 1px solid #2a2a2a;
+        color: #e5e7eb;
+      }
+
+      body.dark-theme .search-wrapper input:focus {
+        border-color: #a855f7;
+      }
+
+      body.dark-theme .btn-secondary {
+        background: #111;
+        border: 1px solid #2a2a2a;
+        color: #9ca3af;
+      }
+
+      body.dark-theme .btn-secondary:hover {
+        border-color: #a855f7;
+        color: #a855f7;
+      }
+
+      body.dark-theme .empty-state {
+        background: #111;
+        border: 1px solid #2a2a2a;
+      }
+
+      body.dark-theme .fullscreen-indicator {
+        background: rgba(168, 85, 247, 0.2);
+        border: 1px solid #a855f7;
+        color: #fff;
+      }
+
+      /* CORREÇÃO: Adicionar fundo roxo no preço para tema escuro */
+      body.dark-theme .info-value.text-purple-400 {
+        background: #a855f7;
+        color: #fff !important;
+        padding: 2px 8px;
+        border-radius: 16px;
+        display: inline-block;
+      }
+
+      /* Tema claro */
+      body.light-theme {
+        background: #f3f4f6;
+        color: #1f2937;
+      }
+
+      body.light-theme .card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+
+      body.light-theme .card:hover {
+        border-color: #a855f7;
+        box-shadow: 0 8px 16px rgba(168,85,247,0.1);
+      }
+
+      body.light-theme .header-gradient {
+        background: linear-gradient(145deg, #ffffff 0%, #f9fafb 100%);
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      body.light-theme .back-btn,
+      body.light-theme .fullscreen-btn,
+      body.light-theme .filter-chip {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+
+      body.light-theme .back-btn:hover,
+      body.light-theme .fullscreen-btn:hover,
+      body.light-theme .filter-chip:hover {
+        border-color: #a855f7;
+        color: #a855f7;
+        background: #ffffff;
+        box-shadow: 0 4px 8px rgba(168,85,247,0.1);
+      }
+
+      body.light-theme .filter-chip.active {
+        background: #a855f7;
+        border-color: #a855f7;
+        color: white;
+      }
+
+      body.light-theme .search-wrapper input {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #1f2937;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+
+      body.light-theme .search-wrapper input:focus {
+        border-color: #a855f7;
+        box-shadow: 0 0 0 4px rgba(168,85,247,0.1);
+      }
+
+      body.light-theme .search-wrapper input::placeholder {
+        color: #9ca3af;
+      }
+
+      body.light-theme .search-wrapper i {
+        color: #9ca3af;
+      }
+
+      body.light-theme .search-stats {
+        color: #6b7280;
+      }
+
+      body.light-theme .btn-primary {
+        background: #a855f7;
+        color: white;
+      }
+
+      body.light-theme .btn-primary:hover {
+        background: #9333ea;
+        box-shadow: 0 8px 16px rgba(168,85,247,0.3);
+      }
+
+      body.light-theme .btn-secondary {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+      }
+
+      body.light-theme .btn-secondary:hover {
+        border-color: #a855f7;
+        color: #a855f7;
+      }
+
+      body.light-theme .empty-state {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+      }
+
+      body.light-theme .empty-state h3 {
+        color: #1f2937;
+      }
+
+      body.light-theme .empty-state p {
+        color: #6b7280;
+      }
+
+      body.light-theme .empty-state i {
+        color: #9ca3af;
+      }
+
+      body.light-theme .fullscreen-indicator {
+        background: rgba(168,85,247,0.1);
+        border: 1px solid #a855f7;
+        color: #1f2937;
+        backdrop-filter: blur(5px);
+      }
+
+      body.light-theme .vehicle-title {
+        color: #1f2937;
+      }
+
+      body.light-theme .vehicle-subtitle {
+        color: #6b7280;
+      }
+
+      body.light-theme .info-label {
+        color: #6b7280;
+      }
+
+      body.light-theme .info-label i {
+        color: #9ca3af;
+      }
+
+      body.light-theme .info-value:not(.text-purple-400):not(.text-green-400):not(.text-red-400) {
+        color: #1f2937;
+      }
+
+      body.light-theme .info-value.text-purple-400 {
+        background: #a855f7;
+        color: #fff !important;
+        padding: 2px 8px;
+        border-radius: 16px;
+        display: inline-block;
+      }
+
+      body.light-theme .info-value.text-green-400 {
+        color: #10b981 !important;
+      }
+
+      body.light-theme .info-value.text-red-400 {
+        color: #ef4444 !important;
+      }
+
+      body.light-theme .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #f8f8f8 50%,
+          #f0f0f0 75%
+        );
+      }
+
+      body.light-theme #modalExportar .bg-gray-900 {
+        background: #ffffff;
+        border-color: #e5e7eb;
+      }
+
+      body.light-theme #modalExportar p {
+        color: #6b7280 !important;
+      }
+
+      body.light-theme #modalExportar button.bg-gray-800 {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        color: #1f2937;
+      }
+
+      body.light-theme #modalExportar button.bg-gray-800:hover {
+        background: #f3f4f6;
+      }
+
+      body.light-theme #modalExportar button.bg-gray-700 {
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+      }
+
+      body.light-theme #modalExportar button.bg-gray-700:hover {
+        background: #e5e7eb;
+        color: #1f2937;
+      }
+
+      body.light-theme .page-btn {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+      }
+
+      body.light-theme .page-btn:hover:not(.disabled) {
+        border-color: #a855f7;
+        color: #a855f7;
+      }
+
+      body.light-theme .page-btn.active {
+        background: #a855f7;
+        border-color: #a855f7;
+        color: white;
+      }
+
+      /* Estilos comuns */
       .purple-accent {
         color: #a855f7;
       }
@@ -33,28 +307,23 @@
       }
 
       .card {
-        background: #111;
-        border: 1px solid #2a2a2a;
         border-radius: 12px;
         transition: all 0.3s;
       }
 
       .card:hover {
-        border-color: #9333ea;
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2);
       }
 
       /* Header e navegação */
       .header-gradient {
-        background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%);
-        border-bottom: 1px solid #2a2a2a;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
       }
 
       .back-btn {
-        background: #111;
-        border: 1px solid #2a2a2a;
-        color: #888;
         transition: all 0.3s;
         padding: 10px 20px;
         border-radius: 30px;
@@ -62,16 +331,15 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        cursor: pointer;
       }
 
       .back-btn:hover {
-        border-color: #a855f7;
-        color: #a855f7;
         transform: translateX(-2px);
       }
 
-      /* ESTILO DO BOTÃO DE TELA CHEIA */
-      .fullscreen-btn {
+      /* BOTÃO DE TEMA */
+      .theme-toggle {
         background: #111;
         border: 1px solid #2a2a2a;
         color: #888;
@@ -85,10 +353,32 @@
         font-size: 14px;
       }
 
-      .fullscreen-btn:hover {
+      body.light-theme .theme-toggle {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+      }
+
+      .theme-toggle:hover {
         border-color: #a855f7;
         color: #a855f7;
         transform: translateY(-1px);
+      }
+
+      .theme-toggle i {
+        font-size: 16px;
+      }
+
+      /* ESTILO DO BOTÃO DE TELA CHEIA */
+      .fullscreen-btn {
+        transition: all 0.3s;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 14px;
       }
 
       .fullscreen-btn i {
@@ -100,9 +390,6 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background: rgba(168, 85, 247, 0.2);
-        border: 1px solid #a855f7;
-        color: #fff;
         padding: 5px 10px;
         border-radius: 20px;
         font-size: 11px;
@@ -127,7 +414,6 @@
         left: 16px;
         top: 50%;
         transform: translateY(-50%);
-        color: #6b7280;
         font-size: 18px;
         transition: color 0.3s;
       }
@@ -135,28 +421,13 @@
       .search-wrapper input {
         width: 100%;
         padding: 16px 20px 16px 50px;
-        background: #111;
-        border: 1px solid #2a2a2a;
         border-radius: 16px;
-        color: #e5e7eb;
         font-size: 16px;
         transition: all 0.3s;
       }
 
-      .search-wrapper input:focus {
-        outline: none;
-        border-color: #a855f7;
-        box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
-      }
-
-      .search-wrapper input::placeholder {
-        color: #4b5563;
-        font-weight: 300;
-      }
-
       .search-stats {
         font-size: 14px;
-        color: #6b7280;
         margin-top: 10px;
         text-align: right;
         padding-right: 8px;
@@ -164,9 +435,6 @@
 
       /* Filtros rápidos */
       .filter-chip {
-        background: #111;
-        border: 1px solid #2a2a2a;
-        color: #9ca3af;
         padding: 8px 16px;
         border-radius: 30px;
         font-size: 14px;
@@ -175,18 +443,6 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-      }
-
-      .filter-chip:hover {
-        border-color: #a855f7;
-        color: #a855f7;
-        background: #151515;
-      }
-
-      .filter-chip.active {
-        background: #a855f7;
-        border-color: #a855f7;
-        color: white;
       }
 
       .filter-chip i {
@@ -214,6 +470,10 @@
         overflow: hidden;
         background: #1a1a1a;
         margin-bottom: 16px;
+      }
+
+      body.light-theme .vehicle-image-container {
+        background: #f0f0f0;
       }
 
       .vehicle-image {
@@ -294,12 +554,10 @@
         font-size: 1.25rem;
         font-weight: 700;
         margin-bottom: 4px;
-        color: white;
       }
 
       .vehicle-subtitle {
         font-size: 0.9rem;
-        color: #9ca3af;
         margin-bottom: 16px;
         display: flex;
         align-items: center;
@@ -309,7 +567,6 @@
 
       .vehicle-subtitle i {
         font-size: 12px;
-        color: #4b5563;
       }
 
       .info-row {
@@ -320,12 +577,15 @@
         border-bottom: 1px solid #1f1f1f;
       }
 
+      body.light-theme .info-row {
+        border-bottom: 1px solid #f0f0f0;
+      }
+
       .info-row:last-child {
         border-bottom: none;
       }
 
       .info-label {
-        color: #6b7280;
         font-size: 0.9rem;
         display: flex;
         align-items: center;
@@ -335,7 +595,6 @@
       .info-label i {
         width: 16px;
         font-size: 14px;
-        color: #4b5563;
       }
 
       .info-value {
@@ -353,9 +612,6 @@
       }
 
       .page-btn {
-        background: #111;
-        border: 1px solid #2a2a2a;
-        color: #9ca3af;
         width: 40px;
         height: 40px;
         border-radius: 10px;
@@ -367,15 +623,7 @@
       }
 
       .page-btn:hover:not(.disabled) {
-        border-color: #a855f7;
-        color: #a855f7;
         transform: translateY(-2px);
-      }
-
-      .page-btn.active {
-        background: #a855f7;
-        border-color: #a855f7;
-        color: white;
       }
 
       .page-btn.disabled {
@@ -385,12 +633,6 @@
 
       /* Loading skeleton */
       .skeleton {
-        background: linear-gradient(
-          90deg,
-          #1a1a1a 25%,
-          #2a2a2a 50%,
-          #1a1a1a 75%
-        );
         background-size: 200% 100%;
         animation: loading 1.5s infinite;
         border-radius: 8px;
@@ -409,32 +651,25 @@
       .empty-state {
         text-align: center;
         padding: 60px 20px;
-        background: #111;
         border-radius: 16px;
-        border: 1px solid #2a2a2a;
       }
 
       .empty-state i {
         font-size: 64px;
-        color: #2a2a2a;
         margin-bottom: 20px;
       }
 
       .empty-state h3 {
         font-size: 1.5rem;
-        color: white;
         margin-bottom: 10px;
       }
 
       .empty-state p {
-        color: #6b7280;
         margin-bottom: 20px;
       }
 
       /* Botões */
       .btn-primary {
-        background: #a855f7;
-        color: white;
         padding: 12px 24px;
         border-radius: 30px;
         font-weight: 600;
@@ -447,15 +682,10 @@
       }
 
       .btn-primary:hover {
-        background: #9333ea;
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.4);
       }
 
       .btn-secondary {
-        background: #111;
-        border: 1px solid #2a2a2a;
-        color: #9ca3af;
         padding: 12px 24px;
         border-radius: 30px;
         font-weight: 600;
@@ -464,11 +694,6 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-      }
-
-      .btn-secondary:hover {
-        border-color: #a855f7;
-        color: #a855f7;
       }
 
       /* Scrollbar personalizada */
@@ -481,9 +706,17 @@
         background: #1a1a1a;
       }
 
+      body.light-theme ::-webkit-scrollbar-track {
+        background: #f0f0f0;
+      }
+
       ::-webkit-scrollbar-thumb {
         background: #333;
         border-radius: 4px;
+      }
+
+      body.light-theme ::-webkit-scrollbar-thumb {
+        background: #9ca3af;
       }
 
       ::-webkit-scrollbar-thumb:hover {
@@ -529,19 +762,22 @@
         
         .back-btn span,
         .fullscreen-btn span,
-        .btn-primary span {
+        .btn-primary span,
+        .theme-toggle span {
           display: none;
         }
         
         .back-btn,
         .fullscreen-btn,
-        .btn-primary {
+        .btn-primary,
+        .theme-toggle {
           padding: 8px 12px;
         }
         
         .back-btn i,
         .fullscreen-btn i,
-        .btn-primary i {
+        .btn-primary i,
+        .theme-toggle i {
           font-size: 16px;
           margin: 0;
         }
@@ -656,7 +892,7 @@
       }
     </style>
   </head>
-  <body class="text-gray-200 min-h-screen">
+  <body class="dark-theme text-gray-200 min-h-screen">
     <!-- INDICADOR DE TELA CHEIA -->
     <div class="fullscreen-indicator" id="fullscreenIndicator">
       <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para
@@ -688,6 +924,17 @@
           </div>
 
           <div class="flex items-center gap-2 lg:gap-3 ml-auto">
+            <!-- BOTÃO DE TEMA -->
+            <button
+              onclick="toggleTheme()"
+              class="theme-toggle"
+              id="themeToggle"
+              title="Alternar tema"
+            >
+              <i class="fas fa-sun"></i>
+              <span class="hidden md:inline">Tema</span>
+            </button>
+
             <!-- BOTÃO DE TELA CHEIA -->
             <button
               onclick="ativarTelaCheia()"
@@ -903,8 +1150,53 @@
     </div>
 
     <script>
+      // ========== FUNÇÃO DE TEMA ==========
+      function toggleTheme() {
+        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+        
+        if (body.classList.contains('dark-theme')) {
+          body.classList.remove('dark-theme');
+          body.classList.add('light-theme');
+          icon.classList.remove('fa-sun');
+          icon.classList.add('fa-moon');
+          localStorage.setItem('theme', 'light');
+        } else {
+          body.classList.remove('light-theme');
+          body.classList.add('dark-theme');
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
+          localStorage.setItem('theme', 'dark');
+        }
+        
+        // Atualizar título do header
+        const titleElement = document.querySelector('.header-gradient h1 span');
+        if (titleElement) {
+          titleElement.style.color = body.classList.contains('light-theme') ? '#1f2937' : '#fff';
+        }
+      }
+
+      function loadTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+        
+        if (savedTheme === 'light') {
+          document.body.classList.remove('dark-theme');
+          document.body.classList.add('light-theme');
+          icon.classList.remove('fa-sun');
+          icon.classList.add('fa-moon');
+        } else {
+          document.body.classList.add('dark-theme');
+          document.body.classList.remove('light-theme');
+          icon.classList.add('fa-sun');
+          icon.classList.remove('fa-moon');
+        }
+      }
+
       // ========== CONFIGURAÇÕES ==========
-      const ITENS_POR_PAGINA = window.innerWidth < 768 ? 6 : 9; // Menos itens por página em mobile
+      const ITENS_POR_PAGINA = window.innerWidth < 768 ? 6 : 9;
       let cars = [];
       let carsFiltrados = [];
       let filtroAtual = {
@@ -928,13 +1220,11 @@
           elemento.msRequestFullscreen();
         }
 
-        // Mostrar indicador
         if (indicator) {
           indicator.classList.add("visible");
         }
       }
 
-      // Detectar quando sai do modo tela cheia (ESC)
       document.addEventListener(
         "fullscreenchange",
         atualizarIndicadorFullscreen,
@@ -963,30 +1253,24 @@
 
       // ========== INICIALIZAÇÃO ==========
       document.addEventListener("DOMContentLoaded", function () {
+        loadTheme();
         carregarDados();
       });
 
       function carregarDados() {
-        // Mostrar skeleton
         document.getElementById("loadingSkeleton").classList.remove("hidden");
         document.getElementById("estoqueCards").classList.add("hidden");
 
-        // Simular um pequeno delay para mostrar o skeleton (opcional)
         setTimeout(() => {
           try {
-            // Tenta carregar do localStorage compartilhado com a página principal
             const dadosSalvos = localStorage.getItem("gmRepasses");
             if (dadosSalvos) {
               const dados = JSON.parse(dadosSalvos);
               cars = dados.cars || [];
             } else {
-              cars = []; // Garantir que seja array vazio se não houver dados
+              cars = [];
             }
 
-            // IMPORTANTE: NÃO adicionar dados de exemplo
-            // Se cars estiver vazio, continua vazio
-
-            // Inicializar filtros
             aplicarFiltros();
           } catch (error) {
             console.error("Erro ao carregar dados:", error);
@@ -1021,11 +1305,9 @@
           .value.toLowerCase();
         filtroAtual.texto = termoBusca;
 
-        // Filtrar por texto
         let filtrados = cars.filter((c) => {
           if (!c) return false;
 
-          // Busca em todos os campos relevantes
           const buscaStr = `
                     ${c.marca || ""} 
                     ${c.modelo || ""} 
@@ -1038,7 +1320,6 @@
           return buscaStr.includes(termoBusca);
         });
 
-        // Filtrar por status
         if (filtroAtual.status !== "todos") {
           const statusMap = {
             disponivel: "Disponível",
@@ -1051,7 +1332,6 @@
           }
         }
 
-        // Ordenar
         filtrados = ordenarVeiculos(filtrados, filtroAtual.ordenacao);
 
         carsFiltrados = filtrados;
@@ -1062,7 +1342,6 @@
       function filtrarPorStatus(status) {
         filtroAtual.status = status;
 
-        // Atualizar UI dos chips
         document
           .querySelectorAll(".filter-chip")
           .forEach((chip) => chip.classList.remove("active"));
@@ -1078,7 +1357,6 @@
       function ordenarPor(tipo) {
         filtroAtual.ordenacao = tipo;
 
-        // Atualizar UI
         document
           .querySelectorAll(".filter-chip")
           .forEach((chip) => chip.classList.remove("active"));
@@ -1098,7 +1376,6 @@
         switch (tipo) {
           case "recentes":
             return veiculosCopy.sort((a, b) => {
-              // Ordenar por data de compra (mais recente primeiro)
               return new Date(b.dataCompra || 0) - new Date(a.dataCompra || 0);
             });
 
@@ -1115,10 +1392,8 @@
 
       // ========== RENDERIZAÇÃO ==========
       function renderizarEstoque() {
-        // Calcular paginação
         totalPaginas = Math.ceil(carsFiltrados.length / ITENS_POR_PAGINA) || 1;
 
-        // Atualizar stats
         const statsEl = document.getElementById("filtroStats");
         if (statsEl) {
           if (carsFiltrados.length === 0) {
@@ -1133,13 +1408,11 @@
           }
         }
 
-        // Esconder skeleton e mostrar cards
         document.getElementById("loadingSkeleton").classList.add("hidden");
         const cardsContainer = document.getElementById("estoqueCards");
         cardsContainer.classList.remove("hidden");
 
         if (carsFiltrados.length === 0) {
-          // Mostrar empty state
           cardsContainer.innerHTML = `
                     <div class="col-span-1 sm:col-span-2 lg:col-span-3">
                         <div class="empty-state">
@@ -1157,12 +1430,10 @@
           return;
         }
 
-        // Calcular índices da página atual
         const inicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
         const fim = Math.min(inicio + ITENS_POR_PAGINA, carsFiltrados.length);
         const carsPagina = carsFiltrados.slice(inicio, fim);
 
-        // Renderizar cards
         let html = "";
         for (let i = 0; i < carsPagina.length; i++) {
           const c = carsPagina[i];
@@ -1173,7 +1444,6 @@
           const lucro = venda - compra;
           const lucroClass = lucro >= 0 ? "text-green-400" : "text-red-400";
 
-          // Pegar primeira foto ou placeholder
           const primeiraFoto =
             c.fotos && c.fotos.length > 0
               ? c.fotos[0]
@@ -1181,7 +1451,6 @@
 
           const qtdFotos = c.fotos ? c.fotos.length : 0;
 
-          // Classe de status
           const statusClass =
             {
               Disponível: "status-disponivel",
@@ -1243,8 +1512,6 @@
         }
 
         cardsContainer.innerHTML = html;
-
-        // Renderizar paginação
         renderizarPaginacao();
       }
 
@@ -1256,7 +1523,6 @@
 
         document.getElementById("paginacao").classList.remove("hidden");
 
-        // Atualizar botões anterior/próximo
         document
           .getElementById("prevPage")
           .classList.toggle("disabled", paginaAtual === 1);
@@ -1264,9 +1530,8 @@
           .getElementById("nextPage")
           .classList.toggle("disabled", paginaAtual === totalPaginas);
 
-        // Gerar números das páginas
         let pageNumbers = "";
-        const maxBotoes = window.innerWidth < 768 ? 3 : 5; // Menos botões em mobile
+        const maxBotoes = window.innerWidth < 768 ? 3 : 5;
         let inicio = Math.max(1, paginaAtual - Math.floor(maxBotoes / 2));
         let fim = Math.min(totalPaginas, inicio + maxBotoes - 1);
 
@@ -1322,8 +1587,8 @@
           icon: "success",
           title: "Dados atualizados!",
           text: "O estoque foi recarregado com sucesso.",
-          background: "#1a1a1a",
-          color: "#fff",
+          background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+          color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
           timer: 1500,
           showConfirmButton: false,
         });
@@ -1346,13 +1611,12 @@
             icon: "warning",
             title: "Nada para exportar",
             text: "Não há veículos para exportar.",
-            background: "#1a1a1a",
-            color: "#fff",
+            background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+            color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
           });
           return;
         }
 
-        // Criar cabeçalho CSV
         const cabecalho = [
           "Marca",
           "Modelo",
@@ -1366,7 +1630,6 @@
           "Lucro",
         ];
 
-        // Criar linhas
         const linhas = carsFiltrados.map((c) => [
           c.marca || "",
           c.modelo || "",
@@ -1380,13 +1643,11 @@
           (c.venda || 0) - (c.compra || 0),
         ]);
 
-        // Montar CSV
         const csvContent = [
           cabecalho.join(","),
           ...linhas.map((l) => l.join(",")),
         ].join("\n");
 
-        // Download
         const blob = new Blob([csvContent], {
           type: "text/csv;charset=utf-8;",
         });
@@ -1402,8 +1663,8 @@
           icon: "success",
           title: "Exportado com sucesso!",
           text: `CSV com ${carsFiltrados.length} veículos gerado.`,
-          background: "#1a1a1a",
-          color: "#fff",
+          background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+          color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
           timer: 2000,
           showConfirmButton: false,
         });
@@ -1422,7 +1683,6 @@
       }
 
       function exportarPDF() {
-        // Simplesmente avisar que é uma feature premium
         Swal.fire({
           icon: "info",
           title: "Exportação PDF",
@@ -1430,14 +1690,13 @@
                     <p class="mb-4">A exportação em PDF está em desenvolvimento.</p>
                     <p class="text-sm text-gray-400">Enquanto isso, utilize CSV para Excel ou JSON.</p>
                 `,
-          background: "#1a1a1a",
-          color: "#fff",
+          background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+          color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
           confirmButtonColor: "#a855f7",
         });
         fecharModalExportar();
       }
 
-      // ========== FUNÇÕES DE ERRO ==========
       function mostrarErro(mensagem) {
         document.getElementById("loadingSkeleton").classList.add("hidden");
         document.getElementById("estoqueCards").classList.remove("hidden");
@@ -1457,7 +1716,6 @@
             `;
       }
 
-      // Atualizar ITENS_POR_PAGINA quando a janela for redimensionada
       window.addEventListener('resize', function() {
         if (carsFiltrados.length > 0) {
           renderizarEstoque();

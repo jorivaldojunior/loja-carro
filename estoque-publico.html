@@ -14,12 +14,305 @@
             box-sizing: border-box;
         }
         
-        body {
+        /* Tema escuro (padrão) */
+        body.dark-theme {
             background: #0a0a0a;
             color: #e0e0e0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
+        body.dark-theme .header-gradient {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-bottom: 1px solid #a855f7;
+            background: rgba(10, 10, 10, 0.95);
+        }
+        
+        body.dark-theme .back-to-home,
+        body.dark-theme .hamburger-btn,
+        body.dark-theme .fullscreen-btn,
+        body.dark-theme .social-icon,
+        body.dark-theme .theme-toggle {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+        }
+        
+        body.dark-theme .back-to-home:hover,
+        body.dark-theme .hamburger-btn:hover,
+        body.dark-theme .fullscreen-btn:hover,
+        body.dark-theme .social-icon:hover,
+        body.dark-theme .theme-toggle:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+            transform: scale(1.1);
+        }
+        
+        body.dark-theme .mobile-menu {
+            background: #111;
+            border-left: 1px solid #333;
+        }
+        
+        body.dark-theme .vehicle-card {
+            background: #111;
+            border: 1px solid #222;
+        }
+        
+        body.dark-theme .vehicle-card:hover {
+            border-color: #a855f7;
+        }
+        
+        body.dark-theme .extra-info {
+            background: #0a0a0a;
+        }
+        
+        body.dark-theme .search-wrapper input {
+            background: #111;
+            border: 2px solid #222;
+            color: #fff;
+        }
+        
+        body.dark-theme .search-wrapper input:focus {
+            border-color: #a855f7;
+        }
+        
+        body.dark-theme .no-results {
+            background: #111;
+            border: 1px solid #222;
+        }
+        
+        body.dark-theme .fullscreen-indicator {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #fff;
+        }
+        
+        /* CORREÇÃO: Adicionar fundo roxo no preço para tema escuro */
+        body.dark-theme .price-tag {
+            background: #a855f7;
+            border: 2px solid #ffffff;
+            color: #fff;
+        }
+
+        /* Tema claro */
+        body.light-theme {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        body.light-theme .header-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+            border-bottom: 1px solid #a855f7;
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        body.light-theme .back-to-home,
+        body.light-theme .hamburger-btn,
+        body.light-theme .fullscreen-btn,
+        body.light-theme .social-icon,
+        body.light-theme .theme-toggle {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        body.light-theme .back-to-home:hover,
+        body.light-theme .hamburger-btn:hover,
+        body.light-theme .fullscreen-btn:hover,
+        body.light-theme .social-icon:hover,
+        body.light-theme .theme-toggle:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(168,85,247,0.3);
+        }
+        
+        body.light-theme .social-icon.instagram:hover {
+            background: #E4405F;
+            border-color: #E4405F;
+            color: #fff;
+        }
+        
+        body.light-theme .social-icon.whatsapp:hover {
+            background: #25D366;
+            border-color: #25D366;
+            color: #fff;
+        }
+        
+        body.light-theme .social-icon.exit:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #fff;
+        }
+        
+        body.light-theme .mobile-menu {
+            background: #ffffff;
+            border-left: 1px solid #e5e7eb;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        }
+        
+        body.light-theme .menu-header h3 {
+            color: #a855f7;
+        }
+        
+        body.light-theme .menu-close {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+        }
+        
+        body.light-theme .menu-close:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+        
+        body.light-theme .menu-item {
+            color: #1f2937;
+        }
+        
+        body.light-theme .menu-item:hover {
+            background: #f9fafb;
+        }
+        
+        body.light-theme .menu-divider {
+            background: #e5e7eb;
+        }
+        
+        body.light-theme .vehicle-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        body.light-theme .vehicle-card:hover {
+            border-color: #a855f7;
+            box-shadow: 0 8px 24px rgba(168,85,247,0.15);
+        }
+        
+        body.light-theme .vehicle-title {
+            color: #1f2937;
+        }
+        
+        body.light-theme .vehicle-subtitle {
+            color: #6b7280;
+        }
+        
+        body.light-theme .detail-item {
+            color: #4b5563;
+        }
+        
+        body.light-theme .extra-info {
+            background: #f9fafb;
+            border-left: 3px solid #a855f7;
+        }
+        
+        body.light-theme .extra-item {
+            color: #4b5563;
+        }
+        
+        body.light-theme .extra-item .label {
+            color: #9ca3af;
+        }
+        
+        body.light-theme .extra-item .value {
+            color: #1f2937;
+        }
+        
+        body.light-theme .observation-note {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #4b5563;
+        }
+        
+        body.light-theme .search-wrapper input {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            color: #1f2937;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        body.light-theme .search-wrapper input:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 4px rgba(168,85,247,0.1);
+        }
+        
+        body.light-theme .search-wrapper input::placeholder {
+            color: #9ca3af;
+        }
+        
+        body.light-theme .search-wrapper i {
+            color: #9ca3af;
+        }
+        
+        body.light-theme .no-results {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        
+        body.light-theme .no-results h3 {
+            color: #4b5563;
+        }
+        
+        body.light-theme .fullscreen-indicator {
+            background: rgba(168,85,247,0.1);
+            border: 1px solid #a855f7;
+            color: #1f2937;
+            backdrop-filter: blur(5px);
+        }
+        
+        body.light-theme .whatsapp-float {
+            border: 2px solid #ffffff;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.2);
+        }
+        
+        body.light-theme .price-tag {
+            background: #a855f7;
+            border: 2px solid #ffffff;
+            color: #fff;
+        }
+        
+        body.light-theme .fipe-value {
+            color: #a855f7;
+        }
+        
+        body.light-theme .fipe-above {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        
+        body.light-theme .fipe-below {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        
+        body.light-theme .fipe-equal {
+            background: rgba(168, 85, 247, 0.1);
+            color: #a855f7;
+        }
+        
+        body.light-theme #resultadoBusca {
+            color: #6b7280;
+        }
+        
+        body.light-theme h2 {
+            color: #1f2937;
+        }
+        
+        body.light-theme p.text-gray-500 {
+            color: #6b7280 !important;
+        }
+        
+        body.light-theme .loading {
+            color: #6b7280;
+        }
+        
+        body.light-theme .menu-overlay {
+            background: rgba(255,255,255,0.8);
+        }
+
+        /* Estilos comuns */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -29,9 +322,17 @@
             background: #1a1a1a;
         }
         
+        body.light-theme ::-webkit-scrollbar-track {
+            background: #e5e7eb;
+        }
+        
         ::-webkit-scrollbar-thumb {
             background: #333;
             border-radius: 3px;
+        }
+        
+        body.light-theme ::-webkit-scrollbar-thumb {
+            background: #9ca3af;
         }
         
         ::-webkit-scrollbar-thumb:hover {
@@ -40,20 +341,14 @@
         
         /* HEADER COM GRADIENTE */
         .header-gradient {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-            border-bottom: 1px solid #a855f7;
             position: sticky;
             top: 0;
             z-index: 50;
             backdrop-filter: blur(10px);
-            background: rgba(10, 10, 10, 0.95);
         }
         
         /* BOTÃO VOLTAR (apenas desktop) */
         .back-to-home {
-            background: #111;
-            border: 1px solid #333;
-            color: #888;
             width: 40px;
             height: 40px;
             border-radius: 40px;
@@ -65,19 +360,9 @@
             font-size: 18px;
             margin-right: 10px;
         }
-        
-        .back-to-home:hover {
-            background: #a855f7;
-            color: #fff;
-            border-color: #a855f7;
-            transform: scale(1.1);
-        }
 
         /* BOTÃO HAMBURGER */
         .hamburger-btn {
-            background: #111;
-            border: 1px solid #333;
-            color: #888;
             width: 45px;
             height: 45px;
             border-radius: 45px;
@@ -88,12 +373,19 @@
             transition: all 0.3s;
             font-size: 20px;
         }
-        
-        .hamburger-btn:hover {
-            background: #a855f7;
-            color: #fff;
-            border-color: #a855f7;
-            transform: scale(1.1);
+
+        /* BOTÃO DE TEMA */
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            margin-right: 5px;
         }
 
         /* MENU MOBILE */
@@ -103,8 +395,6 @@
             right: -100%;
             width: 280px;
             height: 100vh;
-            background: #111;
-            border-left: 1px solid #333;
             z-index: 100;
             transition: right 0.3s ease;
             padding: 20px;
@@ -122,7 +412,6 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
             z-index: 90;
             display: none;
         }
@@ -140,6 +429,10 @@
             border-bottom: 1px solid #333;
         }
         
+        body.light-theme .menu-header {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
         .menu-header h3 {
             color: #a855f7;
             font-size: 18px;
@@ -147,9 +440,6 @@
         }
         
         .menu-close {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #888;
             width: 36px;
             height: 36px;
             border-radius: 36px;
@@ -160,19 +450,12 @@
             transition: all 0.2s;
         }
         
-        .menu-close:hover {
-            background: #ef4444;
-            color: #fff;
-            border-color: #ef4444;
-        }
-        
         .menu-item {
             display: flex;
             align-items: center;
             gap: 15px;
             padding: 15px;
             border-radius: 12px;
-            color: #e0e0e0;
             transition: all 0.2s;
             cursor: pointer;
             margin-bottom: 5px;
@@ -180,7 +463,6 @@
         }
         
         .menu-item:hover {
-            background: #1a1a1a;
             transform: translateX(-5px);
         }
         
@@ -200,14 +482,11 @@
         
         .menu-divider {
             height: 1px;
-            background: #333;
             margin: 20px 0;
         }
         
         /* CARDS ESTILIZADOS */
         .vehicle-card {
-            background: #111;
-            border: 1px solid #222;
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s;
@@ -218,8 +497,6 @@
         
         .vehicle-card:hover {
             transform: translateY(-5px);
-            border-color: #a855f7;
-            box-shadow: 0 15px 30px -10px rgba(168, 85, 247, 0.3);
         }
         
         .vehicle-image {
@@ -229,6 +506,10 @@
             border-bottom: 1px solid #222;
             transition: all 0.3s;
             cursor: pointer;
+        }
+        
+        body.light-theme .vehicle-image {
+            border-bottom: 1px solid #e5e7eb;
         }
         
         .vehicle-card:hover .vehicle-image {
@@ -244,15 +525,11 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: #a855f7;
-            color: #fff;
             padding: 8px 16px;
             border-radius: 30px;
             font-weight: bold;
             font-size: 18px;
-            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
             z-index: 10;
-            border: 2px solid #fff;
         }
         
         .status-badge {
@@ -284,12 +561,10 @@
         .vehicle-title {
             font-size: 20px;
             font-weight: bold;
-            color: #fff;
             margin-bottom: 5px;
         }
         
         .vehicle-subtitle {
-            color: #888;
             font-size: 14px;
             margin-bottom: 15px;
             display: flex;
@@ -314,11 +589,15 @@
             border-bottom: 1px dashed #222;
         }
         
+        body.light-theme .vehicle-details {
+            border-top: 1px dashed #e5e7eb;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        
         .detail-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #aaa;
             font-size: 13px;
         }
         
@@ -330,11 +609,9 @@
         
         /* NOVOS CAMPOS */
         .extra-info {
-            background: #0a0a0a;
             border-radius: 8px;
             padding: 12px;
             margin: 10px 0;
-            border-left: 3px solid #a855f7;
         }
         
         .extra-item {
@@ -343,7 +620,6 @@
             gap: 8px;
             font-size: 13px;
             margin-bottom: 6px;
-            color: #ccc;
         }
         
         .extra-item i {
@@ -352,18 +628,7 @@
         }
         
         .extra-item .label {
-            color: #666;
             width: 80px;
-        }
-        
-        .extra-item .value {
-            color: #fff;
-            font-weight: 500;
-        }
-        
-        .fipe-value {
-            color: #a855f7;
-            font-weight: bold;
         }
         
         .fipe-comparison {
@@ -374,29 +639,11 @@
             border-radius: 12px;
         }
         
-        .fipe-above {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-        }
-        
-        .fipe-below {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-        }
-        
-        .fipe-equal {
-            background: rgba(168, 85, 247, 0.2);
-            color: #a855f7;
-        }
-        
         .observation-note {
-            background: #0a0a0a;
-            border: 1px solid #222;
             border-radius: 8px;
             padding: 10px;
             margin-top: 10px;
             font-size: 12px;
-            color: #aaa;
             display: flex;
             align-items: start;
             gap: 8px;
@@ -441,29 +688,15 @@
             left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #6b7280;
             font-size: 18px;
         }
         
         .search-wrapper input {
             width: 100%;
             padding: 15px 20px 15px 50px;
-            background: #111;
-            border: 2px solid #222;
             border-radius: 50px;
-            color: #fff;
             font-size: 16px;
             transition: all 0.3s;
-        }
-        
-        .search-wrapper input:focus {
-            outline: none;
-            border-color: #a855f7;
-            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
-        }
-        
-        .search-wrapper input::placeholder {
-            color: #4b5563;
         }
         
         .whatsapp-float {
@@ -479,11 +712,9 @@
             justify-content: center;
             color: #fff;
             font-size: 30px;
-            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
             cursor: pointer;
             transition: all 0.3s;
             z-index: 100;
-            border: 2px solid #fff;
         }
         
         .whatsapp-float:hover {
@@ -495,15 +726,17 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px 20px;
-            background: #111;
             border-radius: 16px;
-            border: 1px solid #222;
         }
         
         .no-results i {
             font-size: 60px;
             color: #333;
             margin-bottom: 20px;
+        }
+        
+        body.light-theme .no-results i {
+            color: #9ca3af;
         }
         
         .loading {
@@ -529,9 +762,6 @@
 
         /* ESTILO DO BOTÃO DE TELA CHEIA */
         .fullscreen-btn {
-            background: #111;
-            border: 1px solid #333;
-            color: #888;
             width: 40px;
             height: 40px;
             border-radius: 40px;
@@ -542,26 +772,16 @@
             transition: all 0.3s;
             font-size: 18px;
         }
-        
-        .fullscreen-btn:hover {
-            background: #a855f7;
-            color: #fff;
-            border-color: #a855f7;
-            transform: scale(1.1);
-        }
 
         /* ÍCONES SOCIAIS DESKTOP */
         .social-icons {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-left: 15px;
+            margin-left: 5px;
         }
         
         .social-icon {
-            background: #111;
-            border: 1px solid #333;
-            color: #888;
             width: 40px;
             height: 40px;
             border-radius: 40px;
@@ -573,37 +793,12 @@
             font-size: 18px;
             text-decoration: none;
         }
-        
-        .social-icon:hover {
-            transform: scale(1.1);
-        }
-        
-        .social-icon.instagram:hover {
-            background: #E4405F;
-            color: #fff;
-            border-color: #E4405F;
-        }
-        
-        .social-icon.whatsapp:hover {
-            background: #25D366;
-            color: #fff;
-            border-color: #25D366;
-        }
-        
-        .social-icon.exit:hover {
-            background: #ef4444;
-            color: #fff;
-            border-color: #ef4444;
-        }
 
         /* INDICADOR DE TELA CHEIA */
         .fullscreen-indicator {
             position: fixed;
             bottom: 100px;
             right: 30px;
-            background: rgba(168, 85, 247, 0.2);
-            border: 1px solid #a855f7;
-            color: #fff;
             padding: 8px 15px;
             border-radius: 30px;
             font-size: 12px;
@@ -622,14 +817,13 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         /* ===== RESPONSIVIDADE ===== */
         
         /* Mobile */
         @media (max-width: 768px) {
-            /* Esconder elementos do desktop */
             .back-to-home {
                 display: none !important;
             }
@@ -638,7 +832,10 @@
                 display: none !important;
             }
             
-            /* Header mobile */
+            .theme-toggle {
+                margin-right: 0;
+            }
+            
             .header-gradient .container {
                 padding-left: 15px;
                 padding-right: 15px;
@@ -650,23 +847,19 @@
                 justify-content: space-between;
             }
             
-            /* Logo maior */
             .header-gradient img {
                 height: 50px !important;
             }
             
-            /* Hamburger à direita */
             .hamburger-btn {
                 display: flex !important;
-                margin-left: auto;
+                margin-left: 0;
             }
             
-            /* Esconder texto do título */
             .header-gradient .hidden.md\\:block {
                 display: none !important;
             }
             
-            /* Ajustes no conteúdo */
             .container.px-4.py-8 {
                 padding-left: 12px;
                 padding-right: 12px;
@@ -741,6 +934,12 @@
                 bottom: 20px;
                 right: 20px;
             }
+            
+            .fullscreen-indicator {
+                bottom: 80px;
+                right: 20px;
+                font-size: 10px;
+            }
         }
 
         /* Telas muito pequenas */
@@ -749,7 +948,9 @@
                 height: 45px !important;
             }
             
-            .hamburger-btn {
+            .hamburger-btn,
+            .fullscreen-btn,
+            .theme-toggle {
                 width: 42px;
                 height: 42px;
                 font-size: 18px;
@@ -793,10 +994,14 @@
             .menu-overlay {
                 display: none !important;
             }
+            
+            .theme-toggle {
+                margin-right: 5px;
+            }
         }
     </style>
 </head>
-<body>
+<body class="dark-theme">
     <!-- INDICADOR DE TELA CHEIA -->
     <div class="fullscreen-indicator" id="fullscreenIndicator">
         <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para sair
@@ -851,6 +1056,11 @@
                 
                 <!-- Ações do header -->
                 <div class="header-actions">
+                    <!-- Botão de tema -->
+                    <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Alternar tema">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    
                     <!-- Botão voltar (apenas desktop) -->
                     <div class="back-to-home" onclick="voltarPaginaPrincipal()" title="Página Principal">
                         <i class="fas fa-home"></i>
@@ -917,6 +1127,57 @@
     </div>
 
     <script>
+        // ========== FUNÇÃO DE TEMA ==========
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            // Atualizar título do header para o tema claro/escuro
+            const titleElement = document.querySelector('.header-gradient h1');
+            if (titleElement) {
+                titleElement.style.color = body.classList.contains('light-theme') ? '#1f2937' : '#fff';
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+                icon.classList.add('fa-sun');
+                icon.classList.remove('fa-moon');
+            }
+            
+            // Atualizar título do header
+            const titleElement = document.querySelector('.header-gradient h1');
+            if (titleElement) {
+                titleElement.style.color = savedTheme === 'light' ? '#1f2937' : '#fff';
+            }
+        }
+
         // ========== FUNÇÕES DO MENU MOBILE ==========
         function toggleMenu() {
             document.getElementById('mobileMenu').classList.toggle('open');
@@ -928,7 +1189,6 @@
             document.getElementById('menuOverlay').classList.remove('active');
         }
 
-        // Fechar menu ao redimensionar para desktop
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 document.getElementById('mobileMenu').classList.remove('open');
@@ -973,12 +1233,14 @@
 
         // ========== FUNÇÃO SAIR ==========
         function sair() {
+            const isLightTheme = document.body.classList.contains('light-theme');
+            
             Swal.fire({
                 title: 'Deseja sair?',
                 text: 'Você será redirecionado para a página de login',
                 icon: 'question',
-                background: '#1a1a1a',
-                color: '#fff',
+                background: isLightTheme ? '#ffffff' : '#1a1a1a',
+                color: isLightTheme ? '#1f2937' : '#fff',
                 showCancelButton: true,
                 confirmButtonColor: '#a855f7',
                 cancelButtonColor: '#6b7280',
@@ -998,8 +1260,8 @@
                     icon: 'info',
                     title: 'Sem fotos',
                     text: 'Este veículo não possui fotos cadastradas.',
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                     confirmButtonColor: '#a855f7'
                 });
                 return;
@@ -1013,23 +1275,19 @@
                     imageUrl: foto,
                     imageAlt: titulo,
                     title: `${index + 1}/${fotos.length}`,
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                     showConfirmButton: false,
                     showCloseButton: true,
-                    showCancelButton: false,
-                    showDenyButton: false,
                     width: '90%',
                     customClass: {
                         image: 'max-h-[80vh] object-contain',
-                        closeButton: 'text-gray-400 hover:text-white focus:outline-none'
+                        closeButton: document.body.classList.contains('light-theme') ? 'text-gray-400 hover:text-gray-600' : 'text-gray-400 hover:text-white'
                     },
                     didOpen: () => {
-                        // Adicionar setas de navegação com JavaScript puro
                         const container = document.querySelector('.swal2-popup');
                         if (!container) return;
                         
-                        // Criar seta esquerda
                         const leftArrow = document.createElement('div');
                         leftArrow.innerHTML = '◀';
                         leftArrow.style.cssText = `
@@ -1038,21 +1296,20 @@
                             top: 50%;
                             transform: translateY(-50%);
                             font-size: 40px;
-                            color: rgba(255,255,255,0.5);
+                            color: ${document.body.classList.contains('light-theme') ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)'};
                             cursor: pointer;
                             z-index: 1000;
                             transition: color 0.2s;
                             user-select: none;
                         `;
                         leftArrow.onmouseover = () => leftArrow.style.color = '#a855f7';
-                        leftArrow.onmouseout = () => leftArrow.style.color = 'rgba(255,255,255,0.5)';
+                        leftArrow.onmouseout = () => leftArrow.style.color = document.body.classList.contains('light-theme') ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)';
                         leftArrow.onclick = () => {
                             currentIndex = (currentIndex - 1 + fotos.length) % fotos.length;
                             Swal.close();
                             showImage(currentIndex);
                         };
                         
-                        // Criar seta direita
                         const rightArrow = document.createElement('div');
                         rightArrow.innerHTML = '▶';
                         rightArrow.style.cssText = `
@@ -1061,25 +1318,23 @@
                             top: 50%;
                             transform: translateY(-50%);
                             font-size: 40px;
-                            color: rgba(255,255,255,0.5);
+                            color: ${document.body.classList.contains('light-theme') ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)'};
                             cursor: pointer;
                             z-index: 1000;
                             transition: color 0.2s;
                             user-select: none;
                         `;
                         rightArrow.onmouseover = () => rightArrow.style.color = '#a855f7';
-                        rightArrow.onmouseout = () => rightArrow.style.color = 'rgba(255,255,255,0.5)';
+                        rightArrow.onmouseout = () => rightArrow.style.color = document.body.classList.contains('light-theme') ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)';
                         rightArrow.onclick = () => {
                             currentIndex = (currentIndex + 1) % fotos.length;
                             Swal.close();
                             showImage(currentIndex);
                         };
                         
-                        // Adicionar setas ao container
                         container.appendChild(leftArrow);
                         container.appendChild(rightArrow);
                         
-                        // Suporte a teclas do teclado
                         const keyHandler = (e) => {
                             if (e.key === 'ArrowLeft') {
                                 e.preventDefault();
@@ -1098,7 +1353,6 @@
                         
                         document.addEventListener('keydown', keyHandler);
                         
-                        // Remover event listener quando fechar
                         const originalClose = Swal.close;
                         Swal.close = function() {
                             document.removeEventListener('keydown', keyHandler);
@@ -1126,6 +1380,7 @@
                 }
             }
             renderizarVeiculos(todosVeiculos);
+            document.getElementById('resultadoBusca').innerHTML = `${todosVeiculos.length} veículo(s) disponível(eis)`;
         }
         
         // Formatar moeda
@@ -1281,6 +1536,7 @@
         
         // Inicializar
         window.onload = function() {
+            loadTheme();
             carregarVeiculos();
             window.addEventListener('storage', function(e) {
                 if (e.key === 'gmRepasses') {

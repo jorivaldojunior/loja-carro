@@ -10,23 +10,208 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { background: #0b0b0b; }
-        .purple-accent { color: #a855f7; }
-        .card { background: #111; border: 1px solid #2a2a2a; border-radius: 12px; }
-        .card:hover { border-color: #9333ea; transition: 0.3s; }
-        .sidebar-item:hover { background: #151515; }
-        .sidebar-item i { width: 20px; text-align: center; }
-        .investimento-card, .lucro-card { cursor: pointer; transition: all 0.3s; }
-        .investimento-card:hover { border-color: #10b981; }
-        .lucro-card:hover { border-color: #f59e0b; }
-        .eye-icon { cursor: pointer; opacity: 0.7; }
-        .eye-icon:hover { opacity: 1; }
+        /* Tema escuro (padrão) */
+        body.dark-theme { 
+            background: #0b0b0b; 
+            color: #e5e7eb;
+        }
         
-        /* ESTILO DO BOTÃO DE TELA CHEIA */
-        .fullscreen-btn {
+        body.dark-theme .card { 
+            background: #111; 
+            border: 1px solid #2a2a2a; 
+        }
+        
+        body.dark-theme .card:hover { 
+            border-color: #9333ea; 
+        }
+        
+        body.dark-theme .sidebar { 
+            background: black; 
+            border-color: #1f1f1f; 
+        }
+        
+        body.dark-theme .sidebar-item:hover { 
+            background: #151515; 
+        }
+        
+        body.dark-theme input, 
+        body.dark-theme select { 
+            background: black; 
+            border-color: #2a2a2a; 
+            color: white; 
+        }
+        
+        body.dark-theme .fullscreen-btn,
+        body.dark-theme .hamburger-btn { 
+            background: #111; 
+            border-color: #2a2a2a; 
+            color: #888; 
+        }
+        
+        body.dark-theme .fullscreen-btn:hover,
+        body.dark-theme .hamburger-btn:hover { 
+            border-color: #a855f7; 
+            color: #a855f7; 
+        }
+
+        /* Tema claro */
+        body.light-theme { 
+            background: #f3f4f6; 
+            color: #1f2937;
+        }
+        
+        body.light-theme .card { 
+            background: #ffffff; 
+            border: 1px solid #e5e7eb; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        body.light-theme .card:hover { 
+            border-color: #a855f7; 
+            box-shadow: 0 4px 12px rgba(168,85,247,0.1);
+        }
+        
+        body.light-theme .sidebar { 
+            background: white; 
+            border-color: #e5e7eb; 
+        }
+        
+        body.light-theme .sidebar-item:hover { 
+            background: #f9fafb; 
+        }
+        
+        body.light-theme input, 
+        body.light-theme select { 
+            background: white; 
+            border-color: #e5e7eb; 
+            color: #1f2937; 
+        }
+        
+        body.light-theme input:focus { 
+            border-color: #a855f7 !important; 
+            box-shadow: 0 0 0 3px rgba(168,85,247,0.1); 
+        }
+        
+        body.light-theme .fullscreen-btn,
+        body.light-theme .hamburger-btn { 
+            background: white; 
+            border-color: #e5e7eb; 
+            color: #6b7280; 
+        }
+        
+        body.light-theme .fullscreen-btn:hover,
+        body.light-theme .hamburger-btn:hover { 
+            border-color: #a855f7; 
+            color: #a855f7; 
+            background: white; 
+        }
+        
+        body.light-theme .text-gray-300 { 
+            color: #4b5563 !important; 
+        }
+        
+        body.light-theme .text-gray-400 { 
+            color: #6b7280 !important; 
+        }
+        
+        body.light-theme .text-gray-500 { 
+            color: #9ca3af !important; 
+        }
+        
+        body.light-theme .border-gray-800 { 
+            border-color: #e5e7eb !important; 
+        }
+        
+        body.light-theme .bg-gray-700 { 
+            background: #e5e7eb !important; 
+        }
+        
+        body.light-theme #modalInvestimento .bg-gray-900,
+        body.light-theme #modalSenha .bg-gray-900 { 
+            background: white; 
+            border-color: #e5e7eb; 
+        }
+        
+        body.light-theme #modalInvestimento p,
+        body.light-theme #modalSenha p { 
+            color: #6b7280 !important; 
+        }
+        
+        body.light-theme .fullscreen-indicator { 
+            background: rgba(168,85,247,0.1); 
+            border-color: #a855f7; 
+            color: #1f2937; 
+        }
+
+        /* Estilos comuns */
+        .purple-accent { 
+            color: #a855f7; 
+        }
+        
+        .card { 
+            border-radius: 12px; 
+            transition: all 0.3s;
+        }
+        
+        .sidebar-item i { 
+            width: 20px; 
+            text-align: center; 
+        }
+        
+        .investimento-card, .lucro-card { 
+            cursor: pointer; 
+            transition: all 0.3s; 
+        }
+        
+        .investimento-card:hover { 
+            border-color: #10b981; 
+        }
+        
+        .lucro-card:hover { 
+            border-color: #f59e0b; 
+        }
+        
+        .eye-icon { 
+            cursor: pointer; 
+            opacity: 0.7; 
+        }
+        
+        .eye-icon:hover { 
+            opacity: 1; 
+        }
+        
+        /* Botão de tema */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 80px;
+            z-index: 1000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             background: #111;
             border: 1px solid #2a2a2a;
             color: #888;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        body.light-theme .theme-toggle {
+            background: white;
+            border-color: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .theme-toggle:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+            transform: scale(1.1);
+        }
+        
+        .fullscreen-btn {
             transition: all 0.3s;
             cursor: pointer;
             display: flex;
@@ -37,24 +222,16 @@
             font-size: 14px;
         }
 
-        .fullscreen-btn:hover {
-            border-color: #a855f7;
-            color: #a855f7;
-            transform: translateY(-1px);
-        }
-
         .fullscreen-btn i {
             font-size: 16px;
         }
 
-        /* INDICADOR DE TELA CHEIA */
         .fullscreen-indicator {
             position: fixed;
             bottom: 20px;
             right: 20px;
             background: rgba(168, 85, 247, 0.2);
             border: 1px solid #a855f7;
-            color: #fff;
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 11px;
@@ -68,19 +245,22 @@
             opacity: 1;
         }
         
-        /* Melhorias no gráfico */
         canvas {
             max-height: 200px;
             width: 100% !important;
         }
         
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 40px;
             background: #111;
             border-radius: 12px;
             border: 1px solid #2a2a2a;
+        }
+
+        body.light-theme .empty-state {
+            background: white;
+            border-color: #e5e7eb;
         }
         
         .empty-state i {
@@ -100,9 +280,7 @@
             font-size: 0.9rem;
         }
 
-        /* ===== RESPONSIVIDADE ===== */
-        
-        /* Mobile: esconder sidebar e mostrar menu hamburger */
+        /* Responsividade */
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
@@ -112,8 +290,10 @@
                 height: 100vh;
                 z-index: 100;
                 transition: left 0.3s ease;
-                background: black;
             }
+            
+            body.dark-theme .sidebar { background: black; }
+            body.light-theme .sidebar { background: white; }
             
             .sidebar.open {
                 left: 0;
@@ -124,9 +304,8 @@
                 padding: 16px;
             }
             
-            /* Ajuste para o título não ficar atrás do menu */
             .page-header h1 {
-                margin-right: 50px;
+                margin-right: 100px;
             }
             
             .menu-overlay {
@@ -140,26 +319,22 @@
                 z-index: 90;
             }
             
+            body.light-theme .menu-overlay {
+                background: rgba(255,255,255,0.8);
+            }
+            
             .menu-overlay.active {
                 display: block;
             }
             
             .hamburger-btn {
                 display: flex !important;
-                background: #111;
-                border: 1px solid #2a2a2a;
-                color: #888;
                 width: 40px;
                 height: 40px;
                 border-radius: 8px;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-            }
-            
-            .hamburger-btn:hover {
-                border-color: #a855f7;
-                color: #a855f7;
             }
             
             .page-header {
@@ -187,9 +362,13 @@
             .resumo-cards {
                 grid-template-columns: 1fr !important;
             }
+
+            .theme-toggle {
+                top: 20px;
+                right: 70px;
+            }
         }
 
-        /* Tablet */
         @media (min-width: 769px) and (max-width: 1024px) {
             .main-content {
                 padding: 24px;
@@ -208,7 +387,6 @@
             }
         }
 
-        /* Desktop: manter original */
         @media (min-width: 1025px) {
             .hamburger-btn {
                 display: none;
@@ -219,7 +397,6 @@
             }
         }
 
-        /* Modal responsivo */
         @media (max-width: 480px) {
             #modalInvestimento .bg-gray-900,
             #modalSenha .bg-gray-900 {
@@ -227,10 +404,7 @@
                 margin: 0 16px;
                 padding: 20px;
             }
-        }
-
-        /* Ajustes para os cards em mobile */
-        @media (max-width: 480px) {
+            
             .card.p-6 {
                 padding: 16px;
             }
@@ -255,7 +429,12 @@
     </style>
 </head>
 
-<body class="text-gray-200">
+<body class="dark-theme text-gray-200">
+    <!-- BOTÃO DE TEMA -->
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+        <i class="fas fa-sun"></i>
+    </button>
+
     <!-- INDICADOR DE TELA CHEIA -->
     <div class="fullscreen-indicator" id="fullscreenIndicator">
         <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para sair
@@ -273,7 +452,7 @@
 
     <div class="flex h-screen">
         <!-- SIDEBAR -->
-        <div class="sidebar w-64 bg-black border-r border-gray-800 flex flex-col" id="sidebar">
+        <div class="sidebar w-64 border-r border-gray-800 flex flex-col" id="sidebar">
             <!-- Botão fechar para mobile -->
             <div class="p-4 flex justify-end md:hidden">
                 <button onclick="fecharMenu()" class="text-gray-400 hover:text-white">
@@ -282,7 +461,7 @@
             </div>
             
             <div class="p-6 border-b border-gray-800 flex flex-col items-center">
-                <img src="./image/LOGO.jpg" class="w-40 mb-3" alt="GM Repasses" onerror="this.src='https://via.placeholder.com/160x80/1a1a1a/ffffff?text=GM+Repasses'">
+                <img src="./image/log_3d.png" class="w-40 mb-3" alt="GM Repasses" onerror="this.src='https://via.placeholder.com/160x80/1a1a1a/ffffff?text=GM+Repasses'">
                 <p class="text-xs text-gray-500">Sistema Administrativo</p>
             </div>
 
@@ -328,10 +507,6 @@
             <div id="dashboard">
                 <div class="page-header flex justify-between items-center mb-6 md:mb-8">
                     <h1 class="text-2xl md:text-3xl font-bold purple-accent">Dashboard</h1>
-                    <button onclick="ativarTelaCheia()" class="fullscreen-btn">
-                        <i class="fas fa-expand"></i>
-                        <span class="hidden md:inline">Tela Cheia</span>
-                    </button>
                 </div>
 
                 <!-- CARDS PRINCIPAIS -->
@@ -492,6 +667,45 @@
         let lucroVisivel = true;
         const SENHA_ADMIN = "1234";
 
+        // ========== FUNÇÃO DE TEMA ==========
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+                icon.classList.add('fa-sun');
+                icon.classList.remove('fa-moon');
+            }
+        }
+
         // ========== FUNÇÕES DO MENU MOBILE ==========
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
@@ -503,7 +717,6 @@
             document.getElementById('menuOverlay').classList.remove('active');
         }
 
-        // Fechar menu ao redimensionar para desktop
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 document.getElementById('sidebar').classList.remove('open');
@@ -601,9 +814,6 @@
                 }
             }
             
-            // IMPORTANTE: NÃO adicionar dados de exemplo
-            // Se não há dados, cars continua como array vazio []
-            
             atualizarDashboard();
         }
 
@@ -639,8 +849,8 @@
                     icon: 'error',
                     title: 'Acesso Negado',
                     text: 'Senha incorreta!',
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                     confirmButtonColor: '#a855f7'
                 });
             }
@@ -666,8 +876,8 @@
                     icon: 'error', 
                     title: 'Erro', 
                     text: 'Digite um valor válido!', 
-                    background: '#1a1a1a', 
-                    color: '#fff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                     confirmButtonColor: '#a855f7'
                 });
                 return;
@@ -681,8 +891,8 @@
                 icon: 'success',
                 title: 'Investimento atualizado!',
                 text: `Novo investimento: ${formatarMoedaBrasileira(investimento)}`,
-                background: '#1a1a1a',
-                color: '#fff',
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                 timer: 2000,
                 showConfirmButton: false
             });
@@ -726,7 +936,7 @@
             Swal.fire({
                 title: 'Análise de Lucro/Prejuízo',
                 html: `
-                    <div style="text-align: left; color: #fff;">
+                    <div style="text-align: left; color: ${document.body.classList.contains('light-theme') ? '#1f2937' : '#fff'};">
                         <p style="color: ${cor}; font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 20px;">
                             ${status}
                         </p>
@@ -734,7 +944,7 @@
                         <p><span class="text-gray-400">Lucro realizado:</span> <strong>${formatarMoedaBrasileira(ind.lucroRealizado)}</strong></p>
                         <p><span class="text-gray-400">Lucro potencial (estoque):</span> <strong>${formatarMoedaBrasileira(ind.lucroPotencial)}</strong></p>
                         <p><span class="text-gray-400">Valor em estoque:</span> <strong>${formatarMoedaBrasileira(ind.valorEstoque)}</strong></p>
-                        <hr style="border-color: #333; margin: 15px 0;">
+                        <hr style="border-color: ${document.body.classList.contains('light-theme') ? '#e5e7eb' : '#333'}; margin: 15px 0;">
                         <p><span class="text-gray-400">Saldo atual:</span> <strong style="color: ${cor};">${formatarMoedaBrasileira(ind.saldo)}</strong></p>
                         <p class="text-sm text-gray-400 mt-4">
                             ${ind.saldo >= 0 
@@ -748,7 +958,7 @@
                         </p>
                     </div>
                 `,
-                background: '#1a1a1a',
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
                 confirmButtonColor: '#a855f7',
                 confirmButtonText: 'Entendi'
             });
@@ -837,7 +1047,6 @@
             }
             
             if (window.salesChart) {
-                // Zera os dados de vendas mensais
                 window.salesChart.data.datasets[0].data = [0, 0, 0, 0, 0, 0];
                 window.salesChart.update();
             }
@@ -848,8 +1057,8 @@
                 title: 'Deseja sair?',
                 text: 'Você será redirecionado para a página de login',
                 icon: 'question',
-                background: '#1a1a1a',
-                color: '#fff',
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                 showCancelButton: true,
                 confirmButtonColor: '#a855f7',
                 cancelButtonColor: '#6b7280',
@@ -864,7 +1073,6 @@
 
         // ========== INICIALIZAÇÃO ==========
         window.onload = function() {
-            // Inicializar gráfico de vendas
             const ctx1 = document.getElementById("salesChart").getContext('2d');
             window.salesChart = new Chart(ctx1, {
                 type: "line",
@@ -888,23 +1096,22 @@
                     responsive: true,
                     plugins: { 
                         legend: { 
-                            labels: { color: "#9ca3af" } 
+                            labels: { color: document.body.classList.contains('light-theme') ? '#4b5563' : '#9ca3af' } 
                         } 
                     },
                     scales: {
                         y: {
-                            grid: { color: "#2a2a2a" },
-                            ticks: { color: "#9ca3af" }
+                            grid: { color: document.body.classList.contains('light-theme') ? '#e5e7eb' : '#2a2a2a' },
+                            ticks: { color: document.body.classList.contains('light-theme') ? '#4b5563' : '#9ca3af' }
                         },
                         x: {
-                            grid: { color: "#2a2a2a" },
-                            ticks: { color: "#9ca3af" }
+                            grid: { color: document.body.classList.contains('light-theme') ? '#e5e7eb' : '#2a2a2a' },
+                            ticks: { color: document.body.classList.contains('light-theme') ? '#4b5563' : '#9ca3af' }
                         }
                     }
                 }
             });
 
-            // Inicializar gráfico de status
             const ctx2 = document.getElementById("statusChart").getContext('2d');
             window.statusChart = new Chart(ctx2, {
                 type: "doughnut",
@@ -913,7 +1120,7 @@
                     datasets: [{
                         data: [0,0,0],
                         backgroundColor: ["#10b981", "#ef4444", "#a855f7"],
-                        borderColor: "#111",
+                        borderColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#111',
                         borderWidth: 2,
                         hoverOffset: 4
                     }]
@@ -925,12 +1132,13 @@
                     plugins: {
                         legend: { 
                             position: "bottom", 
-                            labels: { color: "#9ca3af", font: { size: 12 } } 
+                            labels: { color: document.body.classList.contains('light-theme') ? '#4b5563' : '#9ca3af', font: { size: 12 } } 
                         }
                     }
                 }
             });
             
+            loadTheme();
             carregarDados();
         };
     </script>

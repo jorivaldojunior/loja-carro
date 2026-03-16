@@ -9,12 +9,209 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { background: #0b0b0b; font-family: system-ui, -apple-system, sans-serif; }
+        /* Tema escuro (padrão) */
+        body.dark-theme {
+            background: #0b0b0b;
+            color: #e5e7eb;
+        }
+        
+        body.dark-theme .card { 
+            background: #111; 
+            border: 1px solid #2a2a2a; 
+        }
+        
+        body.dark-theme .btn-icon {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #888;
+        }
+        
+        body.dark-theme .btn-icon:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+        }
+        
+        body.dark-theme .btn-icon.danger:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        body.dark-theme .btn-icon.success:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        
+        body.dark-theme .info-item {
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+        }
+        
+        body.dark-theme .info-value {
+            color: white;
+        }
+        
+        body.dark-theme .edit-field {
+            background: #1a1a1a;
+            border: 1px solid #a855f7;
+            color: white;
+        }
+        
+        body.dark-theme .valor-card {
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+        }
+        
+        body.dark-theme .fipe-card {
+            background: #0a0a0a;
+            border: 1px solid #a855f7;
+        }
+        
+        body.dark-theme .bg-black\/50 {
+            background: rgba(0,0,0,0.5);
+            border-color: #2a2a2a;
+        }
+        
+        body.dark-theme .text-gray-300 {
+            color: #d1d5db;
+        }
+        
+        body.dark-theme .gallery-main {
+            background: #000;
+        }
+        
+        body.dark-theme .gallery-nav {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #333;
+            color: white;
+        }
+        
+        body.dark-theme .gallery-nav:hover {
+            background: #a855f7;
+            border-color: #a855f7;
+        }
+
+        /* Tema claro */
+        body.light-theme {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        body.light-theme .card { 
+            background: #ffffff; 
+            border: 1px solid #e5e7eb; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        body.light-theme .btn-icon {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        body.light-theme .btn-icon:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+            box-shadow: 0 4px 8px rgba(168,85,247,0.1);
+        }
+        
+        body.light-theme .btn-icon.danger:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        body.light-theme .btn-icon.success:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        
+        body.light-theme .info-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        
+        body.light-theme .info-label {
+            color: #6b7280;
+        }
+        
+        body.light-theme .info-label i {
+            color: #a855f7;
+        }
+        
+        body.light-theme .info-value {
+            color: #1f2937;
+        }
+        
+        body.light-theme .edit-field {
+            background: #ffffff;
+            border: 1px solid #a855f7;
+            color: #1f2937;
+            box-shadow: 0 0 0 1px rgba(168,85,247,0.2);
+        }
+        
+        body.light-theme .edit-field:focus {
+            box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
+        }
+        
+        body.light-theme .valor-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        
+        body.light-theme .fipe-card {
+            background: #ffffff;
+            border: 1px solid #a855f7;
+        }
+        
+        body.light-theme .bg-black\/50 {
+            background: rgba(255,255,255,0.7);
+            border-color: #e5e7eb;
+            backdrop-filter: blur(4px);
+        }
+        
+        body.light-theme .text-gray-300 {
+            color: #4b5563;
+        }
+        
+        body.light-theme .gallery-main {
+            background: #f0f0f0;
+        }
+        
+        body.light-theme .gallery-nav {
+            background: rgba(255,255,255,0.8);
+            border: 1px solid #e5e7eb;
+            color: #4b5563;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        body.light-theme .gallery-nav:hover {
+            background: #a855f7;
+            border-color: #a855f7;
+            color: white;
+        }
+        
+        body.light-theme .bg-black.border-b {
+            background: #ffffff !important;
+            border-color: #e5e7eb !important;
+        }
+        
+        body.light-theme #veiculoTitulo {
+            color: #1f2937;
+        }
+        
+        body.light-theme select.edit-field option {
+            background: white;
+            color: #1f2937;
+        }
+        
+        /* Estilos comuns */
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            transition: background-color 0.3s ease;
+        }
         
         /* Cards simples */
         .card { 
-            background: #111; 
-            border: 1px solid #2a2a2a; 
             border-radius: 12px; 
         }
         
@@ -22,10 +219,7 @@
         .btn-icon {
             width: 36px;
             height: 36px;
-            background: #111;
-            border: 1px solid #2a2a2a;
             border-radius: 8px;
-            color: #888;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -33,19 +227,36 @@
             transition: all 0.2s;
         }
         
-        .btn-icon:hover {
-            border-color: #a855f7;
-            color: #a855f7;
+        /* BOTÃO DE TEMA */
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 4px;
         }
         
-        .btn-icon.danger:hover {
-            border-color: #ef4444;
-            color: #ef4444;
+        body.dark-theme .theme-toggle {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #888;
         }
         
-        .btn-icon.success:hover {
-            border-color: #10b981;
-            color: #10b981;
+        body.light-theme .theme-toggle {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .theme-toggle:hover {
+            border-color: #a855f7 !important;
+            color: #a855f7 !important;
+            transform: scale(1.05);
         }
         
         /* Status badge */
@@ -68,7 +279,6 @@
         .gallery-main {
             width: 100%;
             height: 300px;
-            background: #000;
             border-radius: 12px;
             overflow: hidden;
             position: relative;
@@ -78,7 +288,6 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            background: #0a0a0a;
         }
         
         .gallery-nav {
@@ -87,20 +296,12 @@
             transform: translateY(-50%);
             width: 40px;
             height: 40px;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid #333;
             border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             cursor: pointer;
             transition: all 0.2s;
-        }
-        
-        .gallery-nav:hover {
-            background: #a855f7;
-            border-color: #a855f7;
         }
         
         .gallery-nav.prev { left: 10px; }
@@ -140,15 +341,12 @@
         }
         
         .info-item {
-            background: #0a0a0a;
-            border: 1px solid #2a2a2a;
             border-radius: 8px;
             padding: 8px 10px;
         }
         
         .info-label {
             font-size: 10px;
-            color: #6b7280;
             margin-bottom: 2px;
             display: flex;
             align-items: center;
@@ -163,16 +361,12 @@
         .info-value {
             font-size: 14px;
             font-weight: 600;
-            color: white;
         }
         
         /* Campo editável */
         .edit-field {
-            background: #1a1a1a;
-            border: 1px solid #a855f7;
             border-radius: 4px;
             padding: 4px 6px;
-            color: white;
             font-size: 14px;
             font-weight: 600;
             width: 100%;
@@ -181,17 +375,18 @@
         
         .edit-field:focus {
             border-color: #a855f7;
-            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3);
         }
         
         select.edit-field {
             background: #1a1a1a;
         }
         
+        body.light-theme select.edit-field {
+            background: #ffffff;
+        }
+        
         /* Valores */
         .valor-card {
-            background: #0a0a0a;
-            border: 1px solid #2a2a2a;
             border-radius: 8px;
             padding: 8px;
             text-align: center;
@@ -199,8 +394,6 @@
         
         /* FIPE card */
         .fipe-card {
-            background: #0a0a0a;
-            border: 1px solid #a855f7;
             border-radius: 8px;
             padding: 8px 12px;
         }
@@ -290,7 +483,7 @@
                 font-size: 12px;
             }
             
-            .btn-icon {
+            .btn-icon, .theme-toggle {
                 width: 32px;
                 height: 32px;
             }
@@ -374,7 +567,7 @@
                 font-size: 10px;
             }
             
-            .btn-icon {
+            .btn-icon, .theme-toggle {
                 width: 28px;
                 height: 28px;
             }
@@ -426,7 +619,7 @@
         }
     </style>
 </head>
-<body class="text-gray-200">
+<body class="dark-theme">
 
     <!-- Header minimalista (responsivo) -->
     <div class="bg-black border-b border-gray-800 px-3 sm:px-4 py-2 sticky top-0 z-10">
@@ -439,6 +632,11 @@
             </div>
             
             <div class="flex items-center gap-1 sm:gap-2">
+                <!-- BOTÃO DE TEMA -->
+                <button onclick="toggleTheme()" class="theme-toggle" id="themeToggle" title="Alternar tema">
+                    <i class="fas fa-sun"></i>
+                </button>
+                
                 <button onclick="ativarTelaCheia()" class="btn-icon">
                     <i class="fas fa-expand"></i>
                 </button>
@@ -601,6 +799,45 @@
     </div>
 
     <script>
+        // ========== FUNÇÃO DE TEMA ==========
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+                icon.classList.add('fa-sun');
+                icon.classList.remove('fa-moon');
+            }
+        }
+
         // Variáveis
         let veiculoAtual = null;
         let veiculoId = null;
@@ -677,8 +914,13 @@
         function carregarVeiculo() {
             veiculoId = localStorage.getItem('veiculoId');
             if (!veiculoId) {
-                Swal.fire({ icon: 'error', title: 'Erro', text: 'Nenhum veículo selecionado', background: '#1a1a1a' })
-                    .then(() => voltar());
+                Swal.fire({ 
+                    icon: 'error', 
+                    title: 'Erro', 
+                    text: 'Nenhum veículo selecionado', 
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff'
+                }).then(() => voltar());
                 return;
             }
 
@@ -818,7 +1060,14 @@
             preencherTudo(veiculo);
             
             if (!silencioso) {
-                Swal.fire({ icon: 'success', title: 'Salvo!', timer: 1000, showConfirmButton: false, background: '#1a1a1a' });
+                Swal.fire({ 
+                    icon: 'success', 
+                    title: 'Salvo!', 
+                    timer: 1000, 
+                    showConfirmButton: false, 
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff'
+                });
             }
         }
 
@@ -828,8 +1077,8 @@
                 title: 'Excluir?',
                 text: 'Esta ação não pode ser desfeita',
                 icon: 'warning',
-                background: '#1a1a1a',
-                color: '#fff',
+                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a1a1a',
+                color: document.body.classList.contains('light-theme') ? '#1f2937' : '#fff',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 confirmButtonText: 'Excluir',
@@ -909,6 +1158,7 @@
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
+            loadTheme();
             ajustarLayout();
             carregarVeiculo();
         });
