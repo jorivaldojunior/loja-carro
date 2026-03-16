@@ -280,34 +280,81 @@
             font-size: 0.9rem;
         }
 
-        /* Responsividade */
+        /* ===== RESPONSIVIDADE CORRIGIDA PARA A PÁGINA PRINCIPAL ===== */
+        
+        /* Mobile */
         @media (max-width: 768px) {
+            /* Sidebar - versão tela cheia */
             .sidebar {
                 position: fixed;
                 left: -100%;
                 top: 0;
-                width: 280px;
+                width: 100% !important;
                 height: 100vh;
                 z-index: 100;
                 transition: left 0.3s ease;
+                background: black;
+                overflow-y: auto;
+                padding-bottom: 20px;
             }
             
-            body.dark-theme .sidebar { background: black; }
-            body.light-theme .sidebar { background: white; }
+            body.light-theme .sidebar {
+                background: white;
+            }
             
             .sidebar.open {
                 left: 0;
             }
             
-            .main-content {
-                width: 100%;
+            /* Ajuste do conteúdo da sidebar */
+            .sidebar .p-6 {
                 padding: 16px;
             }
             
-            .page-header h1 {
-                margin-right: 100px;
+            .sidebar .p-4 {
+                padding: 16px;
             }
             
+            .sidebar nav {
+                padding: 8px 16px 30px 16px;
+            }
+            
+            .sidebar-item {
+                padding: 14px 12px;
+                font-size: 16px;
+                margin-bottom: 4px;
+            }
+            
+            /* Botão fechar maior e mais visível */
+            .sidebar .p-4.flex.justify-end {
+                padding: 20px 20px 10px 20px;
+            }
+            
+            .sidebar .p-4.flex.justify-end button {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+                background: #1a1a1a;
+                border: 1px solid #333;
+                border-radius: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            body.light-theme .sidebar .p-4.flex.justify-end button {
+                background: #f3f4f6;
+                border-color: #e5e7eb;
+                color: #6b7280;
+            }
+            
+            .sidebar .p-4.flex.justify-end button:hover {
+                background: #ef4444;
+                color: white;
+                border-color: #ef4444;
+            }
+            
+            /* Overlay mais escuro */
             .menu-overlay {
                 display: none;
                 position: fixed;
@@ -315,60 +362,205 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba(0,0,0,0.8);
+                background: rgba(0, 0, 0, 0.8);
                 z-index: 90;
             }
             
             body.light-theme .menu-overlay {
-                background: rgba(255,255,255,0.8);
+                background: rgba(0, 0, 0, 0.6);
             }
             
             .menu-overlay.active {
                 display: block;
             }
             
-            .hamburger-btn {
-                display: flex !important;
-                width: 40px;
-                height: 40px;
-                border-radius: 8px;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
+            /* Main content */
+            .main-content {
+                width: 100%;
+                padding: 12px;
             }
             
             .page-header {
                 flex-direction: column;
                 align-items: flex-start !important;
                 gap: 12px;
+                margin-bottom: 20px;
             }
             
             .page-header h1 {
-                font-size: 24px;
+                font-size: 22px;
+                margin-right: 50px;
             }
             
+            /* Botão hamburger */
+            .hamburger-btn {
+                display: flex !important;
+                background: #111;
+                border: 1px solid #2a2a2a;
+                color: #888;
+                width: 44px;
+                height: 44px;
+                border-radius: 44px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 20px;
+                z-index: 95;
+            }
+            
+            body.light-theme .hamburger-btn {
+                background: white;
+                border-color: #e5e7eb;
+                color: #6b7280;
+            }
+            
+            .hamburger-btn:hover {
+                border-color: #a855f7;
+                color: #a855f7;
+            }
+            
+            /* Ajuste do botão de tema em mobile */
+            .theme-toggle {
+                top: 16px;
+                right: 70px;
+                width: 44px;
+                height: 44px;
+            }
+            
+            /* Grid de cards */
+            .grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px;
+            }
+            
+            .resumo-cards {
+                grid-template-columns: 1fr !important;
+                gap: 10px;
+            }
+            
+            /* Cards */
+            .card.p-4.md\\:p-6 {
+                padding: 12px;
+            }
+            
+            .card h2.text-2xl.md\\:text-3xl {
+                font-size: 20px;
+            }
+            
+            .card p.text-xs.md\\:text-sm {
+                font-size: 11px;
+            }
+            
+            .flex.items-center.gap-3 {
+                flex-direction: row;
+                text-align: left;
+                gap: 10px;
+            }
+            
+            .flex.items-center.gap-3 .w-10.h-10 {
+                width: 36px;
+                height: 36px;
+                margin-bottom: 0;
+            }
+            
+            /* Gráficos */
+            .grid-cols-1.md\\:grid-cols-2 {
+                gap: 12px;
+            }
+            
+            .card.p-4 {
+                padding: 12px;
+            }
+            
+            canvas {
+                max-height: 150px;
+            }
+            
+            /* Modais */
+            #modalInvestimento .bg-gray-900,
+            #modalSenha .bg-gray-900 {
+                width: 90%;
+                margin: 0 16px;
+                padding: 20px;
+            }
+        }
+
+        /* Telas muito pequenas (360x640) */
+        @media (max-width: 380px) {
+            .page-header h1 {
+                font-size: 20px;
+            }
+            
+            .grid-cols-4 {
+                gap: 6px;
+            }
+            
+            .card.p-4.md\\:p-6 {
+                padding: 8px;
+            }
+            
+            .card h2.text-2xl.md\\:text-3xl {
+                font-size: 16px;
+            }
+            
+            .card p.text-xs.md\\:text-sm {
+                font-size: 9px;
+            }
+            
+            .flex.items-center.gap-3 .w-10.h-10 {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .flex.items-center.gap-3 i {
+                font-size: 12px;
+            }
+            
+            .flex.items-center.gap-3 p.text-xs.md\\:text-sm {
+                font-size: 9px;
+            }
+            
+            .flex.items-center.gap-3 p.text-base.md\\:text-lg {
+                font-size: 13px;
+            }
+            
+            /* Sidebar items mais compactos */
+            .sidebar-item {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+            
+            .sidebar-item i {
+                font-size: 16px;
+            }
+            
+            /* Botões de ação */
             .fullscreen-btn span {
                 display: none;
             }
             
             .fullscreen-btn {
-                padding: 8px 12px;
+                padding: 8px 10px;
             }
             
-            .grid-cols-4 {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-            
-            .resumo-cards {
-                grid-template-columns: 1fr !important;
-            }
-
             .theme-toggle {
-                top: 20px;
-                right: 70px;
+                width: 40px;
+                height: 40px;
+                right: 65px;
+            }
+            
+            .hamburger-btn {
+                width: 40px;
+                height: 40px;
             }
         }
 
+        /* Prevenir scroll quando menu está aberto */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Tablet */
         @media (min-width: 769px) and (max-width: 1024px) {
             .main-content {
                 padding: 24px;
@@ -387,6 +579,7 @@
             }
         }
 
+        /* Desktop */
         @media (min-width: 1025px) {
             .hamburger-btn {
                 display: none;
@@ -395,40 +588,13 @@
             .menu-overlay {
                 display: none;
             }
-        }
-
-        @media (max-width: 480px) {
-            #modalInvestimento .bg-gray-900,
-            #modalSenha .bg-gray-900 {
-                width: 90%;
-                margin: 0 16px;
-                padding: 20px;
-            }
             
-            .card.p-6 {
-                padding: 16px;
-            }
-            
-            .card h2.text-3xl {
-                font-size: 24px;
-            }
-            
-            .card p.text-sm {
-                font-size: 11px;
-            }
-            
-            .flex.items-center.gap-3 {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .flex.items-center.gap-3 .w-10.h-10 {
-                margin-bottom: 8px;
+            .sidebar .p-4.flex.justify-end {
+                display: none;
             }
         }
     </style>
 </head>
-
 <body class="dark-theme text-gray-200">
     <!-- BOTÃO DE TEMA -->
     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
@@ -443,7 +609,7 @@
     <!-- OVERLAY PARA MENU MOBILE -->
     <div class="menu-overlay" id="menuOverlay" onclick="fecharMenu()"></div>
 
-    <!-- MENU HAMBURGER (agora alinhado à DIREITA em mobile) -->
+    <!-- MENU HAMBURGER -->
     <div class="fixed top-4 right-4 z-20 md:hidden">
         <button class="hamburger-btn" onclick="toggleMenu()">
             <i class="fas fa-bars text-xl"></i>
@@ -452,16 +618,16 @@
 
     <div class="flex h-screen">
         <!-- SIDEBAR -->
-        <div class="sidebar w-64 border-r border-gray-800 flex flex-col" id="sidebar">
-            <!-- Botão fechar para mobile -->
+        <div class="sidebar w-64 bg-black border-r border-gray-800 flex flex-col" id="sidebar">
+            <!-- Botão fechar para mobile (agora maior e mais visível) -->
             <div class="p-4 flex justify-end md:hidden">
-                <button onclick="fecharMenu()" class="text-gray-400 hover:text-white">
+                <button onclick="fecharMenu()" class="text-gray-400 hover:text-white transition-all" title="Fechar menu">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
             
             <div class="p-6 border-b border-gray-800 flex flex-col items-center">
-                <img src="./image/log_3d.png" class="w-40 mb-3" alt="GM Repasses" onerror="this.src='https://via.placeholder.com/160x80/1a1a1a/ffffff?text=GM+Repasses'">
+                <img src="./image/LOGO.jpg" class="w-40 mb-3" alt="GM Repasses" onerror="this.src='https://via.placeholder.com/160x80/1a1a1a/ffffff?text=GM+Repasses'">
                 <p class="text-xs text-gray-500">Sistema Administrativo</p>
             </div>
 
@@ -507,6 +673,10 @@
             <div id="dashboard">
                 <div class="page-header flex justify-between items-center mb-6 md:mb-8">
                     <h1 class="text-2xl md:text-3xl font-bold purple-accent">Dashboard</h1>
+                    <button onclick="ativarTelaCheia()" class="fullscreen-btn">
+                        <i class="fas fa-expand"></i>
+                        <span class="hidden md:inline">Tela Cheia</span>
+                    </button>
                 </div>
 
                 <!-- CARDS PRINCIPAIS -->
@@ -660,13 +830,6 @@
     </div>
 
     <script>
-        // ========== VARIÁVEIS GLOBAIS ==========
-        let cars = [];
-        let investimento = 0;
-        let investimentoVisivel = true;
-        let lucroVisivel = true;
-        const SENHA_ADMIN = "1234";
-
         // ========== FUNÇÃO DE TEMA ==========
         function toggleTheme() {
             const body = document.body;
@@ -708,19 +871,36 @@
 
         // ========== FUNÇÕES DO MENU MOBILE ==========
         function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('menuOverlay').classList.toggle('active');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('menuOverlay');
+            const body = document.body;
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            // Prevenir scroll quando menu está aberto
+            if (sidebar.classList.contains('open')) {
+                body.classList.add('menu-open');
+            } else {
+                body.classList.remove('menu-open');
+            }
         }
 
         function fecharMenu() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('menuOverlay').classList.remove('active');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('menuOverlay');
+            const body = document.body;
+            
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            body.classList.remove('menu-open');
         }
 
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 document.getElementById('sidebar').classList.remove('open');
                 document.getElementById('menuOverlay').classList.remove('active');
+                document.body.classList.remove('menu-open');
             }
         });
 
@@ -1066,13 +1246,22 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    fecharMenu();
                     window.location.href = "index.html";
                 }
             });
         }
 
+        // ========== VARIÁVEIS GLOBAIS ==========
+        let cars = [];
+        let investimento = 0;
+        let investimentoVisivel = true;
+        let lucroVisivel = true;
+        const SENHA_ADMIN = "1234";
+
         // ========== INICIALIZAÇÃO ==========
         window.onload = function() {
+            // Inicializar gráfico de vendas
             const ctx1 = document.getElementById("salesChart").getContext('2d');
             window.salesChart = new Chart(ctx1, {
                 type: "line",
@@ -1112,6 +1301,7 @@
                 }
             });
 
+            // Inicializar gráfico de status
             const ctx2 = document.getElementById("statusChart").getContext('2d');
             window.statusChart = new Chart(ctx2, {
                 type: "doughnut",
