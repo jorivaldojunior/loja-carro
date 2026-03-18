@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>GM Repasses | Estoque de Veículos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <style>
+        /* ===== VARIÁVEIS GLOBAIS ===== */
+        :root {
+            --purple-primary: #a855f7;
+            --purple-dark: #9333ea;
+            --purple-light: rgba(168, 85, 247, 0.2);
+            --dark-bg: #0a0a0a;
+            --dark-card: #111;
+            --dark-border: #222;
+            --dark-input: #111;
+            --dark-hover: #151515;
+            --light-bg: #f3f4f6;
+            --light-card: #ffffff;
+            --light-border: #e5e7eb;
+            --light-hover: #f9fafb;
+            --text-dark: #1f2937;
+            --text-light: #e0e0e0;
+            --text-gray: #6b7280;
+            --text-gray-light: #9ca3af;
+            --transition: all 0.3s ease;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 8px rgba(168,85,247,0.1);
+            --shadow-lg: 0 8px 16px rgba(168,85,247,0.15);
+        }
+
+        /* ===== RESET E ESTILOS BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+
+        /* ===== TEMA ESCURO (padrão) ===== */
+        body.dark-theme {
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        body.dark-theme .header-gradient {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-bottom: 1px solid var(--purple-primary);
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        body.dark-theme .back-to-home,
+        body.dark-theme .hamburger-btn,
+        body.dark-theme .fullscreen-btn,
+        body.dark-theme .social-icon,
+        body.dark-theme .theme-toggle,
+        body.dark-theme .share-btn,
+        body.dark-theme .close-btn {
+            background: var(--dark-card);
+            border: 1px solid #333;
+            color: #888;
+        }
+
+        body.dark-theme .back-to-home:hover,
+        body.dark-theme .hamburger-btn:hover,
+        body.dark-theme .fullscreen-btn:hover,
+        body.dark-theme .social-icon:hover,
+        body.dark-theme .theme-toggle:hover,
+        body.dark-theme .share-btn:hover,
+        body.dark-theme .close-btn:hover {
+            background: var(--purple-primary);
+            color: #fff;
+            border-color: var(--purple-primary);
+            transform: scale(1.1);
+        }
+
+        body.dark-theme .mobile-menu {
+            background: var(--dark-card);
+            border-left: 1px solid #333;
+        }
+
+        body.dark-theme .vehicle-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+        }
+
+        body.dark-theme .vehicle-card:hover {
+            border-color: var(--purple-primary);
+        }
+
+        body.dark-theme .extra-info {
+            background: var(--dark-bg);
+        }
+
+        body.dark-theme .search-wrapper input {
+            background: var(--dark-card);
+            border: 2px solid var(--dark-border);
+            color: #fff;
+        }
+
+        body.dark-theme .search-wrapper input:focus {
+            border-color: var(--purple-primary);
+        }
+
+        body.dark-theme .no-results {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+        }
+
+        body.dark-theme .fullscreen-indicator {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid var(--purple-primary);
+            color: #fff;
+        }
+
+        body.dark-theme .price-tag {
+            background: var(--purple-primary);
+            border: 2px solid #ffffff;
+            color: #fff;
+        }
+
+        /* ===== TEMA CLARO ===== */
+        body.light-theme {
+            background: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        body.light-theme .header-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+            border-bottom: 1px solid var(--purple-primary);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        body.light-theme .back-to-home,
+        body.light-theme .hamburger-btn,
+        body.light-theme .fullscreen-btn,
+        body.light-theme .social-icon,
+        body.light-theme .theme-toggle,
+        body.light-theme .share-btn,
+        body.light-theme .close-btn {
+            background: var(--light-card);
+            border: 1px solid var(--light-border);
+            color: var(--text-gray);
+            box-shadow: var(--shadow-sm);
+        }
+
+        body.light-theme .back-to-home:hover,
+        body.light-theme .hamburger-btn:hover,
+        body.light-theme .fullscreen-btn:hover,
+        body.light-theme .social-icon:hover,
+        body.light-theme .theme-toggle:hover,
+        body.light-theme .share-btn:hover,
+        body.light-theme .close-btn:hover {
+            background: var(--purple-primary);
+            color: #fff;
+            border-color: var(--purple-primary);
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        body.light-theme .social-icon.instagram:hover {
+            background: #E4405F;
+            border-color: #E4405F;
+            color: #fff;
+        }
+
+        body.light-theme .social-icon.whatsapp:hover {
+            background: #25D366;
+            border-color: #25D366;
+            color: #fff;
+        }
+
+        body.light-theme .social-icon.exit:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #fff;
+        }
+
+        body.light-theme .mobile-menu {
+            background: var(--light-card);
+            border-left: 1px solid var(--light-border);
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        }
+
+        body.light-theme .menu-header h3 {
+            color: var(--purple-primary);
+        }
+
+        body.light-theme .menu-close {
+            background: #f3f4f6;
+            border: 1px solid var(--light-border);
+            color: var(--text-gray);
+        }
+
+        body.light-theme .menu-close:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        body.light-theme .menu-item {
+            color: var(--text-dark);
+        }
+
+        body.light-theme .menu-item:hover {
+            background: var(--light-hover);
+        }
+
+        body.light-theme .menu-divider {
+            background: var(--light-border);
+        }
+
+        body.light-theme .vehicle-card {
+            background: var(--light-card);
+            border: 1px solid var(--light-border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        body.light-theme .vehicle-card:hover {
+            border-color: var(--purple-primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        body.light-theme .vehicle-title {
+            color: var(--text-dark);
+        }
+
+        body.light-theme .vehicle-subtitle {
+            color: var(--text-gray);
+        }
+
+        body.light-theme .detail-item {
+            color: #4b5563;
+        }
+
+        body.light-theme .extra-info {
+            background: #f9fafb;
+            border-left: 3px solid var(--purple-primary);
+        }
+
+        body.light-theme .extra-item {
+            color: #4b5563;
+        }
+
+        body.light-theme .extra-item .label {
+            color: var(--text-gray-light);
+        }
+
+        body.light-theme .extra-item .value {
+            color: var(--text-dark);
+        }
+
+        body.light-theme .observation-note {
+            background: #f9fafb;
+            border: 1px solid var(--light-border);
+            color: #4b5563;
+        }
+
+        body.light-theme .search-wrapper input {
+            background: var(--light-card);
+            border: 2px solid var(--light-border);
+            color: var(--text-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        body.light-theme .search-wrapper input:focus {
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 4px rgba(168,85,247,0.1);
+        }
+
+        body.light-theme .search-wrapper input::placeholder {
+            color: var(--text-gray-light);
+        }
+
+        body.light-theme .search-wrapper i {
+            color: var(--text-gray-light);
+        }
+
+        body.light-theme .no-results {
+            background: var(--light-card);
+            border: 1px solid var(--light-border);
+        }
+
+        body.light-theme .no-results h3 {
+            color: #4b5563;
+        }
+
+        body.light-theme .fullscreen-indicator {
+            background: rgba(168,85,247,0.1);
+            border: 1px solid var(--purple-primary);
+            color: var(--text-dark);
+            backdrop-filter: blur(5px);
+        }
+
+        body.light-theme .whatsapp-float {
+            border: 2px solid var(--light-card);
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.2);
+        }
+
+        body.light-theme .price-tag {
+            background: var(--purple-primary);
+            border: 2px solid var(--light-card);
+            color: #fff;
+        }
+
+        body.light-theme .fipe-value {
+            color: var(--purple-primary);
+        }
+
+        body.light-theme .fipe-above {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        body.light-theme .fipe-below {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        body.light-theme .fipe-equal {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--purple-primary);
+        }
+
+        body.light-theme #resultadoBusca {
+            color: var(--text-gray);
+        }
+
+        body.light-theme h2 {
+            color: var(--text-dark);
+        }
+
+        body.light-theme p.text-gray-500 {
+            color: var(--text-gray) !important;
+        }
+
+        body.light-theme .loading {
+            color: var(--text-gray);
+        }
+
+        body.light-theme .menu-overlay {
+            background: rgba(255,255,255,0.8);
+        }
+
+        /* ===== COMPONENTES COMUNS ===== */
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        body.light-theme ::-webkit-scrollbar-track {
+            background: #e5e7eb;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        body.light-theme ::-webkit-scrollbar-thumb {
+            background: var(--text-gray-light);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* HEADER COM GRADIENTE */
+        .header-gradient {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+        }
+
+        /* BOTÃO VOLTAR (apenas desktop) - REMOVIDO */
+        .back-to-home {
+            display: none !important;
+        }
+
+        /* BOTÃO FECHAR (para página compartilhada) */
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+            margin-right: 5px;
+        }
+
+        /* BOTÃO HAMBURGER */
+        .hamburger-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 20px;
+        }
+
+        /* BOTÃO DE TEMA */
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+            margin-right: 5px;
+        }
+
+        /* BOTÃO DE COMPARTILHAR */
+        .share-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+            margin-right: 5px;
+        }
+
+        /* MENU MOBILE */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            z-index: 100;
+            transition: right 0.3s ease;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-menu.open {
+            right: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 90;
+            display: none;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        body.light-theme .menu-header {
+            border-bottom: 1px solid var(--light-border);
+        }
+
+        .menu-header h3 {
+            color: var(--purple-primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .menu-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+            margin-bottom: 5px;
+            text-decoration: none;
+        }
+
+        .menu-item:hover {
+            transform: translateX(-5px);
+        }
+
+        .menu-item i {
+            width: 24px;
+            font-size: 18px;
+        }
+
+        .menu-item.whatsapp i { color: #25D366; }
+        .menu-item.instagram i { color: #E4405F; }
+        .menu-item.exit i { color: #ef4444; }
+
+        .menu-item span {
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            margin: 20px 0;
+        }
+
+        /* CARDS ESTILIZADOS */
+        .vehicle-card {
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .vehicle-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #222;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+
+        body.light-theme .vehicle-image {
+            border-bottom: 1px solid var(--light-border);
+        }
+
+        .vehicle-card:hover .vehicle-image {
+            transform: scale(1.05);
+        }
+
+        .image-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .price-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 10;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .status-disponivel {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .status-reservado {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+        .vehicle-info {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .vehicle-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .vehicle-subtitle {
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .vehicle-subtitle span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .vehicle-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px dashed #222;
+            border-bottom: 1px dashed #222;
+        }
+
+        body.light-theme .vehicle-details {
+            border-top: 1px dashed var(--light-border);
+            border-bottom: 1px dashed var(--light-border);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .detail-item i {
+            color: var(--purple-primary);
+            width: 18px;
+            font-size: 14px;
+        }
+
+        /* NOVOS CAMPOS */
+        .extra-info {
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+
+        .extra-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .extra-item i {
+            color: var(--purple-primary);
+            width: 18px;
+        }
+
+        .extra-item .label {
+            width: 80px;
+        }
+
+        .fipe-comparison {
+            font-size: 11px;
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 6px;
+            border-radius: 12px;
+        }
+
+        .observation-note {
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+
+        .observation-note i {
+            color: #f59e0b;
+            margin-top: 2px;
+        }
+
+        .contact-button {
+            background: var(--purple-primary);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .contact-button:hover {
+            background: var(--purple-dark);
+            transform: scale(1.02);
+        }
+
+        /* BUSCA */
+        .search-wrapper {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border-radius: 50px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        /* WHATSAPP FLUTUANTE */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        /* EMPTY STATE */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            border-radius: 16px;
+        }
+
+        .no-results i {
+            font-size: 60px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        body.light-theme .no-results i {
+            color: var(--text-gray-light);
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+
+        .loading i {
+            font-size: 40px;
+            color: var(--purple-primary);
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .purple-accent {
+            color: var(--purple-primary);
+        }
+
+        /* BOTÃO DE TELA CHEIA */
+        .fullscreen-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+        }
+
+        /* ÍCONES SOCIAIS DESKTOP - REMOVIDOS */
+        .social-icons {
+            display: none !important;
+        }
+
+        /* INDICADOR DE TELA CHEIA */
+        .fullscreen-indicator {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .fullscreen-indicator.visible {
+            opacity: 1;
+        }
+
+        /* HEADER ACTIONS */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== MODAL DE COMPARTILHAMENTO ===== */
+        #modalCompartilhar .bg-gray-900 {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #modalCompartilhar .grid-cols-4 {
+            gap: 8px;
+        }
+
+        #modalCompartilhar button {
+            transition: var(--transition);
+        }
+
+        #modalCompartilhar button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* QR Code container - CENTRALIZADO */
+        #qrcode {
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        #qrcode img {
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Link clicável em azul */
+        .link-container {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            word-break: break-all;
+            text-align: center;
+        }
+        
+        .link-clicavel {
+            color: #3b82f6;
+            text-decoration: underline;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .link-clicavel:hover {
+            color: #2563eb;
+        }
+
+        /* Tema claro para o modal */
+        body.light-theme #modalCompartilhar .bg-gray-900 {
+            background: var(--light-card);
+            border-color: var(--light-border);
+        }
+
+        body.light-theme #modalCompartilhar .text-gray-400 {
+            color: var(--text-gray) !important;
+        }
+
+        body.light-theme #modalCompartilhar input {
+            background: #f9fafb;
+            border-color: var(--light-border);
+            color: var(--text-dark);
+        }
+
+        body.light-theme #modalCompartilhar .bg-gray-800 {
+            background: #f3f4f6;
+            border: 1px solid var(--light-border);
+            color: var(--text-dark);
+        }
+
+        body.light-theme #modalCompartilhar .bg-gray-800:hover {
+            background: #e5e7eb;
+        }
+
+        body.light-theme #modalCompartilhar .border-gray-800 {
+            border-color: var(--light-border);
+        }
+
+        body.light-theme .link-container {
+            background: #e6f0ff;
+            border-color: #3b82f6;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .back-to-home {
+                display: none !important;
+            }
+            
+            .social-icons {
+                display: none !important;
+            }
+            
+            .theme-toggle,
+            .share-btn,
+            .close-btn {
+                margin-right: 0;
+            }
+            
+            .header-gradient .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .header-gradient .flex {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .header-gradient img {
+                height: 50px !important;
+            }
+            
+            .hamburger-btn {
+                display: flex !important;
+                margin-left: 0;
+            }
+            
+            .header-gradient .hidden.md\:block {
+                display: none !important;
+            }
+            
+            .container.px-4.py-8 {
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            
+            h2.text-3xl {
+                font-size: 24px;
+            }
+            
+            .search-wrapper input {
+                padding: 12px 16px 12px 45px;
+                font-size: 14px;
+            }
+            
+            .search-wrapper i {
+                left: 12px;
+                font-size: 16px;
+            }
+            
+            .grid {
+                gap: 16px;
+            }
+            
+            .vehicle-image {
+                height: 160px;
+            }
+            
+            .price-tag {
+                font-size: 16px;
+                padding: 6px 12px;
+                top: 10px;
+                right: 10px;
+            }
+            
+            .status-badge {
+                font-size: 10px;
+                padding: 4px 8px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            .vehicle-info {
+                padding: 16px;
+            }
+            
+            .vehicle-title {
+                font-size: 18px;
+            }
+            
+            .vehicle-subtitle {
+                font-size: 12px;
+                gap: 6px;
+            }
+            
+            .vehicle-details {
+                gap: 8px;
+                margin: 10px 0;
+                padding: 10px 0;
+            }
+            
+            .detail-item {
+                font-size: 11px;
+                gap: 4px;
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .fullscreen-indicator {
+                bottom: 80px;
+                right: 20px;
+                font-size: 10px;
+            }
+
+            .share-btn,
+            .close-btn {
+                width: 42px;
+                height: 42px;
+            }
+            
+            #modalCompartilhar .grid-cols-4 {
+                gap: 6px;
+            }
+            
+            #modalCompartilhar button span {
+                font-size: 11px;
+            }
+        }
+
+        /* Telas muito pequenas */
+        @media (max-width: 480px) {
+            .header-gradient img {
+                height: 45px !important;
+            }
+            
+            .hamburger-btn,
+            .fullscreen-btn,
+            .theme-toggle,
+            .share-btn,
+            .close-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .vehicle-image {
+                height: 180px;
+            }
+            
+            .price-tag {
+                font-size: 14px;
+                padding: 4px 10px;
+            }
+            
+            .status-badge {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
+            
+            .whatsapp-float {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+            }
+
+            .share-btn,
+            .close-btn {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+        /* Desktop */
+        @media (min-width: 769px) {
+            .hamburger-btn {
+                display: none !important;
+            }
+            
+            .mobile-menu {
+                display: none !important;
+            }
+            
+            .menu-overlay {
+                display: none !important;
+            }
+            
+            .theme-toggle,
+            .share-btn,
+            .close-btn {
+                margin-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <!-- INDICADOR DE TELA CHEIA -->
+    <div class="fullscreen-indicator" id="fullscreenIndicator">
+        <i class="fas fa-expand mr-1"></i> Modo Tela Cheia - Pressione ESC para sair
+    </div>
+
+    <!-- OVERLAY DO MENU MOBILE -->
+    <div class="menu-overlay" id="menuOverlay" onclick="Menu.fechar()"></div>
+
+    <!-- MENU MOBILE -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="menu-header">
+            <h3>MENU</h3>
+            <div class="menu-close" onclick="Menu.fechar()">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <!-- LINK DO INSTAGRAM -->
+        <a href="https://www.instagram.com/gmrepasses_/" target="_blank" class="menu-item instagram">
+            <i class="fab fa-instagram"></i>
+            <span>Instagram</span>
+            <i class="fas fa-external-link-alt text-xs opacity-50"></i>
+        </a>
+        
+        <!-- LINK DO WHATSAPP -->
+        <a href="https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk" target="_blank" class="menu-item whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+            <i class="fas fa-external-link-alt text-xs opacity-50"></i>
+        </a>
+        
+        <div class="menu-divider"></div>
+        
+        <div class="menu-item exit" onclick="Sair.executar()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="header-gradient py-3 md:py-4">
+        <div class="container mx-auto px-3 md:px-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <img src="./image/log_3d.png" class="h-10 md:h-12" alt="Logo" onerror="this.src='https://via.placeholder.com/48x48/1a1a1a/666?text=GM'">
+                
+                <!-- Título (visível apenas em desktop) -->
+                <div class="hidden md:block flex-1 text-center">
+                    <h1 class="text-lg md:text-2xl font-bold text-white">A SUA LOJA É AQUI - <span class="purple-accent">VEJA NOSSAS OFERTAS!</span></h1>
+                    <p class="text-xs text-gray-500">Veículos com procedência e garantia</p>
+                </div>
+                
+                <!-- Ações do header -->
+                <div class="header-actions" id="headerActions">
+                    <!-- Botão de tema (sempre visível) -->
+                    <div class="theme-toggle" onclick="Theme.toggle()" id="themeToggle" title="Alternar tema">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    
+                    <!-- Botão de tela cheia (sempre visível) -->
+                    <div class="fullscreen-btn" onclick="TelaCheia.ativar()" title="Tela Cheia">
+                        <i class="fas fa-expand"></i>
+                    </div>
+                    
+                    <!-- Botão de compartilhar (sempre visível) -->
+                    <div class="share-btn" onclick="Compartilhamento.abrirModal()" title="Compartilhar estoque">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    
+                    <!-- Botão hamburger (apenas mobile) -->
+                    <div class="hamburger-btn" onclick="Menu.toggle()">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container mx-auto px-3 md:px-4 py-6 md:py-8">
+
+        <!-- TÍTULO DA PÁGINA -->
+        <div class="text-center mb-6 md:mb-8">
+            <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">Nosso <span class="purple-accent">Estoque</span></h2>
+            <p class="text-sm md:text-base text-gray-500">Confira os veículos disponíveis para compra</p>
+        </div>
+        
+        <!-- BUSCA -->
+        <div class="max-w-2xl mx-auto mb-6 md:mb-8">
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="buscaCliente" placeholder="Buscar por marca, modelo, ano ou cor..." onkeyup="Filtro.aplicar()">
+            </div>
+            <div class="text-right mt-2 text-xs md:text-sm text-gray-600" id="resultadoBusca"></div>
+        </div>
+        
+        <!-- GRID DE VEÍCULOS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6" id="veiculosGrid">
+            <div class="loading">
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <p class="mt-2 text-sm md:text-base">Carregando veículos...</p>
+            </div>
+        </div>
+        
+        <!-- BOTÃO WHATSAPP FLUTUANTE -->
+        <a href="https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk" target="_blank" class="whatsapp-float">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        
+    </div>
+
+    <!-- MODAL DE COMPARTILHAMENTO -->
+    <div id="modalCompartilhar" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50 p-4">
+        <div class="bg-gray-900 p-6 lg:p-8 rounded-xl w-full max-w-md border border-gray-700">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg lg:text-xl font-bold purple-accent flex items-center gap-3">
+                    <i class="fas fa-share-alt"></i>
+                    Compartilhar Estoque
+                </h2>
+                <button onclick="Compartilhamento.fecharModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <p class="text-sm text-gray-400 mb-4">
+                Compartilhe este link com seus clientes para que eles possam ver todos os veículos disponíveis:
+            </p>
+            
+            <!-- Link da página (input) -->
+            <div class="flex items-center gap-2 mb-4">
+                <input type="text" id="linkCompartilhamento" readonly 
+                       class="flex-1 p-3 bg-black border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-purple-500"
+                       value="">
+                <button onclick="Compartilhamento.copiarLink(this)" 
+                        class="bg-purple-600 hover:bg-purple-700 p-3 rounded-lg transition-colors"
+                        title="Copiar link">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            
+            <!-- LINK CLICÁVEL - EM FORMATO DESTACADO -->
+            <div class="link-container">
+                <span class="text-sm text-gray-400 block mb-1">Link direto:</span>
+                <a href="#" id="linkClicavel" class="link-clicavel text-sm" target="_blank"></a>
+            </div>
+            
+            <!-- Opções de compartilhamento rápido -->
+            <p class="text-sm text-gray-400 mb-3 mt-4">Compartilhar via:</p>
+            <div class="grid grid-cols-4 gap-3">
+                <button onclick="Compartilhamento.compartilharWhatsApp()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-whatsapp text-2xl text-green-400"></i>
+                    <span class="text-xs">WhatsApp</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharInstagram()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-instagram text-2xl text-pink-400"></i>
+                    <span class="text-xs">Instagram</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharFacebook()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-facebook text-2xl text-blue-400"></i>
+                    <span class="text-xs">Facebook</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharTwitter()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-twitter text-2xl text-blue-300"></i>
+                    <span class="text-xs">Twitter</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharLinkedIn()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-linkedin text-2xl text-blue-500"></i>
+                    <span class="text-xs">LinkedIn</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharTelegram()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-telegram text-2xl text-blue-400"></i>
+                    <span class="text-xs">Telegram</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharEmail()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fas fa-envelope text-2xl text-yellow-400"></i>
+                    <span class="text-xs">E-mail</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharMessenger()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-facebook-messenger text-2xl text-blue-500"></i>
+                    <span class="text-xs">Messenger</span>
+                </button>
+            </div>
+            
+            <!-- QR Code -->
+            <div class="mt-6 pt-4 border-t border-gray-800">
+                <p class="text-sm text-gray-400 mb-3 text-center">Ou escaneie o QR Code</p>
+                <div id="qrcode" class="flex justify-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== CONSTANTES =====
+        const CONFIG = {
+            STORAGE_KEY: 'gmRepasses',
+            WHATSAPP_NUMBER: '5581981837459',
+            WHATSAPP_GROUP_URL: 'https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk',
+            INSTAGRAM_URL: 'https://www.instagram.com/gmrepasses_/',
+            PLACEHOLDER_IMAGE: 'https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem',
+            SHARE_MESSAGE: 'Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque: {{URL}} - Veículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!'
+        };
+
+        // ===== ESTADO DA APLICAÇÃO =====
+        const State = {
+            todosVeiculos: [],
+            slideAtual: 0,
+            isSharedPage: window.location.search.includes('shared=true') || document.referrer !== ''
+        };
+
+        // ===== UTILITÁRIOS =====
+        const Utils = {
+            getSwalConfig() {
+                const isLight = document.body.classList.contains('light-theme');
+                return {
+                    background: isLight ? '#ffffff' : '#1a1a1a',
+                    color: isLight ? '#1f2937' : '#fff'
+                };
+            },
+
+            formatarMoedaBrasileira(valor) {
+                if (!valor || isNaN(valor)) return 'R$ 0';
+                return valor.toLocaleString('pt-BR', { 
+                    style: 'currency', 
+                    currency: 'BRL', 
+                    minimumFractionDigits: 0 
+                });
+            },
+
+            formatarKM(km) {
+                if (!km) return 'KM não informado';
+                return parseInt(km).toLocaleString('pt-BR') + ' km';
+            },
+
+            compararComFIPE(fipe, venda) {
+                if (!fipe || fipe === 0 || !venda || venda === 0) {
+                    return { text: '', class: '' };
+                }
+                
+                const diff = ((venda - fipe) / fipe * 100).toFixed(1);
+                
+                if (venda > fipe) {
+                    return { text: `+${diff}% acima FIPE`, class: 'fipe-above' };
+                } else if (venda < fipe) {
+                    return { text: `${diff}% abaixo FIPE`, class: 'fipe-below' };
+                } else {
+                    return { text: 'Igual FIPE', class: 'fipe-equal' };
+                }
+            },
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            },
+
+            getCleanUrl() {
+                // Retorna a URL sem o parâmetro shared=true
+                const url = new URL(window.location.href);
+                url.searchParams.delete('shared');
+                return url.toString();
+            },
+
+            getMensagemCompleta() {
+                return `Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque:\n\n${this.getCleanUrl()}\n\nVeículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!`;
+            }
+        };
+
+        // ===== TEMA =====
+        const Theme = {
+            toggle() {
+                const body = document.body;
+                const themeToggle = document.getElementById('themeToggle');
+                const icon = themeToggle.querySelector('i');
+                
+                if (body.classList.contains('dark-theme')) {
+                    body.classList.remove('dark-theme');
+                    body.classList.add('light-theme');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    body.classList.remove('light-theme');
+                    body.classList.add('dark-theme');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                }
+                
+                this._atualizarTituloHeader();
+            },
+
+            load() {
+                const savedTheme = localStorage.getItem('theme');
+                const themeToggle = document.getElementById('themeToggle');
+                const icon = themeToggle.querySelector('i');
+                
+                if (savedTheme === 'light') {
+                    document.body.classList.remove('dark-theme');
+                    document.body.classList.add('light-theme');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    document.body.classList.add('dark-theme');
+                    document.body.classList.remove('light-theme');
+                    icon.classList.add('fa-sun');
+                    icon.classList.remove('fa-moon');
+                }
+                
+                this._atualizarTituloHeader();
+            },
+
+            _atualizarTituloHeader() {
+                const titleElement = document.querySelector('.header-gradient h1');
+                if (titleElement) {
+                    const isLight = document.body.classList.contains('light-theme');
+                    titleElement.style.color = isLight ? '#1f2937' : '#fff';
+                }
+            }
+        };
+
+        // ===== MENU MOBILE =====
+        const Menu = {
+            toggle() {
+                document.getElementById('mobileMenu').classList.toggle('open');
+                document.getElementById('menuOverlay').classList.toggle('active');
+            },
+
+            fechar() {
+                document.getElementById('mobileMenu').classList.remove('open');
+                document.getElementById('menuOverlay').classList.remove('active');
+            },
+
+            init() {
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        this.fechar();
+                    }
+                });
+            }
+        };
+
+        // ===== TELA CHEIA =====
+        const TelaCheia = {
+            ativar() {
+                const elemento = document.documentElement;
+                const indicator = document.getElementById('fullscreenIndicator');
+                
+                if (elemento.requestFullscreen) {
+                    elemento.requestFullscreen();
+                } else if (elemento.webkitRequestFullscreen) {
+                    elemento.webkitRequestFullscreen();
+                } else if (elemento.msRequestFullscreen) {
+                    elemento.msRequestFullscreen();
+                }
+                
+                if (indicator) {
+                    indicator.classList.add('visible');
+                }
+            },
+
+            init() {
+                document.addEventListener('fullscreenchange', () => this._atualizarIndicador());
+                document.addEventListener('webkitfullscreenchange', () => this._atualizarIndicador());
+                document.addEventListener('mozfullscreenchange', () => this._atualizarIndicador());
+                document.addEventListener('MSFullscreenChange', () => this._atualizarIndicador());
+            },
+
+            _atualizarIndicador() {
+                const indicator = document.getElementById('fullscreenIndicator');
+                if (!document.fullscreenElement && indicator) {
+                    indicator.classList.remove('visible');
+                }
+            }
+        };
+
+        // ===== NAVEGAÇÃO =====
+        const Navegacao = {
+            voltarPaginaPrincipal() {
+                window.location.href = 'principal.html';
+            },
+
+            abrirPaginaVeiculo(id) {
+                localStorage.setItem('veiculoId', id);
+                window.location.href = 'detalhes-veiculo.html';
+            },
+
+            fecharPagina() {
+                window.close();
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Feche esta aba',
+                        text: 'Por favor, feche esta aba manualmente.',
+                        ...Utils.getSwalConfig()
+                    });
+                }, 500);
+            }
+        };
+
+        // ===== WHATSAPP =====
+        const WhatsApp = {
+            abrirGrupo() {
+                window.open(CONFIG.WHATSAPP_GROUP_URL, '_blank');
+            },
+
+            interessado(veiculo, preco) {
+                const mensagem = `Olá! Tenho interesse no veículo *${veiculo}* anunciado por *${Utils.formatarMoedaBrasileira(preco)}*. Poderia me passar mais informações?`;
+                const url = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+                window.open(url, '_blank');
+            }
+        };
+
+        // ===== SAIR =====
+        const Sair = {
+            executar() {
+                const isLight = document.body.classList.contains('light-theme');
+                
+                Swal.fire({
+                    title: 'Deseja sair?',
+                    text: 'Você será redirecionado para a página de login',
+                    icon: 'question',
+                    background: isLight ? '#ffffff' : '#1a1a1a',
+                    color: isLight ? '#1f2937' : '#fff',
+                    showCancelButton: true,
+                    confirmButtonColor: '#a855f7',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Sim, sair',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        };
+
+        // ===== COMPARTILHAMENTO =====
+        const Compartilhamento = {
+            getUrl() {
+                return Utils.getCleanUrl();
+            },
+
+            getTitulo() {
+                return 'GM Repasses - Estoque de Veículos';
+            },
+
+            abrirModal() {
+                const modal = document.getElementById('modalCompartilhar');
+                const input = document.getElementById('linkCompartilhamento');
+                const linkClicavel = document.getElementById('linkClicavel');
+                const url = this.getUrl();
+                
+                input.value = url;
+                linkClicavel.href = url;
+                linkClicavel.textContent = url;
+                
+                setTimeout(() => {
+                    input.select();
+                }, 100);
+                
+                this._gerarQRCode();
+                
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            },
+
+            fecharModal() {
+                const modal = document.getElementById('modalCompartilhar');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            },
+
+            _gerarQRCode() {
+                const container = document.getElementById('qrcode');
+                container.innerHTML = '';
+                
+                if (typeof QRCode !== 'undefined') {
+                    new QRCode(container, {
+                        text: this.getUrl(),
+                        width: 150,
+                        height: 150,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+            },
+
+            copiarLink(btnElement) {
+                const input = document.getElementById('linkCompartilhamento');
+                
+                input.select();
+                input.setSelectionRange(0, 99999);
+                
+                try {
+                    navigator.clipboard.writeText(input.value).then(() => {
+                        this._mostrarFeedbackSucesso(btnElement);
+                    }).catch(() => {
+                        document.execCommand('copy');
+                        this._mostrarFeedbackSucesso(btnElement);
+                    });
+                } catch (err) {
+                    document.execCommand('copy');
+                    this._mostrarFeedbackSucesso(btnElement);
+                }
+            },
+
+            _mostrarFeedbackSucesso(btnElement) {
+                const originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fas fa-check"></i>';
+                
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHtml;
+                }, 2000);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Link copiado!',
+                    text: 'O link foi copiado para a área de transferência.',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    ...Utils.getSwalConfig()
+                });
+            },
+
+            // ===== COMPARTILHAMENTO OTIMIZADO =====
+            
+            compartilharWhatsApp() {
+                const mensagem = Utils.getMensagemCompleta();
+                const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+                window.open(url, '_blank');
+                this.fecharModal();
+            },
+
+            compartilharInstagram() {
+                this.copiarLink(document.querySelector('.share-btn'));
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Link copiado!',
+                    text: 'Cole o link no seu Instagram',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    ...Utils.getSwalConfig()
+                });
+                this.fecharModal();
+            },
+
+            compartilharFacebook() {
+                const url = encodeURIComponent(this.getUrl());
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+                this.fecharModal();
+            },
+
+            compartilharTwitter() {
+                const mensagem = encodeURIComponent(this.getTitulo());
+                const url = encodeURIComponent(this.getUrl());
+                window.open(`https://twitter.com/intent/tweet?text=${mensagem}&url=${url}`, '_blank');
+                this.fecharModal();
+            },
+
+            compartilharLinkedIn() {
+                const url = encodeURIComponent(this.getUrl());
+                window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+                this.fecharModal();
+            },
+
+            compartilharTelegram() {
+                const mensagem = encodeURIComponent(this.getTitulo());
+                const url = encodeURIComponent(this.getUrl());
+                window.open(`https://t.me/share/url?url=${url}&text=${mensagem}`, '_blank');
+                this.fecharModal();
+            },
+
+            compartilharEmail() {
+                const assunto = encodeURIComponent(this.getTitulo());
+                const corpo = encodeURIComponent(Utils.getMensagemCompleta());
+                window.open(`mailto:?subject=${assunto}&body=${corpo}`, '_blank');
+                this.fecharModal();
+            },
+
+            compartilharMessenger() {
+                const url = encodeURIComponent(this.getUrl());
+                window.open(`https://www.facebook.com/dialog/send?link=${url}&app_id=YOUR_APP_ID&redirect_uri=${url}`, '_blank');
+                this.fecharModal();
+            }
+        };
+
+        // ===== GALERIA =====
+        const Galeria = {
+            abrir(fotos, titulo) {
+                if (!fotos || fotos.length === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Sem fotos',
+                        text: 'Este veículo não possui fotos cadastradas.',
+                        ...Utils.getSwalConfig(),
+                        confirmButtonColor: '#a855f7'
+                    });
+                    return;
+                }
+
+                let currentIndex = 0;
+                const isLight = document.body.classList.contains('light-theme');
+
+                const showImage = (index) => {
+                    const foto = fotos[index];
+                    Swal.fire({
+                        imageUrl: foto,
+                        imageAlt: titulo,
+                        title: `${index + 1}/${fotos.length}`,
+                        background: isLight ? '#ffffff' : '#1a1a1a',
+                        color: isLight ? '#1f2937' : '#fff',
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        width: '90%',
+                        customClass: {
+                            image: 'max-h-[80vh] object-contain',
+                            closeButton: isLight ? 'text-gray-400 hover:text-gray-600' : 'text-gray-400 hover:text-white'
+                        },
+                        didOpen: () => this._adicionarNavegacao(fotos, index, showImage)
+                    });
+                };
+
+                showImage(currentIndex);
+            },
+
+            _adicionarNavegacao(fotos, currentIndex, showImageCallback) {
+                const container = document.querySelector('.swal2-popup');
+                if (!container) return;
+                
+                const isLight = document.body.classList.contains('light-theme');
+                const setaColor = isLight ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)';
+                
+                const leftArrow = this._criarSeta('◀', 'left', setaColor, () => {
+                    currentIndex = (currentIndex - 1 + fotos.length) % fotos.length;
+                    Swal.close();
+                    showImageCallback(currentIndex);
+                });
+                
+                const rightArrow = this._criarSeta('▶', 'right', setaColor, () => {
+                    currentIndex = (currentIndex + 1) % fotos.length;
+                    Swal.close();
+                    showImageCallback(currentIndex);
+                });
+                
+                container.appendChild(leftArrow);
+                container.appendChild(rightArrow);
+                
+                this._adicionarControleTeclado(fotos, currentIndex, showImageCallback);
+            },
+
+            _criarSeta(symbol, direction, color, callback) {
+                const arrow = document.createElement('div');
+                arrow.innerHTML = symbol;
+                arrow.style.cssText = `
+                    position: absolute;
+                    ${direction}: 20px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    font-size: 40px;
+                    color: ${color};
+                    cursor: pointer;
+                    z-index: 1000;
+                    transition: color 0.2s;
+                    user-select: none;
+                `;
+                arrow.onmouseover = () => arrow.style.color = '#a855f7';
+                arrow.onmouseout = () => arrow.style.color = color;
+                arrow.onclick = callback;
+                return arrow;
+            },
+
+            _adicionarControleTeclado(fotos, currentIndex, showImageCallback) {
+                const keyHandler = (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        currentIndex = (currentIndex - 1 + fotos.length) % fotos.length;
+                        Swal.close();
+                        showImageCallback(currentIndex);
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        currentIndex = (currentIndex + 1) % fotos.length;
+                        Swal.close();
+                        showImageCallback(currentIndex);
+                    } else if (e.key === 'Escape') {
+                        Swal.close();
+                    }
+                };
+                
+                document.addEventListener('keydown', keyHandler);
+                
+                const originalClose = Swal.close;
+                Swal.close = function() {
+                    document.removeEventListener('keydown', keyHandler);
+                    originalClose();
+                };
+            }
+        };
+
+        // ===== GERENCIADOR DE VEÍCULOS =====
+        const VeiculosManager = {
+            dados: [],
+
+            carregar() {
+                const dadosSalvos = localStorage.getItem(CONFIG.STORAGE_KEY);
+                if (dadosSalvos) {
+                    try {
+                        const dados = JSON.parse(dadosSalvos);
+                        this.dados = (dados.cars || []).filter(c => c.status !== 'Vendido');
+                    } catch (e) {
+                        console.error('Erro ao carregar dados:', e);
+                        this.dados = [];
+                    }
+                }
+                State.todosVeiculos = this.dados;
+                UI.atualizarResultadoBusca(this.dados.length);
+                UI.renderizarVeiculos(this.dados);
+            },
+
+            filtrar(termo) {
+                if (!termo) {
+                    UI.atualizarResultadoBusca(this.dados.length);
+                    UI.renderizarVeiculos(this.dados);
+                    return this.dados;
+                }
+                
+                const filtrados = this.dados.filter(c => {
+                    return (c.marca && c.marca.toLowerCase().includes(termo)) ||
+                           (c.modelo && c.modelo.toLowerCase().includes(termo)) ||
+                           (c.ano && c.ano.toString().includes(termo)) ||
+                           (c.cor && c.cor.toLowerCase().includes(termo)) ||
+                           (c.combustivel && c.combustivel.toLowerCase().includes(termo));
+                });
+                
+                UI.atualizarResultadoBusca(filtrados.length, termo);
+                UI.renderizarVeiculos(filtrados);
+                return filtrados;
+            }
+        };
+
+        // ===== INTERFACE DO USUÁRIO =====
+        const UI = {
+            renderizarVeiculos(veiculos) {
+                const grid = document.getElementById('veiculosGrid');
+                
+                if (!veiculos || veiculos.length === 0) {
+                    grid.innerHTML = this._getEmptyStateHTML();
+                    return;
+                }
+                
+                let html = '';
+                for (let i = 0; i < veiculos.length; i++) {
+                    html += this._renderizarCard(veiculos[i]);
+                }
+                
+                grid.innerHTML = html;
+            },
+
+            _renderizarCard(veiculo) {
+                const foto = (veiculo.fotos && veiculo.fotos.length > 0) 
+                    ? veiculo.fotos[0] 
+                    : CONFIG.PLACEHOLDER_IMAGE;
+                
+                const statusClass = veiculo.status === 'Disponível' ? 'status-disponivel' : 'status-reservado';
+                const statusIcon = veiculo.status === 'Disponível' ? 'fa-check-circle' : 'fa-clock';
+                
+                const fipeComp = Utils.compararComFIPE(veiculo.fipe, veiculo.venda);
+                const fotosJson = JSON.stringify(veiculo.fotos || []);
+                const tituloVeiculo = `${veiculo.marca || ''} ${veiculo.modelo || ''} ${veiculo.ano || ''}`.trim();
+                
+                return `
+                    <div class="vehicle-card">
+                        <div class="image-container">
+                            <img src="${foto}" class="vehicle-image" alt="${veiculo.marca} ${veiculo.modelo}" 
+                                 onclick='Galeria.abrir(${fotosJson}, "${Utils.escapeHtml(tituloVeiculo)}")'
+                                 onerror="this.src='${CONFIG.PLACEHOLDER_IMAGE}'">
+                            <div class="price-tag">${Utils.formatarMoedaBrasileira(veiculo.venda)}</div>
+                            <div class="status-badge ${statusClass}">
+                                <i class="fas ${statusIcon} mr-1"></i> ${veiculo.status}
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-info">
+                            <h3 class="vehicle-title">${veiculo.marca || ''} ${veiculo.modelo || ''}</h3>
+                            
+                            <div class="vehicle-subtitle">
+                                <span><i class="fas fa-calendar"></i> ${veiculo.ano || '-'}</span>
+                                <span><i class="fas fa-palette"></i> ${veiculo.cor || '-'}</span>
+                                <span><i class="fas fa-gas-pump"></i> ${veiculo.combustivel || '-'}</span>
+                            </div>
+                            
+                            <div class="vehicle-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>${Utils.formatarKM(veiculo.km)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>${veiculo.placa || 'Placa não informada'}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="extra-info">
+                                ${veiculo.fipe ? `
+                                <div class="extra-item">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span class="label">FIPE:</span>
+                                    <span class="value fipe-value">${Utils.formatarMoedaBrasileira(veiculo.fipe)}</span>
+                                    ${fipeComp.text ? `<span class="fipe-comparison ${fipeComp.class}">${fipeComp.text}</span>` : ''}
+                                </div>
+                                ` : ''}
+                                
+                                ${veiculo.observacoes ? `
+                                <div class="observation-note">
+                                    <i class="fas fa-comment"></i>
+                                    <span>${veiculo.observacoes}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                            
+                            <button class="contact-button" onclick="WhatsApp.interessado('${veiculo.marca} ${veiculo.modelo} ${veiculo.ano}', ${veiculo.venda})">
+                                <i class="fab fa-whatsapp"></i>
+                                Tenho interesse
+                            </button>
+                        </div>
+                    </div>
+                `;
+            },
+
+            _getEmptyStateHTML() {
+                return `
+                    <div class="no-results">
+                        <i class="fas fa-car"></i>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-400 mb-2">Nenhum veículo disponível</h3>
+                        <p class="text-sm md:text-base text-gray-600">No momento não temos veículos em estoque.</p>
+                        <p class="text-sm md:text-base text-gray-600 mt-3 md:mt-4">Entre em contato pelo WhatsApp para mais informações.</p>
+                    </div>
+                `;
+            },
+
+            atualizarResultadoBusca(quantidade, termo = '') {
+                const resultadoEl = document.getElementById('resultadoBusca');
+                if (quantidade === 0) {
+                    resultadoEl.innerHTML = '<i class="fas fa-search mr-1"></i> Nenhum veículo encontrado';
+                } else {
+                    resultadoEl.innerHTML = `
+                        <i class="fas fa-car mr-1"></i> 
+                        ${quantidade} ${quantidade === 1 ? 'veículo' : 'veículos'} ${termo ? `para "<span class="text-purple-400">${Utils.escapeHtml(termo)}</span>"` : 'disponível(eis)'}
+                    `;
+                }
+            },
+
+            mostrarLoading() {
+                document.getElementById('veiculosGrid').innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                        <p class="mt-2 text-sm md:text-base">Carregando veículos...</p>
+                    </div>
+                `;
+            }
+        };
+
+        // ===== FILTRO =====
+        const Filtro = {
+            aplicar() {
+                const termo = document.getElementById('buscaCliente').value.toLowerCase().trim();
+                VeiculosManager.filtrar(termo);
+            }
+        };
+
+        // ===== INICIALIZAÇÃO =====
+        document.addEventListener('DOMContentLoaded', () => {
+            Theme.load();
+            Menu.init();
+            TelaCheia.init();
+            
+            UI.mostrarLoading();
+            VeiculosManager.carregar();
+            
+            window.addEventListener('storage', (e) => {
+                if (e.key === CONFIG.STORAGE_KEY) {
+                    VeiculosManager.carregar();
+                }
+            });
+            
+            // Fechar modal ao clicar fora
+            window.addEventListener('click', (e) => {
+                const modal = document.getElementById('modalCompartilhar');
+                if (e.target === modal) {
+                    Compartilhamento.fecharModal();
+                }
+            });
+            
+            // Fechar modal com tecla ESC
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    Compartilhamento.fecharModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
