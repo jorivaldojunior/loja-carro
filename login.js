@@ -1,7 +1,6 @@
 // ===== CONFIGURAÇÕES =====
 const imagens = [
   "./image/FUNDO 1.jpg", 
-  "./image/FUNDO 2.jpg",
   "./image/FUNDO 3.avif",
   "./image/FUNDO 4.avif"
 ];
