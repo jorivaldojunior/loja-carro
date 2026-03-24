@@ -5,7 +5,7 @@ const CONFIG = {
     WHATSAPP_GROUP_URL: 'https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk',
     INSTAGRAM_URL: 'https://www.instagram.com/gmrepasses_/',
     PLACEHOLDER_IMAGE: 'https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem',
-    SHARE_MESSAGE: 'Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque: {{URL}} - Veículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!'
+    SHARE_URL: window.location.href.split('?')[0] // Pega a URL atual automaticamente
 };
 
 // ===== ESTADO DA APLICAÇÃO =====
@@ -61,14 +61,8 @@ const Utils = {
         return div.innerHTML;
     },
 
-    getCleanUrl() {
-        const url = new URL(window.location.href);
-        url.searchParams.delete('shared');
-        return url.toString();
-    },
-
     getMensagemCompleta() {
-        return `Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque:\n\n${this.getCleanUrl()}\n\nVeículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!`;
+        return `Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque:\n\n${CONFIG.SHARE_URL}\n\nVeículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!`;
     }
 };
 
@@ -220,7 +214,7 @@ const Sair = {
 // ===== COMPARTILHAMENTO =====
 const Compartilhamento = {
     getUrl() {
-        return Utils.getCleanUrl();
+        return CONFIG.SHARE_URL;
     },
 
     getTitulo() {
@@ -229,17 +223,11 @@ const Compartilhamento = {
 
     abrirModal() {
         const modal = document.getElementById('modalCompartilhar');
-        const input = document.getElementById('linkCompartilhamento');
-        const linkClicavel = document.getElementById('linkClicavel');
-        const url = this.getUrl();
+        const mensagemDiv = document.getElementById('mensagemCompartilhar');
         
-        input.value = url;
-        linkClicavel.href = url;
-        linkClicavel.textContent = url;
-        
-        setTimeout(() => {
-            input.select();
-        }, 100);
+        if (mensagemDiv) {
+            mensagemDiv.textContent = Utils.getMensagemCompleta();
+        }
         
         this._gerarQRCode();
         
@@ -269,40 +257,25 @@ const Compartilhamento = {
         }
     },
 
-    copiarLink(btnElement) {
-        const input = document.getElementById('linkCompartilhamento');
+    copiarMensagem() {
+        const mensagem = Utils.getMensagemCompleta();
         
-        input.select();
-        input.setSelectionRange(0, 99999);
-        
-        try {
-            navigator.clipboard.writeText(input.value).then(() => {
-                this._mostrarFeedbackSucesso(btnElement);
-            }).catch(() => {
-                document.execCommand('copy');
-                this._mostrarFeedbackSucesso(btnElement);
+        navigator.clipboard.writeText(mensagem).then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Mensagem copiada!',
+                text: 'A mensagem foi copiada para a área de transferência.',
+                timer: 1500,
+                showConfirmButton: false,
+                ...Utils.getSwalConfig()
             });
-        } catch (err) {
-            document.execCommand('copy');
-            this._mostrarFeedbackSucesso(btnElement);
-        }
-    },
-
-    _mostrarFeedbackSucesso(btnElement) {
-        const originalHtml = btnElement.innerHTML;
-        btnElement.innerHTML = '<i class="fas fa-check"></i>';
-        
-        setTimeout(() => {
-            btnElement.innerHTML = originalHtml;
-        }, 2000);
-        
-        Swal.fire({
-            icon: 'success',
-            title: 'Link copiado!',
-            text: 'O link foi copiado para a área de transferência.',
-            timer: 1500,
-            showConfirmButton: false,
-            ...Utils.getSwalConfig()
+        }).catch(() => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: 'Não foi possível copiar a mensagem.',
+                ...Utils.getSwalConfig()
+            });
         });
     },
 
@@ -314,15 +287,9 @@ const Compartilhamento = {
     },
 
     compartilharInstagram() {
-        this.copiarLink(document.querySelector('.share-btn'));
-        Swal.fire({
-            icon: 'info',
-            title: 'Link copiado!',
-            text: 'Cole o link no seu Instagram',
-            timer: 2000,
-            showConfirmButton: false,
-            ...Utils.getSwalConfig()
-        });
+        const mensagem = encodeURIComponent(Utils.getMensagemCompleta());
+        const url = `https://www.instagram.com/?text=${mensagem}`;
+        window.open(url, '_blank');
         this.fecharModal();
     },
 
@@ -346,9 +313,8 @@ const Compartilhamento = {
     },
 
     compartilharTelegram() {
-        const mensagem = encodeURIComponent(this.getTitulo());
-        const url = encodeURIComponent(this.getUrl());
-        window.open(`https://t.me/share/url?url=${url}&text=${mensagem}`, '_blank');
+        const mensagem = encodeURIComponent(Utils.getMensagemCompleta());
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(this.getUrl())}&text=${mensagem}`, '_blank');
         this.fecharModal();
     },
 
@@ -356,12 +322,6 @@ const Compartilhamento = {
         const assunto = encodeURIComponent(this.getTitulo());
         const corpo = encodeURIComponent(Utils.getMensagemCompleta());
         window.open(`mailto:?subject=${assunto}&body=${corpo}`, '_blank');
-        this.fecharModal();
-    },
-
-    compartilharMessenger() {
-        const url = encodeURIComponent(this.getUrl());
-        window.open(`https://www.facebook.com/dialog/send?link=${url}&app_id=YOUR_APP_ID&redirect_uri=${url}`, '_blank');
         this.fecharModal();
     }
 };

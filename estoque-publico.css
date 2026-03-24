@@ -53,7 +53,8 @@ body.dark-theme .fullscreen-btn,
 body.dark-theme .social-icon,
 body.dark-theme .theme-toggle,
 body.dark-theme .share-btn,
-body.dark-theme .close-btn {
+body.dark-theme .close-btn,
+body.dark-theme .logout-btn {
     background: var(--dark-card);
     border: 1px solid #333;
     color: #888;
@@ -65,7 +66,8 @@ body.dark-theme .fullscreen-btn:hover,
 body.dark-theme .social-icon:hover,
 body.dark-theme .theme-toggle:hover,
 body.dark-theme .share-btn:hover,
-body.dark-theme .close-btn:hover {
+body.dark-theme .close-btn:hover,
+body.dark-theme .logout-btn:hover {
     background: var(--purple-primary);
     color: #fff;
     border-color: var(--purple-primary);
@@ -135,7 +137,8 @@ body.light-theme .fullscreen-btn,
 body.light-theme .social-icon,
 body.light-theme .theme-toggle,
 body.light-theme .share-btn,
-body.light-theme .close-btn {
+body.light-theme .close-btn,
+body.light-theme .logout-btn {
     background: var(--light-card);
     border: 1px solid var(--light-border);
     color: var(--text-gray);
@@ -148,7 +151,8 @@ body.light-theme .fullscreen-btn:hover,
 body.light-theme .social-icon:hover,
 body.light-theme .theme-toggle:hover,
 body.light-theme .share-btn:hover,
-body.light-theme .close-btn:hover {
+body.light-theme .close-btn:hover,
+body.light-theme .logout-btn:hover {
     background: var(--purple-primary);
     color: #fff;
     border-color: var(--purple-primary);
@@ -377,13 +381,18 @@ body.light-theme ::-webkit-scrollbar-thumb {
     backdrop-filter: blur(10px);
 }
 
-/* BOTÃO VOLTAR (apenas desktop) - REMOVIDO */
-.back-to-home {
-    display: none !important;
+/* BOTÕES DO HEADER - APENAS DESKTOP */
+.desktop-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* BOTÃO FECHAR (para página compartilhada) */
-.close-btn {
+/* Botões do desktop */
+.theme-toggle,
+.fullscreen-btn,
+.share-btn,
+.logout-btn {
     width: 40px;
     height: 40px;
     border-radius: 40px;
@@ -396,12 +405,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-right: 5px;
 }
 
-/* BOTÃO HAMBURGER */
+/* BOTÃO HAMBURGER (apenas mobile) */
 .hamburger-btn {
     width: 45px;
     height: 45px;
     border-radius: 45px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -409,32 +418,28 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-size: 20px;
 }
 
-/* BOTÃO DE TEMA */
-.theme-toggle {
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
+/* WHATSAPP FLUTUANTE */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #25D366;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #fff;
+    font-size: 30px;
     cursor: pointer;
     transition: var(--transition);
-    font-size: 18px;
-    margin-right: 5px;
+    z-index: 100;
 }
 
-/* BOTÃO DE COMPARTILHAR */
-.share-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 18px;
-    margin-right: 5px;
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
 }
 
 /* MENU MOBILE */
@@ -520,18 +525,14 @@ body.light-theme .menu-header {
     font-size: 18px;
 }
 
-.menu-item.whatsapp i { color: #25D366; }
-.menu-item.instagram i { color: #E4405F; }
-.menu-item.exit i { color: #ef4444; }
+.menu-item.theme-menu i { color: var(--purple-primary); }
+.menu-item.fullscreen-menu i { color: var(--purple-primary); }
+.menu-item.share-menu i { color: var(--purple-primary); }
+.menu-item.exit-menu i { color: #ef4444; }
 
 .menu-item span {
     flex: 1;
     font-size: 15px;
-}
-
-.menu-divider {
-    height: 1px;
-    margin: 20px 0;
 }
 
 /* CARDS ESTILIZADOS */
@@ -749,30 +750,6 @@ body.light-theme .vehicle-details {
     transition: var(--transition);
 }
 
-/* WHATSAPP FLUTUANTE */
-.whatsapp-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #25D366;
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 30px;
-    cursor: pointer;
-    transition: var(--transition);
-    z-index: 100;
-}
-
-.whatsapp-float:hover {
-    transform: scale(1.1);
-    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
-}
-
 /* EMPTY STATE */
 .no-results {
     grid-column: 1 / -1;
@@ -813,24 +790,6 @@ body.light-theme .no-results i {
     color: var(--purple-primary);
 }
 
-/* BOTÃO DE TELA CHEIA */
-.fullscreen-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 18px;
-}
-
-/* ÍCONES SOCIAIS DESKTOP - REMOVIDOS */
-.social-icons {
-    display: none !important;
-}
-
 /* INDICADOR DE TELA CHEIA */
 .fullscreen-indicator {
     position: fixed;
@@ -863,16 +822,19 @@ body.light-theme .no-results i {
     overflow-y: auto;
 }
 
-#modalCompartilhar .grid-cols-4 {
-    gap: 8px;
-}
-
 #modalCompartilhar button {
     transition: var(--transition);
 }
 
 #modalCompartilhar button:hover {
     transform: translateY(-2px);
+}
+
+/* Grid de redes sociais no modal - padrão 4 colunas */
+.social-share-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
 }
 
 /* QR Code container - CENTRALIZADO */
@@ -892,26 +854,10 @@ body.light-theme .no-results i {
     display: block;
 }
 
-/* Link clicável em azul */
-.link-container {
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid #3b82f6;
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    word-break: break-all;
-    text-align: center;
-}
-
-.link-clicavel {
-    color: #3b82f6;
-    text-decoration: underline;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.link-clicavel:hover {
-    color: #2563eb;
+.mensagem-conteudo {
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
 }
 
 /* Tema claro para o modal */
@@ -944,27 +890,30 @@ body.light-theme #modalCompartilhar .border-gray-800 {
     border-color: var(--light-border);
 }
 
-body.light-theme .link-container {
-    background: #e6f0ff;
-    border-color: #3b82f6;
-}
-
 /* ===== RESPONSIVIDADE ===== */
 
 /* Mobile */
 @media (max-width: 768px) {
+    .desktop-actions {
+        display: none !important;
+    }
+    
+    .hamburger-btn {
+        display: flex !important;
+    }
+    
+    /* Modal de compartilhamento em mobile - grid de 2 colunas */
+    .social-share-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px;
+    }
+    
     .back-to-home {
         display: none !important;
     }
     
     .social-icons {
         display: none !important;
-    }
-    
-    .theme-toggle,
-    .share-btn,
-    .close-btn {
-        margin-right: 0;
     }
     
     .header-gradient .container {
@@ -980,11 +929,6 @@ body.light-theme .link-container {
     
     .header-gradient img {
         height: 50px !important;
-    }
-    
-    .hamburger-btn {
-        display: flex !important;
-        margin-left: 0;
     }
     
     .header-gradient .hidden.md\:block {
@@ -1071,16 +1015,6 @@ body.light-theme .link-container {
         right: 20px;
         font-size: 10px;
     }
-
-    .share-btn,
-    .close-btn {
-        width: 42px;
-        height: 42px;
-    }
-    
-    #modalCompartilhar .grid-cols-4 {
-        gap: 6px;
-    }
     
     #modalCompartilhar button span {
         font-size: 11px;
@@ -1093,11 +1027,7 @@ body.light-theme .link-container {
         height: 45px !important;
     }
     
-    .hamburger-btn,
-    .fullscreen-btn,
-    .theme-toggle,
-    .share-btn,
-    .close-btn {
+    .hamburger-btn {
         width: 42px;
         height: 42px;
         font-size: 18px;
@@ -1126,12 +1056,6 @@ body.light-theme .link-container {
         height: 45px;
         font-size: 22px;
     }
-
-    .share-btn,
-    .close-btn {
-        width: 42px;
-        height: 42px;
-    }
 }
 
 /* Desktop */
@@ -1150,7 +1074,9 @@ body.light-theme .link-container {
     
     .theme-toggle,
     .share-btn,
-    .close-btn {
+    .close-btn,
+    .fullscreen-btn,
+    .logout-btn {
         margin-right: 5px;
     }
 }

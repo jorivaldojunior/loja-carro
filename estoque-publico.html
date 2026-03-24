@@ -38,23 +38,26 @@
             </div>
         </div>
         
-        <!-- LINK DO INSTAGRAM -->
-        <a href="https://www.instagram.com/gmrepasses_/" target="_blank" class="menu-item instagram">
-            <i class="fab fa-instagram"></i>
-            <span>Instagram</span>
-            <i class="fas fa-external-link-alt text-xs opacity-50"></i>
-        </a>
+        <!-- Botão de Tema -->
+        <div class="menu-item theme-menu" onclick="Theme.toggle(); Menu.fechar();">
+            <i class="fas fa-sun"></i>
+            <span>Alternar Tema</span>
+        </div>
         
-        <!-- LINK DO WHATSAPP -->
-        <a href="https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk" target="_blank" class="menu-item whatsapp">
-            <i class="fab fa-whatsapp"></i>
-            <span>WhatsApp</span>
-            <i class="fas fa-external-link-alt text-xs opacity-50"></i>
-        </a>
+        <!-- Botão de Tela Cheia -->
+        <div class="menu-item fullscreen-menu" onclick="TelaCheia.ativar(); Menu.fechar();">
+            <i class="fas fa-expand"></i>
+            <span>Tela Cheia</span>
+        </div>
         
-        <div class="menu-divider"></div>
+        <!-- Botão de Compartilhar -->
+        <div class="menu-item share-menu" onclick="Compartilhamento.abrirModal(); Menu.fechar();">
+            <i class="fas fa-share-alt"></i>
+            <span>Compartilhar Estoque</span>
+        </div>
         
-        <div class="menu-item exit" onclick="Sair.executar()">
+        <!-- Botão Sair -->
+        <div class="menu-item exit-menu" onclick="Sair.executar(); Menu.fechar();">
             <i class="fas fa-sign-out-alt"></i>
             <span>Sair</span>
         </div>
@@ -73,27 +76,32 @@
                     <p class="text-xs text-gray-500">Veículos com procedência e garantia</p>
                 </div>
                 
-                <!-- Ações do header -->
-                <div class="header-actions" id="headerActions">
-                    <!-- Botão de tema (sempre visível) -->
+                <!-- Ações do header (visíveis apenas em desktop) -->
+                <div class="header-actions desktop-actions" id="headerActions">
+                    <!-- Botão de tema -->
                     <div class="theme-toggle" onclick="Theme.toggle()" id="themeToggle" title="Alternar tema">
                         <i class="fas fa-sun"></i>
                     </div>
                     
-                    <!-- Botão de tela cheia (sempre visível) -->
+                    <!-- Botão de tela cheia -->
                     <div class="fullscreen-btn" onclick="TelaCheia.ativar()" title="Tela Cheia">
                         <i class="fas fa-expand"></i>
                     </div>
                     
-                    <!-- Botão de compartilhar (sempre visível) -->
+                    <!-- Botão de compartilhar -->
                     <div class="share-btn" onclick="Compartilhamento.abrirModal()" title="Compartilhar estoque">
                         <i class="fas fa-share-alt"></i>
                     </div>
                     
-                    <!-- Botão hamburger (apenas mobile) -->
-                    <div class="hamburger-btn" onclick="Menu.toggle()">
-                        <i class="fas fa-bars"></i>
+                    <!-- Botão sair -->
+                    <div class="logout-btn" onclick="Sair.executar()" title="Sair do sistema">
+                        <i class="fas fa-sign-out-alt"></i>
                     </div>
+                </div>
+                
+                <!-- Botão hamburger (apenas mobile) -->
+                <div class="hamburger-btn" onclick="Menu.toggle()">
+                    <i class="fas fa-bars"></i>
                 </div>
             </div>
         </div>
@@ -146,36 +154,32 @@
             </div>
             
             <p class="text-sm text-gray-400 mb-4">
-                Compartilhe este link com seus clientes para que eles possam ver todos os veículos disponíveis:
+                Copie a mensagem abaixo e compartilhe com seus clientes:
             </p>
             
-            <!-- Link da página (input) -->
-            <div class="flex items-center gap-2 mb-4">
-                <input type="text" id="linkCompartilhamento" readonly 
-                       class="flex-1 p-3 bg-black border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-purple-500"
-                       value="">
-                <button onclick="Compartilhamento.copiarLink(this)" 
-                        class="bg-purple-600 hover:bg-purple-700 p-3 rounded-lg transition-colors"
-                        title="Copiar link">
-                    <i class="fas fa-copy"></i>
-                </button>
+            <!-- Mensagem para compartilhar -->
+            <div class="mensagem-conteudo mb-4" id="mensagemCompartilhar" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; white-space: pre-wrap;">
+                Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque:
+                
+                http://127.0.0.1:5500/estoque-publico.html
+                
+                Veículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!
             </div>
             
-            <!-- LINK CLICÁVEL - EM FORMATO DESTACADO -->
-            <div class="link-container">
-                <span class="text-sm text-gray-400 block mb-1">Link direto:</span>
-                <a href="#" id="linkClicavel" class="link-clicavel text-sm" target="_blank"></a>
+            <div class="flex gap-2 mb-4">
+                <button onclick="Compartilhamento.copiarMensagem()" 
+                        class="flex-1 bg-purple-600 hover:bg-purple-700 p-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-copy"></i> Copiar mensagem
+                </button>
+                <button onclick="Compartilhamento.compartilharWhatsApp()" 
+                        class="flex-1 bg-green-600 hover:bg-green-700 p-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
             </div>
             
             <!-- Opções de compartilhamento rápido -->
-            <p class="text-sm text-gray-400 mb-3 mt-4">Compartilhar via:</p>
-            <div class="grid grid-cols-4 gap-3">
-                <button onclick="Compartilhamento.compartilharWhatsApp()" 
-                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
-                    <i class="fab fa-whatsapp text-2xl text-green-400"></i>
-                    <span class="text-xs">WhatsApp</span>
-                </button>
-                
+            <p class="text-sm text-gray-400 mb-3 mt-2">Compartilhar via:</p>
+            <div class="social-share-grid" id="socialShareGrid">
                 <button onclick="Compartilhamento.compartilharInstagram()" 
                         class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
                     <i class="fab fa-instagram text-2xl text-pink-400"></i>
@@ -210,12 +214,6 @@
                         class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
                     <i class="fas fa-envelope text-2xl text-yellow-400"></i>
                     <span class="text-xs">E-mail</span>
-                </button>
-                
-                <button onclick="Compartilhamento.compartilharMessenger()" 
-                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
-                    <i class="fab fa-facebook-messenger text-2xl text-blue-500"></i>
-                    <span class="text-xs">Messenger</span>
                 </button>
             </div>
             
