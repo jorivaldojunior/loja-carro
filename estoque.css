@@ -55,16 +55,14 @@ body.dark-theme .header-gradient {
 }
 
 body.dark-theme .back-btn,
-body.dark-theme .fullscreen-btn,
-body.dark-theme .filter-chip {
+body.dark-theme .fullscreen-btn {
     background: var(--dark-card);
     border: 1px solid var(--dark-border);
     color: #888;
 }
 
 body.dark-theme .back-btn:hover,
-body.dark-theme .fullscreen-btn:hover,
-body.dark-theme .filter-chip:hover {
+body.dark-theme .fullscreen-btn:hover {
     border-color: var(--purple-primary);
     color: var(--purple-primary);
 }
@@ -79,6 +77,25 @@ body.dark-theme .search-wrapper input:focus {
     border-color: var(--purple-primary);
 }
 
+/* Botões primários no tema escuro */
+body.dark-theme .btn-primary {
+    background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-dark) 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+body.dark-theme .btn-primary:hover {
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-primary) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(168, 85, 247, 0.4);
+}
+
+body.dark-theme .btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Botões secundários no tema escuro */
 body.dark-theme .btn-secondary {
     background: var(--dark-card);
     border: 1px solid var(--dark-border);
@@ -88,6 +105,7 @@ body.dark-theme .btn-secondary {
 body.dark-theme .btn-secondary:hover {
     border-color: var(--purple-primary);
     color: var(--purple-primary);
+    background: var(--dark-hover);
 }
 
 body.dark-theme .empty-state {
@@ -132,8 +150,7 @@ body.light-theme .header-gradient {
 }
 
 body.light-theme .back-btn,
-body.light-theme .fullscreen-btn,
-body.light-theme .filter-chip {
+body.light-theme .fullscreen-btn {
     background: var(--light-card);
     border: 1px solid var(--light-border);
     color: var(--text-gray);
@@ -141,18 +158,11 @@ body.light-theme .filter-chip {
 }
 
 body.light-theme .back-btn:hover,
-body.light-theme .fullscreen-btn:hover,
-body.light-theme .filter-chip:hover {
+body.light-theme .fullscreen-btn:hover {
     border-color: var(--purple-primary);
     color: var(--purple-primary);
     background: var(--light-card);
     box-shadow: 0 4px 8px rgba(168,85,247,0.1);
-}
-
-body.light-theme .filter-chip.active {
-    background: var(--purple-primary);
-    border-color: var(--purple-primary);
-    color: white;
 }
 
 body.light-theme .search-wrapper input {
@@ -179,16 +189,25 @@ body.light-theme .search-stats {
     color: var(--text-gray);
 }
 
+/* Botões primários no tema claro */
 body.light-theme .btn-primary {
-    background: var(--purple-primary);
+    background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-dark) 100%);
     color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
 }
 
 body.light-theme .btn-primary:hover {
-    background: var(--purple-dark);
-    box-shadow: 0 8px 16px rgba(168,85,247,0.3);
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-primary) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(168, 85, 247, 0.4);
 }
 
+body.light-theme .btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Botões secundários no tema claro */
 body.light-theme .btn-secondary {
     background: var(--light-card);
     border: 1px solid var(--light-border);
@@ -451,7 +470,7 @@ body.light-theme .theme-toggle {
     padding-right: 8px;
 }
 
-/* ===== FILTROS RÁPIDOS ===== */
+/* ===== FILTROS RÁPIDOS - CORRIGIDO ===== */
 .filter-chip {
     padding: 8px 16px;
     border-radius: 30px;
@@ -465,6 +484,65 @@ body.light-theme .theme-toggle {
 
 .filter-chip i {
     font-size: 12px;
+}
+
+/* Estado ativo dos filtros - MESMO ESTILO PARA AMBOS OS TEMAS */
+.filter-chip.active {
+    background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-dark) 100%);
+    border-color: var(--purple-primary);
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+.filter-chip.active:hover {
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-primary) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(168, 85, 247, 0.4);
+}
+
+.filter-chip.active i {
+    color: white;
+}
+
+/* TEMA ESCURO - filtros inativos */
+body.dark-theme .filter-chip {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    color: #888;
+}
+
+body.dark-theme .filter-chip:hover:not(.active) {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary);
+    background: var(--dark-hover);
+}
+
+/* TEMA CLARO - filtros inativos - CORRIGIDO */
+body.light-theme .filter-chip {
+    background: var(--light-card);
+    border: 1px solid var(--light-border);
+    color: var(--text-dark) !important;
+    box-shadow: var(--shadow-sm);
+}
+
+body.light-theme .filter-chip:hover:not(.active) {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary) !important;
+    background: var(--light-card);
+    box-shadow: 0 4px 8px rgba(168,85,247,0.1);
+}
+
+/* Garantir que os ícones também tenham a cor correta no tema claro */
+body.light-theme .filter-chip i {
+    color: var(--text-gray);
+}
+
+body.light-theme .filter-chip:hover:not(.active) i {
+    color: var(--purple-primary);
+}
+
+body.light-theme .filter-chip.active i {
+    color: white !important;
 }
 
 /* ===== CARDS DE VEÍCULOS ===== */
@@ -647,6 +725,42 @@ body.light-theme .info-row {
     cursor: not-allowed;
 }
 
+/* TEMA ESCURO - paginação */
+body.dark-theme .page-btn {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    color: #888;
+}
+
+body.dark-theme .page-btn:hover:not(.disabled):not(.active) {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary);
+}
+
+body.dark-theme .page-btn.active {
+    background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-dark) 100%);
+    border-color: var(--purple-primary);
+    color: white;
+}
+
+/* TEMA CLARO - paginação */
+body.light-theme .page-btn {
+    background: var(--light-card);
+    border: 1px solid var(--light-border);
+    color: var(--text-gray);
+}
+
+body.light-theme .page-btn:hover:not(.disabled):not(.active) {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary);
+}
+
+body.light-theme .page-btn.active {
+    background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-dark) 100%);
+    border-color: var(--purple-primary);
+    color: white;
+}
+
 /* ===== LOADING SKELETON ===== */
 .skeleton {
     background-size: 200% 100%;
@@ -697,6 +811,10 @@ body.light-theme .info-row {
     transform: translateY(-2px);
 }
 
+.btn-primary:active {
+    transform: translateY(0);
+}
+
 .btn-secondary {
     padding: 12px 24px;
     border-radius: 30px;
@@ -706,6 +824,7 @@ body.light-theme .info-row {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    background: transparent;
 }
 
 /* ===== SCROLLBAR PERSONALIZADA ===== */
