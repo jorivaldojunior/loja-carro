@@ -1,29 +1,22 @@
-/**
- * GM Repasses - Estoque Público
- * Versão: 1.0.0
- * Descrição: Página pública de exibição do estoque de veículos
- */
-
 // ===== CONSTANTES =====
 const CONFIG = {
     STORAGE_KEY: 'gmRepasses',
     WHATSAPP_NUMBER: '5581981837459',
     WHATSAPP_GROUP_URL: 'https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk',
     INSTAGRAM_URL: 'https://www.instagram.com/gmrepasses_/',
-    PLACEHOLDER_IMAGE: 'https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem'
+    PLACEHOLDER_IMAGE: 'https://via.placeholder.com/400x300/1a1a1a/444?text=Sem+Imagem',
+    SHARE_MESSAGE: 'Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque: {{URL}} - Veículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!'
 };
 
 // ===== ESTADO DA APLICAÇÃO =====
 const State = {
     todosVeiculos: [],
-    slideAtual: 0
+    slideAtual: 0,
+    isSharedPage: window.location.search.includes('shared=true') || document.referrer !== ''
 };
 
 // ===== UTILITÁRIOS =====
 const Utils = {
-    /**
-     * Obtém configuração do SweetAlert baseada no tema
-     */
     getSwalConfig() {
         const isLight = document.body.classList.contains('light-theme');
         return {
@@ -32,9 +25,6 @@ const Utils = {
         };
     },
 
-    /**
-     * Formata valor para moeda brasileira (sem centavos)
-     */
     formatarMoedaBrasileira(valor) {
         if (!valor || isNaN(valor)) return 'R$ 0';
         return valor.toLocaleString('pt-BR', { 
@@ -44,17 +34,11 @@ const Utils = {
         });
     },
 
-    /**
-     * Formata quilometragem
-     */
     formatarKM(km) {
         if (!km) return 'KM não informado';
         return parseInt(km).toLocaleString('pt-BR') + ' km';
     },
 
-    /**
-     * Compara valor com FIPE
-     */
     compararComFIPE(fipe, venda) {
         if (!fipe || fipe === 0 || !venda || venda === 0) {
             return { text: '', class: '' };
@@ -71,13 +55,20 @@ const Utils = {
         }
     },
 
-    /**
-     * Escapa string para uso seguro em HTML
-     */
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    },
+
+    getCleanUrl() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('shared');
+        return url.toString();
+    },
+
+    getMensagemCompleta() {
+        return `Olá! Confira os melhores veículos da GM Repasses! Acesse o link para ver todo o nosso estoque:\n\n${this.getCleanUrl()}\n\nVeículos com procedência e garantia! Os melhores preços da região! Compartilhe com quem também está procurando um veículo!`;
     }
 };
 
@@ -189,18 +180,6 @@ const TelaCheia = {
     }
 };
 
-// ===== NAVEGAÇÃO =====
-const Navegacao = {
-    voltarPaginaPrincipal() {
-        window.location.href = 'principal.html';
-    },
-
-    abrirPaginaVeiculo(id) {
-        localStorage.setItem('veiculoId', id);
-        window.location.href = 'detalhes-veiculo.html';
-    }
-};
-
 // ===== WHATSAPP =====
 const WhatsApp = {
     abrirGrupo() {
@@ -235,6 +214,155 @@ const Sair = {
                 window.location.href = 'index.html';
             }
         });
+    }
+};
+
+// ===== COMPARTILHAMENTO =====
+const Compartilhamento = {
+    getUrl() {
+        return Utils.getCleanUrl();
+    },
+
+    getTitulo() {
+        return 'GM Repasses - Estoque de Veículos';
+    },
+
+    abrirModal() {
+        const modal = document.getElementById('modalCompartilhar');
+        const input = document.getElementById('linkCompartilhamento');
+        const linkClicavel = document.getElementById('linkClicavel');
+        const url = this.getUrl();
+        
+        input.value = url;
+        linkClicavel.href = url;
+        linkClicavel.textContent = url;
+        
+        setTimeout(() => {
+            input.select();
+        }, 100);
+        
+        this._gerarQRCode();
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    },
+
+    fecharModal() {
+        const modal = document.getElementById('modalCompartilhar');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    },
+
+    _gerarQRCode() {
+        const container = document.getElementById('qrcode');
+        container.innerHTML = '';
+        
+        if (typeof QRCode !== 'undefined') {
+            new QRCode(container, {
+                text: this.getUrl(),
+                width: 150,
+                height: 150,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    },
+
+    copiarLink(btnElement) {
+        const input = document.getElementById('linkCompartilhamento');
+        
+        input.select();
+        input.setSelectionRange(0, 99999);
+        
+        try {
+            navigator.clipboard.writeText(input.value).then(() => {
+                this._mostrarFeedbackSucesso(btnElement);
+            }).catch(() => {
+                document.execCommand('copy');
+                this._mostrarFeedbackSucesso(btnElement);
+            });
+        } catch (err) {
+            document.execCommand('copy');
+            this._mostrarFeedbackSucesso(btnElement);
+        }
+    },
+
+    _mostrarFeedbackSucesso(btnElement) {
+        const originalHtml = btnElement.innerHTML;
+        btnElement.innerHTML = '<i class="fas fa-check"></i>';
+        
+        setTimeout(() => {
+            btnElement.innerHTML = originalHtml;
+        }, 2000);
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Link copiado!',
+            text: 'O link foi copiado para a área de transferência.',
+            timer: 1500,
+            showConfirmButton: false,
+            ...Utils.getSwalConfig()
+        });
+    },
+
+    compartilharWhatsApp() {
+        const mensagem = Utils.getMensagemCompleta();
+        const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+        window.open(url, '_blank');
+        this.fecharModal();
+    },
+
+    compartilharInstagram() {
+        this.copiarLink(document.querySelector('.share-btn'));
+        Swal.fire({
+            icon: 'info',
+            title: 'Link copiado!',
+            text: 'Cole o link no seu Instagram',
+            timer: 2000,
+            showConfirmButton: false,
+            ...Utils.getSwalConfig()
+        });
+        this.fecharModal();
+    },
+
+    compartilharFacebook() {
+        const url = encodeURIComponent(this.getUrl());
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        this.fecharModal();
+    },
+
+    compartilharTwitter() {
+        const mensagem = encodeURIComponent(this.getTitulo());
+        const url = encodeURIComponent(this.getUrl());
+        window.open(`https://twitter.com/intent/tweet?text=${mensagem}&url=${url}`, '_blank');
+        this.fecharModal();
+    },
+
+    compartilharLinkedIn() {
+        const url = encodeURIComponent(this.getUrl());
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+        this.fecharModal();
+    },
+
+    compartilharTelegram() {
+        const mensagem = encodeURIComponent(this.getTitulo());
+        const url = encodeURIComponent(this.getUrl());
+        window.open(`https://t.me/share/url?url=${url}&text=${mensagem}`, '_blank');
+        this.fecharModal();
+    },
+
+    compartilharEmail() {
+        const assunto = encodeURIComponent(this.getTitulo());
+        const corpo = encodeURIComponent(Utils.getMensagemCompleta());
+        window.open(`mailto:?subject=${assunto}&body=${corpo}`, '_blank');
+        this.fecharModal();
+    },
+
+    compartilharMessenger() {
+        const url = encodeURIComponent(this.getUrl());
+        window.open(`https://www.facebook.com/dialog/send?link=${url}&app_id=YOUR_APP_ID&redirect_uri=${url}`, '_blank');
+        this.fecharModal();
     }
 };
 
@@ -533,6 +661,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('storage', (e) => {
         if (e.key === CONFIG.STORAGE_KEY) {
             VeiculosManager.carregar();
+        }
+    });
+    
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('modalCompartilhar');
+        if (e.target === modal) {
+            Compartilhamento.fecharModal();
+        }
+    });
+    
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            Compartilhamento.fecharModal();
         }
     });
 });

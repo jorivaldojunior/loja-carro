@@ -14,7 +14,10 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- CSS da página de estoque público -->
+    <!-- QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <!-- CSS Personalizado -->
     <link rel="stylesheet" href="estoque-publico.css">
 </head>
 <body class="dark-theme">
@@ -71,33 +74,20 @@
                 </div>
                 
                 <!-- Ações do header -->
-                <div class="header-actions">
-                    <!-- Botão de tema -->
+                <div class="header-actions" id="headerActions">
+                    <!-- Botão de tema (sempre visível) -->
                     <div class="theme-toggle" onclick="Theme.toggle()" id="themeToggle" title="Alternar tema">
                         <i class="fas fa-sun"></i>
                     </div>
                     
-                    <!-- Botão voltar (apenas desktop) -->
-                    <div class="back-to-home" onclick="Navegacao.voltarPaginaPrincipal()" title="Página Principal">
-                        <i class="fas fa-home"></i>
-                    </div>
-                    
-                    <!-- ÍCONES SOCIAIS DESKTOP -->
-                    <div class="social-icons">
-                        <a href="https://www.instagram.com/gmrepasses_/" target="_blank" class="social-icon instagram" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://chat.whatsapp.com/FYvCDjoFpHi6ZmZyIgbuRk" target="_blank" class="social-icon whatsapp" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <div class="social-icon exit" onclick="Sair.executar()" title="Sair">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Botão de tela cheia -->
+                    <!-- Botão de tela cheia (sempre visível) -->
                     <div class="fullscreen-btn" onclick="TelaCheia.ativar()" title="Tela Cheia">
                         <i class="fas fa-expand"></i>
+                    </div>
+                    
+                    <!-- Botão de compartilhar (sempre visível) -->
+                    <div class="share-btn" onclick="Compartilhamento.abrirModal()" title="Compartilhar estoque">
+                        <i class="fas fa-share-alt"></i>
                     </div>
                     
                     <!-- Botão hamburger (apenas mobile) -->
@@ -142,7 +132,102 @@
         
     </div>
 
-    <!-- JavaScript da página de estoque público -->
+    <!-- MODAL DE COMPARTILHAMENTO -->
+    <div id="modalCompartilhar" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50 p-4">
+        <div class="bg-gray-900 p-6 lg:p-8 rounded-xl w-full max-w-md border border-gray-700">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg lg:text-xl font-bold purple-accent flex items-center gap-3">
+                    <i class="fas fa-share-alt"></i>
+                    Compartilhar Estoque
+                </h2>
+                <button onclick="Compartilhamento.fecharModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <p class="text-sm text-gray-400 mb-4">
+                Compartilhe este link com seus clientes para que eles possam ver todos os veículos disponíveis:
+            </p>
+            
+            <!-- Link da página (input) -->
+            <div class="flex items-center gap-2 mb-4">
+                <input type="text" id="linkCompartilhamento" readonly 
+                       class="flex-1 p-3 bg-black border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-purple-500"
+                       value="">
+                <button onclick="Compartilhamento.copiarLink(this)" 
+                        class="bg-purple-600 hover:bg-purple-700 p-3 rounded-lg transition-colors"
+                        title="Copiar link">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            
+            <!-- LINK CLICÁVEL - EM FORMATO DESTACADO -->
+            <div class="link-container">
+                <span class="text-sm text-gray-400 block mb-1">Link direto:</span>
+                <a href="#" id="linkClicavel" class="link-clicavel text-sm" target="_blank"></a>
+            </div>
+            
+            <!-- Opções de compartilhamento rápido -->
+            <p class="text-sm text-gray-400 mb-3 mt-4">Compartilhar via:</p>
+            <div class="grid grid-cols-4 gap-3">
+                <button onclick="Compartilhamento.compartilharWhatsApp()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-whatsapp text-2xl text-green-400"></i>
+                    <span class="text-xs">WhatsApp</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharInstagram()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-instagram text-2xl text-pink-400"></i>
+                    <span class="text-xs">Instagram</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharFacebook()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-facebook text-2xl text-blue-400"></i>
+                    <span class="text-xs">Facebook</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharTwitter()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-twitter text-2xl text-blue-300"></i>
+                    <span class="text-xs">Twitter</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharLinkedIn()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-linkedin text-2xl text-blue-500"></i>
+                    <span class="text-xs">LinkedIn</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharTelegram()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-telegram text-2xl text-blue-400"></i>
+                    <span class="text-xs">Telegram</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharEmail()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fas fa-envelope text-2xl text-yellow-400"></i>
+                    <span class="text-xs">E-mail</span>
+                </button>
+                
+                <button onclick="Compartilhamento.compartilharMessenger()" 
+                        class="flex flex-col items-center gap-2 p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-facebook-messenger text-2xl text-blue-500"></i>
+                    <span class="text-xs">Messenger</span>
+                </button>
+            </div>
+            
+            <!-- QR Code -->
+            <div class="mt-6 pt-4 border-t border-gray-800">
+                <p class="text-sm text-gray-400 mb-3 text-center">Ou escaneie o QR Code</p>
+                <div id="qrcode" class="flex justify-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script src="estoque-publico.js"></script>
 </body>
 </html>

@@ -51,7 +51,9 @@ body.dark-theme .back-to-home,
 body.dark-theme .hamburger-btn,
 body.dark-theme .fullscreen-btn,
 body.dark-theme .social-icon,
-body.dark-theme .theme-toggle {
+body.dark-theme .theme-toggle,
+body.dark-theme .share-btn,
+body.dark-theme .close-btn {
     background: var(--dark-card);
     border: 1px solid #333;
     color: #888;
@@ -61,7 +63,9 @@ body.dark-theme .back-to-home:hover,
 body.dark-theme .hamburger-btn:hover,
 body.dark-theme .fullscreen-btn:hover,
 body.dark-theme .social-icon:hover,
-body.dark-theme .theme-toggle:hover {
+body.dark-theme .theme-toggle:hover,
+body.dark-theme .share-btn:hover,
+body.dark-theme .close-btn:hover {
     background: var(--purple-primary);
     color: #fff;
     border-color: var(--purple-primary);
@@ -129,7 +133,9 @@ body.light-theme .back-to-home,
 body.light-theme .hamburger-btn,
 body.light-theme .fullscreen-btn,
 body.light-theme .social-icon,
-body.light-theme .theme-toggle {
+body.light-theme .theme-toggle,
+body.light-theme .share-btn,
+body.light-theme .close-btn {
     background: var(--light-card);
     border: 1px solid var(--light-border);
     color: var(--text-gray);
@@ -140,7 +146,9 @@ body.light-theme .back-to-home:hover,
 body.light-theme .hamburger-btn:hover,
 body.light-theme .fullscreen-btn:hover,
 body.light-theme .social-icon:hover,
-body.light-theme .theme-toggle:hover {
+body.light-theme .theme-toggle:hover,
+body.light-theme .share-btn:hover,
+body.light-theme .close-btn:hover {
     background: var(--purple-primary);
     color: #fff;
     border-color: var(--purple-primary);
@@ -369,8 +377,13 @@ body.light-theme ::-webkit-scrollbar-thumb {
     backdrop-filter: blur(10px);
 }
 
-/* BOTÃO VOLTAR (apenas desktop) */
+/* BOTÃO VOLTAR (apenas desktop) - REMOVIDO */
 .back-to-home {
+    display: none !important;
+}
+
+/* BOTÃO FECHAR (para página compartilhada) */
+.close-btn {
     width: 40px;
     height: 40px;
     border-radius: 40px;
@@ -380,7 +393,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     cursor: pointer;
     transition: var(--transition);
     font-size: 18px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 /* BOTÃO HAMBURGER */
@@ -398,6 +411,20 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 /* BOTÃO DE TEMA */
 .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+/* BOTÃO DE COMPARTILHAR */
+.share-btn {
     width: 40px;
     height: 40px;
     border-radius: 40px;
@@ -799,25 +826,9 @@ body.light-theme .no-results i {
     font-size: 18px;
 }
 
-/* ÍCONES SOCIAIS DESKTOP */
+/* ÍCONES SOCIAIS DESKTOP - REMOVIDOS */
 .social-icons {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 5px;
-}
-
-.social-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 18px;
-    text-decoration: none;
+    display: none !important;
 }
 
 /* INDICADOR DE TELA CHEIA */
@@ -846,6 +857,98 @@ body.light-theme .no-results i {
     gap: 8px;
 }
 
+/* ===== MODAL DE COMPARTILHAMENTO ===== */
+#modalCompartilhar .bg-gray-900 {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#modalCompartilhar .grid-cols-4 {
+    gap: 8px;
+}
+
+#modalCompartilhar button {
+    transition: var(--transition);
+}
+
+#modalCompartilhar button:hover {
+    transform: translateY(-2px);
+}
+
+/* QR Code container - CENTRALIZADO */
+#qrcode {
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+#qrcode img {
+    margin: 0 auto;
+    display: block;
+}
+
+/* Link clicável em azul */
+.link-container {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
+    word-break: break-all;
+    text-align: center;
+}
+
+.link-clicavel {
+    color: #3b82f6;
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.link-clicavel:hover {
+    color: #2563eb;
+}
+
+/* Tema claro para o modal */
+body.light-theme #modalCompartilhar .bg-gray-900 {
+    background: var(--light-card);
+    border-color: var(--light-border);
+}
+
+body.light-theme #modalCompartilhar .text-gray-400 {
+    color: var(--text-gray) !important;
+}
+
+body.light-theme #modalCompartilhar input {
+    background: #f9fafb;
+    border-color: var(--light-border);
+    color: var(--text-dark);
+}
+
+body.light-theme #modalCompartilhar .bg-gray-800 {
+    background: #f3f4f6;
+    border: 1px solid var(--light-border);
+    color: var(--text-dark);
+}
+
+body.light-theme #modalCompartilhar .bg-gray-800:hover {
+    background: #e5e7eb;
+}
+
+body.light-theme #modalCompartilhar .border-gray-800 {
+    border-color: var(--light-border);
+}
+
+body.light-theme .link-container {
+    background: #e6f0ff;
+    border-color: #3b82f6;
+}
+
 /* ===== RESPONSIVIDADE ===== */
 
 /* Mobile */
@@ -858,7 +961,9 @@ body.light-theme .no-results i {
         display: none !important;
     }
     
-    .theme-toggle {
+    .theme-toggle,
+    .share-btn,
+    .close-btn {
         margin-right: 0;
     }
     
@@ -966,6 +1071,20 @@ body.light-theme .no-results i {
         right: 20px;
         font-size: 10px;
     }
+
+    .share-btn,
+    .close-btn {
+        width: 42px;
+        height: 42px;
+    }
+    
+    #modalCompartilhar .grid-cols-4 {
+        gap: 6px;
+    }
+    
+    #modalCompartilhar button span {
+        font-size: 11px;
+    }
 }
 
 /* Telas muito pequenas */
@@ -976,7 +1095,9 @@ body.light-theme .no-results i {
     
     .hamburger-btn,
     .fullscreen-btn,
-    .theme-toggle {
+    .theme-toggle,
+    .share-btn,
+    .close-btn {
         width: 42px;
         height: 42px;
         font-size: 18px;
@@ -1005,6 +1126,12 @@ body.light-theme .no-results i {
         height: 45px;
         font-size: 22px;
     }
+
+    .share-btn,
+    .close-btn {
+        width: 42px;
+        height: 42px;
+    }
 }
 
 /* Desktop */
@@ -1021,7 +1148,9 @@ body.light-theme .no-results i {
         display: none !important;
     }
     
-    .theme-toggle {
+    .theme-toggle,
+    .share-btn,
+    .close-btn {
         margin-right: 5px;
     }
 }
