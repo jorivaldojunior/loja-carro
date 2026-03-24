@@ -317,6 +317,16 @@ input:focus {
     padding: 24px;
     margin-top: 20px;
   }
+  
+  /* Ajuste dos botões em mobile */
+  .flex.justify-center.md\:justify-start {
+    flex-wrap: wrap;
+  }
+  
+  .flex.justify-center.md\:justify-start button {
+    flex: 1;
+    justify-content: center;
+  }
 }
 
 @media (max-height: 500px) {

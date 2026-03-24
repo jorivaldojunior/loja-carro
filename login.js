@@ -11,6 +11,11 @@ let slideInterval;
 const slideshow = document.getElementById("slideshow");
 const indicatorsContainer = document.getElementById("indicators");
 
+// ===== FUNÇÃO PARA ABRIR ESTOQUE PÚBLICO =====
+function abrirEstoquePublico() {
+  window.location.href = "estoque-publico.html";
+}
+
 // ===== FUNÇÕES DE TEMA =====
 function toggleTheme() {
   const body = document.body;
