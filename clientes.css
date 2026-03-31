@@ -1,0 +1,243 @@
+/* ===== ESTILOS ESPECÍFICOS PARA CLIENTES ===== */
+
+/* Tabela de clientes */
+.cliente-table {
+    overflow-x: auto;
+}
+
+.cliente-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cliente-table th,
+.cliente-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid;
+}
+
+body.dark-theme .cliente-table th {
+    border-bottom-color: #2a2a2a;
+    color: #9ca3af;
+}
+
+body.dark-theme .cliente-table td {
+    border-bottom-color: #1f1f1f;
+}
+
+body.light-theme .cliente-table th {
+    border-bottom-color: #e5e7eb;
+    color: #6b7280;
+}
+
+body.light-theme .cliente-table td {
+    border-bottom-color: #f3f4f6;
+}
+
+.cliente-table tr:hover td {
+    background-color: rgba(168, 85, 247, 0.05);
+}
+
+/* Status badges */
+.cliente-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-ativo {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.status-inativo {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+/* Botões de ação */
+.action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: rgba(168, 85, 247, 0.2);
+}
+
+/* Botões primário e secundário */
+.btn-primary {
+    background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+.btn-secondary {
+    background-color: #2a2a2a;
+    color: #e5e7eb;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body.light-theme .btn-secondary {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.btn-secondary:hover {
+    opacity: 0.8;
+}
+
+/* Inputs de busca e filtro */
+.search-input {
+    padding: 10px 16px 10px 40px;
+    border-radius: 8px;
+    border: 1px solid;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+body.dark-theme .search-input {
+    background: black;
+    border-color: #2a2a2a;
+    color: white;
+}
+
+body.light-theme .search-input {
+    background: white;
+    border-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+.filter-select {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid;
+    background: transparent;
+    cursor: pointer;
+}
+
+body.dark-theme .filter-select {
+    background: black;
+    border-color: #2a2a2a;
+    color: white;
+}
+
+body.light-theme .filter-select {
+    background: white;
+    border-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #a855f7;
+}
+
+/* Inputs do formulário */
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid;
+    transition: all 0.2s;
+}
+
+body.dark-theme .form-input {
+    background: black;
+    border-color: #2a2a2a;
+    color: white;
+}
+
+body.light-theme .form-input {
+    background: white;
+    border-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+/* Tabs */
+.tab-active {
+    color: #a855f7;
+    border-bottom: 2px solid #a855f7;
+}
+
+.tab-inactive {
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-inactive:hover {
+    color: #a855f7;
+}
+
+/* Cards de estatísticas */
+.stats-card {
+    transition: all 0.2s;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .cliente-table th,
+    .cliente-table td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 640px) {
+    .cliente-table th:nth-child(5),
+    .cliente-table td:nth-child(5),
+    .cliente-table th:nth-child(6),
+    .cliente-table td:nth-child(6) {
+        display: none;
+    }
+}
